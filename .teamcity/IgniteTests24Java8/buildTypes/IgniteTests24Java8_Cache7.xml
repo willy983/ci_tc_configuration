@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="51e23cac-432f-4a46-91a3-29bf71b669b3" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Cache 7</name>
+  <description />
+  <settings ref="IgniteTests24Java8_RunTestSuitesJava">
+    <options>
+      <option name="executionTimeoutMin" value="90" />
+    </options>
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-core,:ignite-indexing" />
+      <param name="TEST_SUITE" value="org.apache.ignite.testsuites.IgniteCacheTestSuite7,org.apache.ignite.testsuites.IgniteCacheWithIndexingAndPersistenceTestSuite" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

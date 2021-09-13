@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="eecc5baa-2e96-45f8-9d30-a546a1de8fe0" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[Check Code Style]</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="work/log =&gt; logs.zip&#xA;./**/target/checkstyle-result.xml =&gt; checkstyle-result.zip" />
+      <option name="checkoutMode" value="ON_SERVER" />
+      <option name="cleanBuild" value="true" />
+    </options>
+    <parameters>
+      <param name="env.JAVA_HOME" value="%env.JDK_ORA_8%" spec="text validationMode='any' display='normal'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_166" name="Cleanup .m2/repository" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+rm -rf ~/.m2/repository/org/apache/ignite]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_226" name="Check Code Style by Maven plugin" type="Maven2">
+        <parameters>
+          <param name="goals" value="package" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.3.6.0%" />
+          <param name="runnerArgs"><![CDATA[-Pcheckstyle,all-java,all-scala,all-other,compatibility,lgpl,yardstick,benchmarks,examples,web-console
+-DskipTests
+-Dmaven.javadoc.skip=true
+-Dmaven.source.skip=true
+-pl -:ignite-scalar_2.10,-:ignite-scalar,-:ignite-visor-console,-:ignite-visor-console_2.10,-:ignite-spark]]></param>
+          <param name="target.jdk.home" value="%env.JDK_ORA_8%" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsPath" value="settings.xml" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_43" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

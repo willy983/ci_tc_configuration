@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="4ac60459-fa40-4348-b55c-ab6f70f828c6" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Kubernetes</name>
+  <description />
+  <settings ref="DevAi2x_RunTestSuitesJava">
+    <options>
+      <option name="executionTimeoutMin" value="10" />
+    </options>
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-kubernetes" spec="text display='hidden' validationMode='any'" />
+      <param name="TEST_SUITE" value="IgniteKubernetesTestSuite" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

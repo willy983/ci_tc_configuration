@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="d9e07878-85ee-45ec-a3fe-45d94d8e1d3b" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Exclude tests</name>
+  <settings>
+    <disabled-settings>
+      <setting-ref ref="RUNNER_172" />
+    </disabled-settings>
+    <parameters>
+      <param name="SKIP_BUILD_CONDITION" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="SKIP_BUILD_MAVEN_MODULE" value="" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_159" name="[OVERRIDE] Set SKIP_BUILD flag if required" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+if [ %SKIP_BUILD_CONDITION% ]; then
+    set +x
+    echo "##teamcity[setParameter name='system.SKIP_BUILD' value='true']"
+    set -x
+fi]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_172" name="[OVERRIDE] Set build steps to skip if required" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+if %system.SKIP_BUILD%; then
+    set +x
+    echo "##teamcity[setParameter name='MAVEN_JDK9_GOALS' value='clean']"
+    echo "##teamcity[setParameter name='MAVEN_BUILD_GOALS' value='clean']"
+    echo "##teamcity[setParameter name='MAVEN_TESTS_GOALS' value='clean']"
+    echo "##teamcity[setParameter name='MAVEN_MODULES' value='%SKIP_BUILD_MAVEN_MODULE%']"
+    set -x
+fi]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</template>
+

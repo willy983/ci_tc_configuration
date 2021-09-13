@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="06a1784c-153a-47e5-9069-b0c642160eab" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Cache (Full API Config Variations / Basic)</name>
+  <description />
+  <settings ref="IgniteTests24Java8_RunTestSuitesJava">
+    <options>
+      <option name="executionTimeoutMin" value="240" />
+    </options>
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-core" />
+      <param name="TEST_SUITE" value="IgniteCacheBasicConfigVariationsFullApiTestSuite" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="40fff155-9fa6-46e1-8dde-ea08c9fc87af" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Run test suites (.NET)</name>
+  <settings>
+    <parameters>
+      <param name="ASSEMBLY_FILES_INCLUDE_LIST" value="" />
+      <param name="TARGET_RELEASE" value="Debug" />
+      <param name="TEST_CATEGORIES_EXCLUDE_LIST" value="" />
+      <param name="TEST_CATEGORIES_INCLUDE_LIST" value="" />
+      <param name="env.JAVA_HOME" value="%env.JDK_ORA_8%" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_32" name="Copy nUnit binaries" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir modules\platforms\dotnet\libs\
+copy /y %teamcity.agent.home.dir%\plugins\dotnetPlugin\bin\Test\NUnit-2.6.3\v2.0\*.* modules\platforms\dotnet\libs\]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_33" name="NuGet restore" type="jb.nuget.installer">
+        <parameters>
+          <param name="nuget.path" value="%teamcity.tool.NuGet.CommandLine.3.4.3%" />
+          <param name="nuget.updatePackages.mode" value="sln" />
+          <param name="nuget.use.restore" value="restore" />
+          <param name="sln.path" value="modules\platforms\dotnet\Apache.Ignite.sln" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_43" name="Build .Net" type="MSBuild">
+        <parameters>
+          <param name="build-file-path" value="modules\platforms\dotnet\Apache.Ignite.sln" />
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Sort" value="0" />
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Type" value="1" />
+          <param name="dotNetCoverage.NCover.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.NCover3.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover3.args" value="//ias .*" />
+          <param name="dotNetCoverage.NCover3.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover3.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.NCover3.reporter.executable.args" value="//or FullCoverageReport:Html:{teamcity.report.path}" />
+          <param name="dotNetCoverage.PartCover.Reg" value="selected" />
+          <param name="dotNetCoverage.PartCover.includes" value="[*]*" />
+          <param name="dotNetCoverage.PartCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.PartCover.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.dotCover.home.path" value="%teamcity.tool.JetBrains.dotCover.CommandLineTools.DEFAULT%" />
+          <param name="msbuild_version" value="4.0" />
+          <param name="run-platform" value="x64" />
+          <param name="runnerArgs"><![CDATA[/p:Configuration=%TARGET_RELEASE%
+/p:PlatformToolset=Windows7.1SDK
+/p:ShouldUnsetParentConfigurationAndPlatform=false
+/val /m /nologo /ds]]></param>
+          <param name="targets" value="Clean;Rebuild" />
+          <param name="teamcity.build.workingDir" value="modules\platforms\dotnet" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="toolsVersion" value="4.0" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_54" name="Copy test binaries" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+if exist modules\platforms\dotnet\Apache.Ignite.Core.Tests\bin\x64 (
+    xcopy modules\platforms\dotnet\Apache.Ignite.Core.Tests\bin\x64\*.* modules\platforms\dotnet\Apache.Ignite.Core.Tests\bin\ /s /e /y
+)]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_71" name="Run .Net tests" type="NUnit">
+        <parameters>
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Sort" value="0" />
+          <param name="dotNetCoverage.NCover.HTMLReport.File.Type" value="1" />
+          <param name="dotNetCoverage.NCover.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.NCover3.Reg" value="selected" />
+          <param name="dotNetCoverage.NCover3.args" value="//ias .*" />
+          <param name="dotNetCoverage.NCover3.platformBitness" value="x86" />
+          <param name="dotNetCoverage.NCover3.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.NCover3.reporter.executable.args" value="//or FullCoverageReport:Html:{teamcity.report.path}" />
+          <param name="dotNetCoverage.PartCover.Reg" value="selected" />
+          <param name="dotNetCoverage.PartCover.includes" value="[*]*" />
+          <param name="dotNetCoverage.PartCover.platformBitness" value="x86" />
+          <param name="dotNetCoverage.PartCover.platformVersion" value="v2.0" />
+          <param name="dotNetCoverage.dotCover.filters" value="+:Apache.Ignite.Core" />
+          <param name="dotNetCoverage.dotCover.home.path" value="%teamcity.tool.JetBrains.dotCover.CommandLineTools.DEFAULT%" />
+          <param name="dotNetTestRunner.Type" value="NUnit" />
+          <param name="nunit_categery_exclude" value="%TEST_CATEGORIES_EXCLUDE_LIST%" />
+          <param name="nunit_categery_include" value="%TEST_CATEGORIES_INCLUDE_LIST%" />
+          <param name="nunit_enabled" value="checked" />
+          <param name="nunit_environment" value="v4.0" />
+          <param name="nunit_include" value="%ASSEMBLY_FILES_INCLUDE_LIST%" />
+          <param name="nunit_platform" value="x64" />
+          <param name="nunit_version" value="NUnit-2.6.4" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</template>
+

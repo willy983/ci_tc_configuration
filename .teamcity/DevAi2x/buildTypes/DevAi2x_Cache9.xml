@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="00b9e5f6-247c-4d4b-8d4f-7e76af56cede" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Cache 9</name>
+  <description />
+  <settings ref="DevAi2x_RunTestSuitesJava">
+    <options>
+      <option name="executionTimeoutMin" value="150" />
+    </options>
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-core" spec="text display='hidden' validationMode='any'" />
+      <param name="TEST_SUITE" value="IgniteCacheTestSuite9" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

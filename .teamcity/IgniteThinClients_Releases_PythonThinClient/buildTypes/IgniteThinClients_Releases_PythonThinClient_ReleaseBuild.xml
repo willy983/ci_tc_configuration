@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="69e66428-e70e-4bb5-afff-91fce94dc4eb" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[1] Release Build</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="%ARTIFACTS_DIR% =&gt; %ARTIFACTS_DIR%&#xA;release.properties" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="RUNNER_116" />
+    </disabled-settings>
+    <parameters />
+    <build-runners>
+      <runner id="RUNNER_113" name="Configure and set build parameters" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+# Set client version for project
+VERSION=$(python3 setup.py --version)
+
+
+set +x
+echo "##teamcity[setParameter name='VERSION' value='${VERSION}']"]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_114" name="Generate API docs" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+pip install -r requirements/docs.txt
+cd docs
+sphinx-apidoc -o . ../pygridgain
+make html
+cp -rfv generated/html ../
+cd ../
+rm -rf docs
+mv html docs]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_115" name="Build binary archive" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+# Remove all files except target
+while read file
+do
+    rm -rfv ${file}
+done < <(ls | grep -vE "(docs|examples|pygridgain|requirements|LICENSE|NOTICE|README.md|setup.py)")
+
+
+# Generate revision file
+cat <<EOF > revision.txt
+repository: %vcsroot.GitHubApacheIgnitePythonThinClient.url%
+branch:     $(git rev-parse --abbrev-ref HEAD)
+hash:       $(git rev-parse --verify HEAD)
+EOF
+
+# Archive binary
+mkdir -pv %NAME%-%VERSION%
+cp -rfv * %NAME%-%VERSION%/
+rm -rf %NAME%-%VERSION%/%NAME%-%VERSION%
+zip -r %NAME%-%VERSION%.zip %NAME%-%VERSION%/]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_116" name="Build docs archive" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+cp -rfv docs %VERSION%
+zip -r %NAME%-%VERSION%-docs.zip %VERSION%]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_117" name="Build binaries" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+python3 setup.py sdist bdist_wheel]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_118" name="Prepare artifacts" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+mkdir %ARTIFACTS_DIR%
+cp -rfv *.zip dist/*.tar.gz dist/*.whl %ARTIFACTS_DIR%]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_120" name="Prepare properties file for Release" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+cat <<EOF > release.properties
+REVISION=$(git rev-parse --verify HEAD)
+VERSION=%VERSION%
+EOF]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_121" name="Compute checksums" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+file="%NAME%-%VERSION%.zip"
+base_name=$(basename $file)
+md5sum ${base_name} > ${base_name}.md5
+sha512sum ${base_name} > ${base_name}.sha512]]></param>
+          <param name="teamcity.build.workingDir" value="%ARTIFACTS_DIR%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnitePythonThinClient" />
+    </vcs-settings>
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

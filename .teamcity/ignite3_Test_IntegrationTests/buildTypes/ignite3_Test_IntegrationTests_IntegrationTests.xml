@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="2e86b85c-a6f5-4f75-ba22-633531e499e5" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Integration Tests</name>
+  <description />
+  <settings ref="ignite3_ApacheIgniteBuildDependency">
+    <disabled-settings>
+      <setting-ref ref="vcsTrigger" />
+    </disabled-settings>
+    <parameters />
+    <build-runners>
+      <runner id="RUNNER_25" name="Run tests" type="Maven2">
+        <parameters>
+          <param name="goals" value="failsafe:integration-test" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-Dmaven.test.failure.ignore=true
+-DfailIfNoTests=false]]></param>
+          <param name="target.jdk.home" value="%env.JDK_ORA_11%" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="teamcity.tool.jacoco" value="%teamcity.tool.jacoco.DEFAULT%" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements>
+      <equals id="RQ_19" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers>
+      <build-trigger id="vcsTrigger" type="vcsTrigger">
+        <parameters>
+          <param name="branchFilter" value="+:*" />
+          <param name="enableQueueOptimization" value="true" />
+          <param name="quietPeriodMode" value="DO_NOT_USE" />
+        </parameters>
+      </build-trigger>
+    </build-triggers>
+    <build-extensions>
+      <extension id="BUILD_EXT_1" type="pullRequests">
+        <parameters>
+          <param name="authenticationType" value="token" />
+          <param name="filterAuthorRole" value="MEMBER" />
+          <param name="filterTargetBranch" value="+:refs/heads/main" />
+          <param name="providerType" value="github" />
+          <param name="secure:accessToken" value="credentialsJSON:4011fec0-e071-47f2-8259-f962d71f5c85" />
+          <param name="vcsRootId" value="Ignite3" />
+        </parameters>
+      </extension>
+      <extension id="BUILD_EXT_2" type="commit-status-publisher">
+        <parameters>
+          <param name="github_authentication_type" value="token" />
+          <param name="github_host" value="https://api.github.com" />
+          <param name="publisherId" value="githubStatusPublisher" />
+          <param name="secure:github_access_token" value="credentialsJSON:4011fec0-e071-47f2-8259-f962d71f5c85" />
+          <param name="vcsRootId" value="Ignite3" />
+        </parameters>
+      </extension>
+    </build-extensions>
+    <cleanup />
+  </settings>
+</build-type>
+

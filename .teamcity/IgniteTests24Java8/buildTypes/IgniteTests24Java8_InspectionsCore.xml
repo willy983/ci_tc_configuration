@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="dc3cdaab-ba01-4cdd-aeee-5394c8bec030" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[Inspections] Core</name>
+  <description />
+  <settings ref="IgniteTests24Java8_RunIntelliJIdeaInspectionsTemplate">
+    <parameters>
+      <param name="JVM_PARAMETERS" value="-Didea.log.path=%system.teamcity.build.tempDir%/idea-logs/" spec="text display='hidden' validationMode='any'" />
+      <param name="MODULE_PATH" value="modules/core" />
+    </parameters>
+    <build-runners order="RUNNER_59, RUNNER_246">
+      <runner id="RUNNER_246" name="" type="Inspection">
+        <parameters>
+          <param name="disabled.plugins.file"><![CDATA[AntSupport
+CVS
+ClearcasePlugin
+Coverage
+DevKit
+Emma
+GenerateToString
+Geronimo
+Glassfish
+Guice
+HtmlTools
+IdeaServerPlugin
+Inspection-JS
+InspectionGadgets
+IntentionPowerPack
+J2ME
+Java EE: Web Services (JAX-WS)
+JBoss
+JSIntentionPowerPack
+JSR45Plugin
+JSTestDriver Plugin
+JUnit
+JavaScript
+JavaScriptDebugger
+Jetty
+NodeJS
+Osmorc
+PerforceDirectPlugin
+Pythonid
+QuirksMode
+Refactor-X
+Resin
+SourceSafe
+StrutsAssistant
+Subversion
+TFS
+TestNG-J
+Tomcat
+Type Migration
+W3Validators
+WebServicesPlugin
+WebSphere
+Weblogic
+XPathView
+XSLT-Debugger
+ZKM
+com.android.tools.idea.smali
+com.intellij.aop
+com.intellij.apacheConfig
+com.intellij.appengine
+com.intellij.aspectj
+com.intellij.beanValidation
+com.intellij.cdi
+com.intellij.commander
+com.intellij.copyright
+com.intellij.css
+com.intellij.database
+com.intellij.diagram
+com.intellij.dmserver
+com.intellij.dsm
+com.intellij.flex
+com.intellij.freemarker
+com.intellij.guice
+com.intellij.gwt
+com.intellij.hibernate
+com.intellij.java-i18n
+com.intellij.java.cucumber
+com.intellij.javaee
+com.intellij.javaee.view
+com.intellij.jsf
+com.intellij.jsp
+com.intellij.persistence
+com.intellij.phing
+com.intellij.seam
+com.intellij.seam.pageflow
+com.intellij.seam.pages
+com.intellij.spring
+com.intellij.spring.batch
+com.intellij.spring.data
+com.intellij.spring.integration
+com.intellij.spring.osgi
+com.intellij.spring.roo
+com.intellij.spring.security
+com.intellij.spring.webflow
+com.intellij.spring.ws
+com.intellij.struts2
+com.intellij.tapestry
+com.intellij.tasks
+com.intellij.tcserver
+com.intellij.uiDesigner
+com.intellij.velocity
+com.jetbrains.jarFinder
+com.jetbrains.php
+com.jetbrains.php.framework
+com.jetbrains.plugins.asp
+com.jetbrains.plugins.webDeployment
+hg4idea
+org.coffeescript
+org.intellij.grails
+org.intellij.groovy
+org.intellij.intelliLang
+org.jetbrains.android
+org.jetbrains.idea.eclipse
+org.jetbrains.idea.maven.ext
+org.jetbrains.kotlin
+org.jetbrains.plugins.django-db-config
+org.jetbrains.plugins.github
+org.jetbrains.plugins.gradle
+org.jetbrains.plugins.haml
+org.jetbrains.plugins.less
+org.jetbrains.plugins.ruby
+org.jetbrains.plugins.sass
+org.jetbrains.plugins.yaml]]></param>
+          <param name="idea.app.home" value="%teamcity.tool.intellij.DEFAULT%" />
+          <param name="inspection.profile.file" value="idea/ignite_inspections_teamcity.xml" />
+          <param name="iprInfoRunParam" value="&lt;iprInfo path-to-ipr=&quot;%MODULE_PATH%/pom.xml&quot; /&gt;" />
+          <param name="jvmArgs"><![CDATA[-Xms2G
+-Xmx4G
+-XX:ReservedCodeCacheSize=240m
+-XX:+UseG1GC
+%JVM_PARAMETERS%]]></param>
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

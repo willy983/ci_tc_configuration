@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="147e371b-e236-4976-b490-155ce2575f56" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Run Extension Tests</name>
+  <settings>
+    <options>
+      <option name="checkoutMode" value="ON_SERVER" />
+      <option name="cleanBuild" value="true" />
+    </options>
+    <parameters>
+      <param name="DIR_EXTENSION" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="DIR_REPOSITORY" value="%dep.IgniteExtensions_Tests_Build.DIR_REPOSITORY%" spec="text display='hidden' validationMode='any'" />
+      <param name="IGNITE_VERSION" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="reverse.dep.*.OVERRIDDEN_BRANCH" value="master" spec="text description='Overridden branch for Apache Ignite repository' label='Branch' validationMode='not_empty' display='normal'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_140" name="Install build artifacts to local Maven repository" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+rm -rf ~/.m2/repository/org/apache/ignite
+mkdir -pv ~/.m2/repository/org/apache/ignite
+cp -rfv repository/* ~/.m2/repository/org/apache/ignite/]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_143" name="Set Ignite's version" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+IGNITE_VERSION="$(basename $(ls -d ~/.m2/repository/org/apache/ignite/apache-ignite/*/))"
+
+
+set +x
+echo "##teamcity[setParameter name='IGNITE_VERSION' value='${IGNITE_VERSION}']"]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_141" name="Run Extension's tests" type="Maven2">
+        <parameters>
+          <param name="goals" value="test" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-pl modules/%DIR_EXTENSION% -am
+-Dmaven.test.failure.ignore=true
+-DfailIfNoTests=false
+-Dignite.version=%IGNITE_VERSION%]]></param>
+          <param name="target.jdk.home" value="%env.JDK_ORA_8%" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="teamcity.tool.jacoco" value="%teamcity.tool.jacoco.DEFAULT%" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgniteExtensions" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_9" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <artifact-dependencies>
+      <dependency id="ARTIFACT_DEPENDENCY_9" sourceBuildTypeId="IgniteExtensions_Tests_Build" cleanDestination="false">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="%DIR_REPOSITORY%.zip!** =&gt; repository" />
+      </dependency>
+    </artifact-dependencies>
+    <dependencies>
+      <depend-on sourceBuildTypeId="IgniteExtensions_Tests_Build">
+        <options>
+          <option name="run-build-if-dependency-failed" value="RUN_ADD_PROBLEM" />
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+    </dependencies>
+    <cleanup />
+  </settings>
+</template>
+

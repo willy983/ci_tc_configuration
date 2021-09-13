@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="9b5ba505-7949-4af4-a690-1d7b582b063a" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>-&gt; Run :: Apache Ignite Nightly Release</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="*.zip" />
+      <option name="buildConfigurationType" value="COMPOSITE" />
+      <option name="cleanBuild" value="true" />
+      <option name="showDependenciesChanges" value="true" />
+    </options>
+    <parameters>
+      <param name="IGNITE_VERSION" value="%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners />
+    <vcs-settings />
+    <requirements />
+    <build-triggers>
+      <build-trigger id="TRIGGER_7" type="schedulingTrigger">
+        <parameters>
+          <param name="branchFilter"><![CDATA[+:<default>
++:ignite-2.11]]></param>
+          <param name="cronExpression_dm" value="*" />
+          <param name="cronExpression_dw" value="?" />
+          <param name="cronExpression_hour" value="*" />
+          <param name="cronExpression_min" value="0" />
+          <param name="cronExpression_month" value="*" />
+          <param name="cronExpression_sec" value="0" />
+          <param name="cronExpression_year" value="*" />
+          <param name="dayOfWeek" value="Sunday" />
+          <param name="hour" value="23" />
+          <param name="minute" value="0" />
+          <param name="promoteWatchedBuild" value="true" />
+          <param name="revisionRule" value="lastFinished" />
+          <param name="revisionRuleBuildBranch" value="&lt;default&gt;" />
+          <param name="schedulingPolicy" value="daily" />
+          <param name="timezone" value="SERVER" />
+        </parameters>
+        <build-customization enforceCleanCheckoutForDependencies="true">
+          <parameters />
+        </build-customization>
+      </build-trigger>
+    </build-triggers>
+    <artifact-dependencies>
+      <dependency id="ARTIFACT_DEPENDENCY_109" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="apache-ignite-%IGNITE_VERSION%-src.zip" />
+      </dependency>
+      <dependency id="ARTIFACT_DEPENDENCY_104" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="*.zip&#xD;&#xA;-:web-console.zip" />
+      </dependency>
+      <dependency id="ARTIFACT_DEPENDENCY_5" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="*.tar.gz" />
+      </dependency>
+      <dependency id="ARTIFACT_DEPENDENCY_4" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="*.rpm&#xD;&#xA;*.deb" />
+      </dependency>
+      <dependency id="ARTIFACT_DEPENDENCY_105" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="apache-ignite-%IGNITE_VERSION%-nuget-staging.zip" />
+      </dependency>
+    </artifact-dependencies>
+    <dependencies>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare" />
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages">
+        <options>
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries">
+        <options>
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage">
+        <options>
+          <option name="run-build-if-dependency-failed" value="RUN" />
+          <option name="run-build-if-dependency-failed-to-start" value="RUN" />
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages">
+        <options>
+          <option name="run-build-if-dependency-failed" value="RUN" />
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+    </dependencies>
+    <cleanup />
+  </settings>
+</build-type>
+

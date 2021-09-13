@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="792fd3f2-1ebe-47c7-aaa3-49bcb90e9959" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Code Style</name>
+  <description>Check code's style rules with Checkstyle</description>
+  <settings>
+    <options>
+      <option name="artifactRules" value="target/checkstyle.xml&#xA;target/site/checkstyle-aggregate.html" />
+      <option name="checkoutMode" value="ON_SERVER" />
+      <option name="cleanBuild" value="true" />
+    </options>
+    <parameters />
+    <build-runners>
+      <runner id="RUNNER_226" name="Check Code Style by Maven plugin" type="Maven2">
+        <parameters>
+          <param name="goals" value="checkstyle:checkstyle-aggregate" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="target.jdk.home" value="%env.JDK_ORA_11%" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsPath" value="settings.xml" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite3" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_43" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <build-extensions>
+      <extension id="BUILD_EXT_15" type="BuildFailureOnMessage">
+        <parameters>
+          <param name="buildFailureOnMessage.conditionType" value="matchesRegex" />
+          <param name="buildFailureOnMessage.messagePattern" value="There.*[0-9]+ error(s)? reported by Checkstyle" />
+          <param name="buildFailureOnMessage.outputText" value="CheckStyle errors" />
+          <param name="buildFailureOnMessage.reverse" value="false" />
+        </parameters>
+      </extension>
+    </build-extensions>
+    <cleanup />
+  </settings>
+</build-type>
+

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="5f7dda8f-470f-47ab-b401-8e60ec5b07db" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Platform C++ CMake (Win x64 | Release)</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="IgniteTests24Java8_RunTestSuitesJava" />
+      <ref id="IgniteTests24Java8_C" />
+    </inherits>
+    <options>
+      <option name="artifactRules" value="work/log =&gt; logs.zip&#xA;**/hs_err*.log =&gt; crashdumps.zip&#xA;**/core =&gt; crashdumps.zip&#xA;./**/target/rat.txt =&gt; rat.zip&#xA;./dev-tools/IGNITE-*-*.patch =&gt; patch&#xA;/home/teamcity/ignite-startNodes/*.log =&gt; ignite-startNodes.zip" />
+      <option name="executionTimeoutMin" value="60" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="RQ_10" />
+      <setting-ref ref="RQ_14" />
+      <setting-ref ref="RUNNER_265" />
+      <setting-ref ref="RUNNER_266" />
+    </disabled-settings>
+    <parameters>
+      <param name="BUILD_PROFILE" value="Release" />
+      <param name="BUILD_PROFILE_NAME" value="release" />
+      <param name="IGNITE_ODBC_PROFILE" value="ignite-odbc-amd64-%BUILD_PROFILE_NAME%" />
+      <param name="SCALA_PROFILE" value="-scala" />
+      <param name="env.BOOST_HOME" value="C:\local\boost_1_77_0" />
+      <param name="env.BOOST_INCLUDEDIR" value="%env.BOOST_HOME%" />
+      <param name="env.BOOST_LIBRARYDIR" value="%env.BOOST_HOME%\lib64-msvc-14.1" />
+      <param name="env.CPP_DIR" value="%env.IGNITE_HOME%/modules/platforms/cpp" />
+      <param name="env.CPP_STAGING" value="%env.CPP_DIR%/cpp_staging" />
+      <param name="env.JAVA_HOME" value="%env.JDK_ORA_8%" spec="text validationMode='any' display='hidden'" />
+      <param name="env.ODBCDIR" value="C:\odbc\amd64" />
+      <param name="env.OPENSSL_ROOT_DIR" value="%env.OPENSSL_HOME%" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_36, RUNNER_83, RUNNER_73, RUNNER_62, RUNNER_64, RUNNER_65, RUNNER_151, RUNNER_152, RUNNER_194, RUNNER_57, RUNNER_38, RUNNER_40, RUNNER_41, RUNNER_42, RUNNER_44, RUNNER_266">
+      <runner id="RUNNER_36" name="Build C++" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir cmake-build-%BUILD_PROFILE_NAME%
+cd cmake-build-%BUILD_PROFILE_NAME%
+
+cmake -DWITH_ODBC=ON -DWITH_THIN_CLIENT=ON -DWITH_TESTS=ON -DWARNINGS_AS_ERRORS=ON -DCMAKE_BUILD_TYPE=%BUILD_PROFILE% -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_INSTALL_PREFIX=%env.CPP_STAGING% ..
+cmake --build . --config %BUILD_PROFILE% -v
+cmake --install . --config %BUILD_PROFILE% -v]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_83" name="Build C++ Examples" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir cmake-build-%BUILD_PROFILE_NAME%
+cd cmake-build-%BUILD_PROFILE_NAME%
+
+cmake -DCMAKE_BUILD_TYPE=%BUILD_PROFILE% -DCMAKE_GENERATOR_PLATFORM=x64 -DIGNITE_CPP_DIR=%env.CPP_STAGING% ..
+cmake --build . --config %BUILD_PROFILE% -v]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\examples" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_73" name="Uninstall ODBC driver" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+chcp 65001
+wmic product where 'Vendor like "%%%%Apache%%%%"' call uninstall || exit 0]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_62" name="Create MSI-building script for ODBC driver" type="jetbrains_powershell">
+        <parameters>
+          <param name="jetbrains_powershell_execution" value="PS1" />
+          <param name="jetbrains_powershell_noprofile" value="true" />
+          <param name="jetbrains_powershell_script_code" value="cat ignite-odbc-amd64.wxs | %{$_ -replace &quot;project/vs/x64/Release&quot;,&quot;cmake-build-%BUILD_PROFILE_NAME%/%BUILD_PROFILE%&quot;} | out-file &quot;%IGNITE_ODBC_PROFILE%.wxs&quot; -encoding utf8" />
+          <param name="jetbrains_powershell_script_mode" value="CODE" />
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\odbc\install" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_64" name="Create MSI installer for ODBC driver" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+candle.exe %IGNITE_ODBC_PROFILE%.wxs || exit 1
+light.exe -ext WixUIExtension %IGNITE_ODBC_PROFILE%.wixobj || exit 1]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\odbc\install" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_65" name="Install ODBC driver" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+msiexec.exe /i %IGNITE_ODBC_PROFILE%.msi /qn]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\odbc\install" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_151" name="Run Core tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+ctest -V -R IgniteCoreTest -C %BUILD_PROFILE% || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\cmake-build-%BUILD_PROFILE_NAME%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_152" name="Run ODBC tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+echo "Running ODBC tests"
+ctest -V -R IgniteOdbcTest -C %BUILD_PROFILE% || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\cmake-build-%BUILD_PROFILE_NAME%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_194" name="Run Thin Client tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+ctest -V -R IgniteThinClientTest -C %BUILD_PROFILE% || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\cmake-build-%BUILD_PROFILE_NAME%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_57" name="Fix example configs" type="jetbrains_powershell">
+        <parameters>
+          <param name="jetbrains_powershell_execution" value="PS1" />
+          <param name="jetbrains_powershell_noprofile" value="true" />
+          <param name="jetbrains_powershell_script_code"><![CDATA[Get-ChildItem -Recurse -Filter '*.xml' | 
+Foreach-Object {
+    $content = Get-Content $_.FullName
+
+    $regex = 'class="org.apache.ignite.configuration.IgniteConfiguration">'
+	
+    $content -replace $regex, 'class="org.apache.ignite.configuration.IgniteConfiguration"><property name="localHost" value="127.0.0.1"/><property name="connectorConfiguration"><null/></property>' | Set-Content $_.FullName
+}]]></param>
+          <param name="jetbrains_powershell_script_mode" value="CODE" />
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%/examples" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_38" name="Run Put-Get example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir platforms\cpp\examples\put-get-example
+xcopy /s /e /f /y ..\..\put-get-example\config platforms\cpp\examples\put-get-example\config\
+
+SET PATH=%env.PATH%;%env.CPP_STAGING%\bin
+
+ignite-put-get-example.exe]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\examples\cmake-build-%BUILD_PROFILE_NAME%\%BUILD_PROFILE%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_40" name="Run Query example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir platforms\cpp\examples\query-example
+xcopy /s /e /f /y ..\..\query-example\config platforms\cpp\examples\query-example\config\
+
+SET PATH=%env.PATH%;%env.CPP_STAGING%\bin
+
+ignite-query-example.exe]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\examples\cmake-build-%BUILD_PROFILE_NAME%\%BUILD_PROFILE%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_41" name="Run ODBC example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir platforms\cpp\examples\odbc-example
+xcopy /s /e /f /y ..\..\odbc-example\config platforms\cpp\examples\odbc-example\config\
+
+SET PATH=%env.PATH%;%env.CPP_STAGING%\bin
+
+ignite-odbc-example.exe]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\examples\cmake-build-%BUILD_PROFILE_NAME%\%BUILD_PROFILE%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_42" name="Run Continuous Query example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir platforms\cpp\examples\continuous-query-example
+xcopy /s /e /f /y ..\..\continuous-query-example\config platforms\cpp\examples\continuous-query-example\config\
+
+SET PATH=%env.PATH%;%env.CPP_STAGING%\bin
+
+ignite-continuous-query-example.exe]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\examples\cmake-build-%BUILD_PROFILE_NAME%\%BUILD_PROFILE%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_44" name="Run Compute example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+mkdir platforms\cpp\examples\compute-example
+xcopy /s /e /f /y ..\..\compute-example\config platforms\cpp\examples\compute-example\config\
+
+SET PATH=%env.PATH%;%env.CPP_STAGING%\bin
+
+ignite-compute-example.exe]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\examples\cmake-build-%BUILD_PROFILE_NAME%\%BUILD_PROFILE%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements>
+      <exists id="RQ_14" name="DotNetFramework4.0_x86" />
+      <contains id="RQ_15" name="teamcity.agent.jvm.os.name" value="Windows" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="5bc11fd5-fc0f-470f-880d-fdf6115935d4" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>~(OLD) Run All Tests</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="work/log =&gt; logs.zip&#xA;**/hs_err*.log =&gt; crashdumps.zip&#xA;**/core =&gt; crashdumps.zip&#xA;./**/target/rat.txt =&gt; rat.zip&#xA;./dev-tools/IGNITE-*-*.patch =&gt; patch&#xA;/home/teamcity/ignite-startNodes/*.log =&gt; ignite-startNodes.zip" />
+    </options>
+    <parameters>
+      <param name="EXTRA_MAVEN_PROFILES" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="IGNITE_LOGGING_OPTS" value="-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true" spec="checkbox label='Quite console output' uncheckedValue='-DIGNITE_QUIET=false' display='normal' checkedValue='-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true'" />
+      <param name="JVM_ARGS" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="JVM_EXTRA_ARGS" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="MAVEN_GOALS" value="package" spec="text validationMode='any' display='hidden'" />
+      <param name="MAVEN_MODULES" value=":ignite-flink-ext,:ignite-spring-boot-autoconfigure-ext,:ignite-spring-boot-thin-client-autoconfigure-ext,:ignite-flume-ext,:ignite-pub-sub-ext,:ignite-twitter-ext,:ignite-zeromq-ext,:ignite-rocketmq-ext,:ignite-mqtt-ext,:ignite-storm-ext,:ignite-camel-ext,:ignite-jms11-ext,:ignite-kafka-ext,:ignite-spring-data-2.0-ext,:ignite-spring-data-2.2-ext,:ignite-spring-data-ext,:ignite-performance-statistics-ext" spec="text display='hidden' validationMode='any'" />
+      <param name="MAVEN_OPTS" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="TEST_SCALE_FACTOR" value="1.0" />
+      <param name="TEST_SUITE" value="FlinkIgniteSinkSelfTestSuite,FlinkIgniteSourceSelfTestSuite,PubSubStreamerTestSuite,IgniteAutoconfigureTest,IgniteClientAutoConfigureTest,RocketMQStreamerTestSuite,IgniteMqttStreamerTestSuite,IgniteStormStreamerSelfTestSuite,IgniteCamelStreamerTestSuite,IgniteJmsStreamerTestSuite,IgniteKafkaStreamerSelfTestSuite,IgniteSpringData2TestSuite,IgniteSpringData22TestSuite,IgniteSpringDataTestSuite,IgnitePerformanceStatisticsReportTestSuite,IgniteRepositoriesAutoconfigureTest,IgniteClientRepositoriesAutoconfigureTest" spec="text display='hidden' validationMode='any'" />
+      <param name="XMS" value="2g" spec="text display='hidden' validationMode='any'" />
+      <param name="XMX" value="2g" spec="text display='hidden' validationMode='any'" />
+      <param name="env.JAVA_HOME" value="%reverse.dep.*.env.JAVA_HOME%" spec="text validationMode='any' display='hidden'" />
+      <param name="reverse.dep.*.env.JAVA_HOME" value="%env.JDK_ORA_8%" spec="select data_5='%env.JDK_ORA_10%' label_5='JDK 10' label_3='JDK 9' data_7='%env.JDK_OPEN_11%' display='normal' label_7='JDK 11' description='Select JDK version for all tests' label='JDK version' data_1='%env.JDK_ORA_8%' label_1='JDK 8' data_3='%env.JDK_ORA_9%'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_14" name="Pre-build cleanup" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[:<<BATCH
+
+
+:: === CMD ===
+@echo on
+exit /b
+BATCH
+
+
+# === SH ===
+set -x
+
+# Pre-clean info
+echo "User: $(whoami)"
+echo "JPS (before): "
+for process in $(%env.JAVA_HOME%/bin/jps)
+do
+    echo "    ${process}"
+done
+echo
+
+# Kill processes
+echo "Killing processes starters"
+for processName in GridHadoopExternalProcessStarter HadoopExternalProcessStarter MainWithArgsInFile
+do
+    for PID in $(%env.JAVA_HOME%/bin/jps | grep ${processName} | awk '{ print $1 }')
+    do
+        echo -n "    Killing ${processName} process with PID ${PID}... "
+        processInfo="$(ps aux -p $PID)"
+        kill -9 ${PID} && echo "[OK]" || {
+            echo "[ERROR] Unable to kill process ${PID}" && exit 1
+        }
+        echo "        Killed process info: ${processInfo}"
+    done
+done
+echo
+echo "Killing IgniteNodeRunner processes (before tests)"
+for PID in $(%env.JAVA_HOME%/bin/jps | grep IgniteNodeRunner | awk '{ print $1 }')
+do
+    echo -n "    Killing process with PID ${PID}... "
+    kill -9 ${PID} && echo "[OK]" || {
+        echo "[ERROR] Unable to kill process ${PID}" && exit 1
+    }
+done
+echo
+
+# Post-clean info
+echo "JPS (after): "
+for process in $(%env.JAVA_HOME%/bin/jps)
+do
+    echo "    ${process}"
+done
+echo
+
+# ULimit
+ulimit -n 65535 && echo "Max number of OPEN FILE DESCRIPTORS:           $(ulimit -n)"
+ulimit -u 65535 && echo "Max number of SINGLE USER AVAILABLE PROCESSES: $(ulimit -u)"
+echo
+
+# Finalize IPC cleaning
+echo "Cleaning IPC resources"
+for param in m s
+do
+    for ipcs in $(ipcs -${param} | grep 'teamcity' | awk '{ print $2 }')
+    do
+        ipcrm -${param} ${ipcs} || {
+            echo "[ERROR] Unable to remove ${param}/${ipcs}" && exit 1
+        }
+    done
+done]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_15" name="Install built artifacts to local maven repository" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[:<<BATCH
+
+
+:: === CMD ===
+@echo on
+del /s /f /q C:\.m2\repository\org\apache\ignite
+md C:\.m2\repository\org\apache\ignite\
+xcopy ignite\repository\* C:\.m2\repository\org\apache\ignite\ /s
+exit /b
+BATCH
+
+
+# === SH ===
+set -x
+rm -rfv ~/.m2/repository/org/apache/ignite
+mkdir -pv ~/.m2/repository/org/apache/ignite
+cp -rfv ignite/repository/* ~/.m2/repository/org/apache/ignite/]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_17" name="Add JDK9+ libraries to local Maven repository (~/.m2/repository)" type="Maven2">
+        <parameters>
+          <param name="goals" value="org.apache.maven.plugins:maven-dependency-plugin:2.8:get" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="pomLocation" value="ignite/pom.xml" />
+          <param name="runnerArgs" value="-Dartifact=javax.transaction:javax.transaction-api:1.3" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="teamcity.tool.jacoco" value="%teamcity.tool.jacoco.DEFAULT%" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_19" name="Build" type="Maven2">
+        <parameters>
+          <param name="goals" value="%MAVEN_GOALS%" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="pomLocation" value="pom.xml" />
+          <param name="runnerArgs"><![CDATA[-pl %MAVEN_MODULES% -am
+-Dmaven.test.failure.ignore=true
+-DfailIfNoTests=false
+-Dtest=%TEST_SUITE%
+-Dmaven.javadoc.skip=true
+%MAVEN_OPTS%]]></param>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="teamcity.tool.jacoco" value="%teamcity.tool.jacoco.DEFAULT%" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_21" name="Post-build cleanup" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[:<<BATCH
+
+
+:: === CMD ===
+@echo on
+exit /b
+BATCH
+
+
+# === SH ===
+set -x
+
+# Kill remaining nodes
+echo "Killing CommandLineStartup processes"
+for PID in $(%env.JAVA_HOME%/bin/jps | grep CommandLineStartup | awk '{ print $1 }')
+do
+    echo -n "    Killing remaining node process with PID ${PID}... "
+    kill -9 ${PID} && echo "[OK]" || {
+        echo "[ERROR] Unable to kill process ${PID}" && exit 1
+    }
+done
+echo
+
+# Finalize IPC cleaning
+echo "Cleaning IPC resources"
+for param in m s
+do
+    for ipcs in $(ipcs -${param} | grep 'teamcity' | awk '{ print $2 }')
+    do
+        ipcrm -${param} ${ipcs} || {
+            echo "[ERROR] Unable to remove ${param}/${ipcs}" && exit 1
+        }
+    done
+done
+echo
+
+# Fail build if some IPC still remains
+if [ $(ipcs | grep teamcity | wc -l) -ne 0 ]
+then
+    echo "[ERROR] Failing build because of remaining IPC resources" >&2
+    exit 1
+fi
+
+# Kill IgniteNodeRunner
+echo "Killing IgniteNodeRunner processes (after tests)"
+for PID in $(%env.JAVA_HOME%/bin/jps | grep IgniteNodeRunner | awk '{ print $1 }')
+do
+    echo -n "    Killing process with PID ${PID}... "
+    kill -9 ${PID} && echo "[OK]" || {
+        echo "[ERROR] Unable to kill process ${PID}" && exit 1
+    }
+done]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgniteExtensions" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_1" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers>
+      <build-trigger id="vcsTrigger" type="vcsTrigger">
+        <parameters>
+          <param name="branchFilter" value="+:*" />
+          <param name="enableQueueOptimization" value="true" />
+          <param name="quietPeriodMode" value="DO_NOT_USE" />
+        </parameters>
+      </build-trigger>
+    </build-triggers>
+    <build-extensions>
+      <extension id="swabra" type="swabra">
+        <parameters>
+          <param name="swabra.enabled" value="swabra.after.build" />
+          <param name="swabra.processes" value="kill" />
+        </parameters>
+      </extension>
+    </build-extensions>
+    <artifact-dependencies>
+      <dependency id="ARTIFACT_DEPENDENCY_6" sourceBuildTypeId="IgniteTests24Java8_BuildApacheIgnite" cleanDestination="true">
+        <revisionRule name="lastSuccessful" revision="latest.lastSuccessful" />
+        <artifact sourcePath="ignite.zip!** =&gt; ./ignite/" />
+      </dependency>
+    </artifact-dependencies>
+    <cleanup />
+  </settings>
+</build-type>
+

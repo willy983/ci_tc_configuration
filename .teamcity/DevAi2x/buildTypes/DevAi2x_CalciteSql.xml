@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="3d6be27a-6462-45cd-9916-3ef970e78ad3" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Calcite SQL</name>
+  <description>Run Calcite-based SQL engine tests</description>
+  <settings ref="DevAi2x_RunTestSuitesJava">
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-calcite" spec="text display='hidden' validationMode='any'" />
+      <param name="TEST_SUITE" value="IgniteCalciteTestSuite" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

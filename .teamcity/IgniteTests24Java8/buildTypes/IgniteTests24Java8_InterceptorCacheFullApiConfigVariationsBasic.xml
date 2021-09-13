@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="38fb250a-16d9-4372-8db7-cd4415c4c065" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Interceptor Cache (Full API Config Variations / Basic)*</name>
+  <description />
+  <settings ref="IgniteTests24Java8_RunTestSuitesJava">
+    <options>
+      <option name="executionTimeoutMin" value="240" />
+    </options>
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-core" />
+      <param name="TEST_SUITE" value="InterceptorCacheConfigVariationsFullApiTestSuite" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements>
+      <does-not-equal id="RQ_24" name="system.agent.name" value="publicagent09_9096" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

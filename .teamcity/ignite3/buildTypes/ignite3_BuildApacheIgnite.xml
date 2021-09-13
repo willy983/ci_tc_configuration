@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="ce3616e7-2191-446f-bf7e-8dded302e8b0" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Build :: Apache Ignite</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="ignite.zip&#xA;repository.zip&#xA;target/*.zip" />
+      <option name="checkoutMode" value="ON_SERVER" />
+      <option name="cleanBuild" value="true" />
+      <option name="showDependenciesChanges" value="true" />
+    </options>
+    <parameters />
+    <build-runners>
+      <runner id="RUNNER_162" name="Clean up local maven repository" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+rm -rfv ~/.m2/repository/org/apache/ignite]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_170" name="Build" type="Maven2">
+        <parameters>
+          <param name="goals" value="install" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-DskipTests
+-Dmaven.javadoc.skip]]></param>
+          <param name="target.jdk.home" value="%env.JDK_ORA_11%" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="teamcity.tool.jacoco" value="%teamcity.tool.jacoco.DEFAULT%" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_174" name="Prepare artifacts" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+# Prepare archive with 'target' directories
+zip -r ignite {target,modules/*/target/} -x '*.jar'
+
+
+# Prepare archive with installed artifacts
+mkdir -pv repository/org/apache/ignite
+cp -rfv ~/.m2/repository/org/apache/ignite/* repository/org/apache/ignite/
+zip -r repository repository]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite3" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_12" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" parent-id="ignite3_Release" uuid="af767f5c-708f-4cfa-82f1-0640f72d3fc2" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[Build]</name>
+  <parameters />
+  <cleanup>
+    <policy type="days" cleanup-level="EVERYTHING">
+      <parameters>
+        <param name="keepDays.count" value="1" />
+      </parameters>
+    </policy>
+    <policy type="days" cleanup-level="HISTORY_ENTRY">
+      <parameters>
+        <param name="keepDays.count" value="1" />
+      </parameters>
+    </policy>
+    <policy type="days" cleanup-level="ARTIFACTS">
+      <parameters>
+        <param name="artifactPatterns"><![CDATA[+:**/*
++:.teamcity/**]]></param>
+        <param name="keepDays.count" value="1" />
+      </parameters>
+    </policy>
+    <options>
+      <option name="preventDependenciesArtifactsFromCleanup" value="false" />
+    </options>
+  </cleanup>
+</project>
+

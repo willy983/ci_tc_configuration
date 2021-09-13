@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="753a3618-f40c-40d5-943b-5b5fcb17fe63" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Platform C++ CMake (Linux Clang)</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="IgniteTests24Java8_RunTestSuitesJava" />
+      <ref id="IgniteTests24Java8_CLinux" />
+    </inherits>
+    <options>
+      <option name="artifactRules" value="work/log =&gt; logs.zip&#xA;**/hs_err*.log =&gt; crashdumps.zip&#xA;**/core =&gt; crashdumps.zip&#xA;./**/target/rat.txt =&gt; rat.zip&#xA;./dev-tools/IGNITE-*-*.patch =&gt; patch&#xA;/home/teamcity/ignite-startNodes/*.log =&gt; ignite-startNodes.zip" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="RUNNER_265" />
+    </disabled-settings>
+    <parameters>
+      <param name="CLANG_VERSION" value="3.9" />
+      <param name="env.CC" value="clang" />
+      <param name="env.CXX" value="clang++" />
+      <param name="env.PATH" value="/usr/lib/llvm-%CLANG_VERSION%/bin:%env.PATH%" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_18, RUNNER_20, RUNNER_23, RUNNER_24, RUNNER_193, RUNNER_55, RUNNER_27, RUNNER_28, RUNNER_29, RUNNER_30, RUNNER_31, RUNNER_265, RUNNER_266">
+      <runner id="RUNNER_18" name="Build C++ (Linux)" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+rm -rfv %env.CPP_STAGING%
+mkdir -pv %env.CPP_STAGING%
+
+mkdir cmake-build-release
+cd cmake-build-release
+
+cmake -DWITH_ODBC=ON -DWITH_THIN_CLIENT=ON -DWITH_TESTS=ON -DWARNINGS_AS_ERRORS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%env.CPP_STAGING% ..
+make -j4 || exit 1
+make install || exit 1]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_20" name="Build C++ Examples (Linux)" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+mkdir cmake-build-release
+cd cmake-build-release
+
+cmake -DIGNITE_CPP_DIR=%env.CPP_STAGING% -DCMAKE_BUILD_TYPE=Release ..
+make -j4 || exit 1]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/examples" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_23" name="Run Core tests (Linux)" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+ctest -V -R IgniteCoreTest || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/cmake-build-release" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_24" name="Run ODBC tests (Linux)" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+ctest -V -R IgniteOdbcTest || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/cmake-build-release" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_193" name="Run Thin Client tests (Linux)" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+ctest -V -R IgniteThinClientTest || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/cmake-build-release" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_55" name="Fix example configs" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+sed -i 's/class="org.apache.ignite.configuration.IgniteConfiguration">/class="org.apache.ignite.configuration.IgniteConfiguration">\n<property name="localHost" value="127.0.0.1"\/>\n<property name="connectorConfiguration"><null\/><\/property>/' `find -name "*.xml"`]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/examples" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_27" name="Run Put-Get example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+mkdir -pv platforms/cpp/examples/put-get-example
+cp -r ../../put-get-example/config ./platforms/cpp/examples/put-get-example
+
+./ignite-put-get-example]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/examples/cmake-build-release/put-get-example" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_28" name="Run Query example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+mkdir -pv platforms/cpp/examples/query-example
+cp -r ../../query-example/config ./platforms/cpp/examples/query-example
+
+./ignite-query-example]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/examples/cmake-build-release/query-example" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_29" name="Run ODBC example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+mkdir -pv platforms/cpp/examples/odbc-example
+cp -r ../../odbc-example/config ./platforms/cpp/examples/odbc-example
+
+./ignite-odbc-example]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/examples/cmake-build-release/odbc-example" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_30" name="Run Continuous Query example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+mkdir -pv platforms/cpp/examples/continuous-query-example
+cp -r ../../continuous-query-example/config ./platforms/cpp/examples/continuous-query-example
+
+./ignite-continuous-query-example]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/examples/cmake-build-release/continuous-query-example" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_31" name="Run Compute example" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+mkdir -pv platforms/cpp/examples/compute-example
+cp -r ../../compute-example/config ./platforms/cpp/examples/compute-example
+
+./ignite-compute-example]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/cpp/examples/cmake-build-release/compute-example" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements>
+      <starts-with id="RQ_33" name="teamcity.agent.name" value="aitc" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

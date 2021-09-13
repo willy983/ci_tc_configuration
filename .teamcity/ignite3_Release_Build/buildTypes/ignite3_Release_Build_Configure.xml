@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="002682ed-4f13-47f2-8e40-aab423777a2e" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[0] Configure</name>
+  <description />
+  <settings>
+    <options>
+      <option name="cleanBuild" value="true" />
+    </options>
+    <parameters>
+      <param name="PROJECT_NAME" value="" spec="text display='hidden' validationMode='any'" />
+      <param name="PROJECT_VERSION" value="" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_5" name="Configure and set build chain parameters" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+# Get project's name and version
+PROJECT_NAME="$(xpath -e "project/artifactId/text()" pom.xml 2>/dev/null)"
+PROJECT_VERSION="$(xpath -e "project/version/text()" pom.xml 2>/dev/null)"
+
+
+
+# Set TC variables
+set +x
+echo "##teamcity[setParameter name='PROJECT_NAME' value='${PROJECT_NAME}']"
+echo "##teamcity[setParameter name='PROJECT_VERSION' value='${PROJECT_VERSION}']"]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite3" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_13" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

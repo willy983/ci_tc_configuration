@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="817a462e-f6d6-406c-9ed4-060ca3868d2b" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>SQL Test</name>
+  <description />
+  <settings ref="DevAi2x_RunTestSuitesJava">
+    <options>
+      <option name="artifactRules" value="work/log =&gt; logs.zip&#xA;**/hs_err*.log =&gt; crashdumps.zip&#xA;**/core =&gt; crashdumps.zip&#xA;sqltest/dbs/ignite/v/result/2016.json" />
+      <option name="executionTimeoutMin" value="30" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="RUNNER_265" />
+      <setting-ref ref="swabra" />
+    </disabled-settings>
+    <parameters>
+      <param name="env.IGNITE_HOME" value="%teamcity.build.checkoutDir%" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_76, RUNNER_266">
+      <runner id="RUNNER_76" name="Run custom SQL tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+# Checkout tests code
+git clone https://github.com/zstan/sqltest
+cd sqltest
+git checkout ignite
+
+
+# Configure tests
+sed -r "s|/home/zstan.*(\"\))|$(ls %teamcity.build.checkoutDir%/modules/core/target/ignite-core-*.jar | grep -vE '(sources|tests)')\1|" \
+    -i dbs/ignite/v/__init__.py
+    
+    
+# Run Apache Ignite node
+bash %env.IGNITE_HOME%/bin/ignite.sh &
+sleep 60
+
+
+# Run tests
+python3 generate_tests.py dbs.ignite.v
+
+
+# Stop Apache Ignite node
+ps ax | grep ignite.sh | sed '$d' | awk {'print $1'} | while read pid; do
+    kill -9 ${pid} || true
+done
+
+
+# Parse results]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

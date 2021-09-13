@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="fbf4f42c-37f7-4663-9496-8588bc47f295" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Platform .NET (Inspections)* - DEPRECATED</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="IgniteTests24Java8_PreBuild" />
+      <ref id="IgniteTests24Java8_RunTestSuitesNet" />
+      <ref id="IgniteTests24Java8_PostBuild" />
+    </inherits>
+    <options>
+      <option name="executionTimeoutMin" value="120" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="ARTIFACT_DEPENDENCY_103" />
+      <setting-ref ref="RUNNER_32" />
+      <setting-ref ref="RUNNER_54" />
+      <setting-ref ref="RUNNER_71" />
+    </disabled-settings>
+    <parameters />
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_32, RUNNER_33, RUNNER_43, RUNNER_54, RUNNER_71, RUNNER_125, RUNNER_126, RUNNER_266">
+      <runner id="RUNNER_125" name="FxCop static analysis" type="FxCop">
+        <parameters>
+          <param name="fxcop.detection_mode" value="auto" />
+          <param name="fxcop.project" value="modules\platforms\dotnet\Apache.Ignite.FxCop" />
+          <param name="fxcop.search_in_gac" value="true" />
+          <param name="fxcop.version" value="not_specified" />
+          <param name="fxcop.what" value="project" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_126" name="ReSharper Inspections" type="dotnet-tools-inspectcode">
+        <parameters>
+          <param name="TargetDotNetFramework_4.0" value="true" />
+          <param name="dotnet-tools-inspectcode.customCmdArgs" value="--profile=&quot;modules/platforms/dotnet/Apache.Ignite.sln.TeamCity.DotSettings&quot;" />
+          <param name="dotnet-tools-inspectcode.project.filter"><![CDATA[Apache.Ignite.Core
+Apache.Ignite.Linq
+Apache.Ignite.AspNet
+Apache.Ignite.EntityFramework]]></param>
+          <param name="dotnet-tools-inspectcode.solution" value="modules/platforms/dotnet/Apache.Ignite.sln" />
+          <param name="dotnet-tools-inspectcodeCustomSettingsProfile" value="modules/platforms/dotnet/Apache.Ignite.sln.TeamCity.DotSettings" />
+          <param name="jetbrains.resharper-clt.clt-path" value="%teamcity.tool.jetbrains.resharper-clt.bundled%" />
+          <param name="jetbrains.resharper-clt.platform" value="x64" />
+          <param name="teamcity.step.mode" value="execute_if_failed" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <build-extensions>
+      <extension id="BUILD_EXT_3" type="BuildFailureOnMetric">
+        <parameters>
+          <param name="anchorBuild" value="lastSuccessful" />
+          <param name="metricKey" value="InspectionStatsE" />
+          <param name="metricThreshold" value="0" />
+          <param name="metricUnits" value="metricUnitsDefault" />
+          <param name="moreOrLess" value="more" />
+          <param name="withBuildAnchor" value="false" />
+        </parameters>
+      </extension>
+      <extension id="BUILD_EXT_4" type="BuildFailureOnMetric">
+        <parameters>
+          <param name="anchorBuild" value="lastSuccessful" />
+          <param name="metricKey" value="InspectionStatsW" />
+          <param name="metricThreshold" value="0" />
+          <param name="metricUnits" value="metricUnitsDefault" />
+          <param name="moreOrLess" value="more" />
+          <param name="withBuildAnchor" value="false" />
+        </parameters>
+      </extension>
+    </build-extensions>
+    <cleanup />
+  </settings>
+</build-type>
+

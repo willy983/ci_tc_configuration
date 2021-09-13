@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="e5453726-1849-4629-bcc2-04e5cbb0d0d6" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[2] Compare w/ Previous Release</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="result.log =&gt; results&#xA;cur.log =&gt; results&#xA;prev.log =&gt; results" />
+      <option name="checkoutMode" value="ON_AGENT" />
+      <option name="cleanBuild" value="true" />
+    </options>
+    <parameters>
+      <param name="IGNITE_VERSION" value="" spec="text description='X.X.X' label='Current Ignite version' validationMode='any' display='prompt'" />
+      <param name="PREV_IGNITE_VERSION" value="" spec="text description='X.X.X' label='Previous Ignite version' validationMode='any' display='prompt'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_228" name="Download previous release" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+mkdir -pv raw/prev
+cd raw/prev
+
+wget http://apache-mirror.rbc.ru/pub/apache/ignite/%PREV_IGNITE_VERSION%/apache-ignite-%PREV_IGNITE_VERSION%-bin.zip || exit 1
+#wget http://apache-mirror.rbc.ru/pub/apache/ignite/%PREV_IGNITE_VERSION%/apache-ignite-hadoop-%PREV_IGNITE_VERSION%-bin.zip
+wget http://apache-mirror.rbc.ru/pub/apache/ignite/%PREV_IGNITE_VERSION%/apache-ignite-%PREV_IGNITE_VERSION%-src.zip || exit 1]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_176" name="Compare" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+mkdir -pv compare/prev
+mkdir -pv compare/cur
+
+zip_files=$(find ./raw/prev -type f -name "*.zip")
+for zip_file in $zip_files
+do
+    unzip -q $zip_file -d ./compare/prev
+done
+
+zip_files=$(find ./raw/cur -type f -name "*.zip")
+for zip_file in $zip_files
+do
+    unzip -q $zip_file -d ./compare/cur
+done
+
+find compare/prev | sort > prev.log  
+find compare/cur | sort > cur.log
+
+sed -i "s/compare\/prev/ /g" prev.log  
+sed -i "s/compare\/cur/ /g" cur.log  
+
+sed -i "s/[0-9]\+[.][0-9]\+[.][0-9]\+/x.x.x/g" prev.log  
+sed -i "s/[0-9]\+[.][0-9]\+[.][0-9]\+/x.x.x/g" cur.log  
+
+sed -i "s/-fabric//g" prev.log   
+
+sort -o prev.log prev.log
+sort -o cur.log cur.log
+
+diff -U0 prev.log cur.log > result.log
+
+
+# Cleanup
+sed -i "s/[@][@].*[@][@]//g" result.log
+sed -i '/^$/d' result.log]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements>
+      <equals id="RQ_23" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <artifact-dependencies>
+      <dependency id="ARTIFACT_DEPENDENCY_100" sourceBuildTypeId="Releases_ApacheIgniteMain_ReleaseBuild" cleanDestination="false">
+        <revisionRule name="lastSuccessful" revision="latest.lastSuccessful" branch="ignite-%IGNITE_VERSION%" />
+        <artifact sourcePath="release*.zip!svn/vote** =&gt; raw/cur" />
+      </dependency>
+    </artifact-dependencies>
+    <cleanup />
+  </settings>
+</build-type>
+

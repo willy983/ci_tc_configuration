@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="e20dbd5f-eae5-47cd-a0b1-531bce27d8c2" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Thin client: PHP (old)</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="DevAi2x_ExcludeTests" />
+      <ref id="DevAi2x_PreBuild" />
+      <ref id="ThinClientStartIgnite" />
+      <ref id="ThinClientStopIgnite" />
+      <ref id="DevAi2x_PostBuild" />
+    </inherits>
+    <options>
+      <option name="artifactRules" value="work/log/** =&gt; logs.zip" />
+      <option name="executionTimeoutMin" value="30" />
+    </options>
+    <parameters>
+      <param name="ACTUAL_VERSION" value="%dep.DevAi2x_Build_2.ACTUAL_VERSION%" spec="text display='hidden' validationMode='any'" />
+      <param name="SKIP_BUILD_CONDITION" value="! -d &quot;modules/platforms/php&quot;" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners order="RUNNER_159, RUNNER_264, RUNNER_287, RUNNER_178, RUNNER_3, RUNNER_186, RUNNER_12, RUNNER_266">
+      <runner id="RUNNER_178" name="Install Composer.phar" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+if %system.SKIP_BUILD%; then exit 0; fi
+
+EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)"
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")"
+
+if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
+then
+    >&2 echo 'ERROR: Invalid installer signature'
+    rm composer-setup.php
+    exit 1
+fi
+
+php composer-setup.php || exit 1
+php composer.phar install]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/php" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_186" name="Run PHP tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+if %system.SKIP_BUILD%; then exit 0; fi
+
+
+# Run tests
+vendor/phpunit/phpunit/phpunit tests --teamcity]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/php" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements>
+      <equals id="RQ_35" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

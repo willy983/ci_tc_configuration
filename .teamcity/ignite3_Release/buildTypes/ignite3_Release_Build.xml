@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="d053c028-fb37-4127-99fd-41ae967cfa66" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[1] Build</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="%DIR_BINARIES% =&gt; %DIR_BINARIES%" />
+      <option name="checkoutMode" value="ON_SERVER" />
+      <option name="cleanBuild" value="true" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="ARTIFACT_DEPENDENCY_7" />
+    </disabled-settings>
+    <parameters>
+      <param name="DIR_BINARIES" value="%reverse.dep.*.DIR_BINARIES%" spec="text display='hidden' validationMode='any'" />
+      <param name="DIR_PACKAGES" value="%reverse.dep.*.DIR_PACKAGES%" spec="text display='hidden' validationMode='any'" />
+      <param name="reverse.dep.*.DIR_BINARIES" value="binaries" spec="text display='hidden' validationMode='any'" />
+      <param name="reverse.dep.*.DIR_PACKAGES" value="packages" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners />
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite3" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_4" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers>
+      <build-trigger id="TRIGGER_6" type="schedulingTrigger">
+        <parameters>
+          <param name="branchFilter" value="+:main" />
+          <param name="cronExpression_dm" value="*" />
+          <param name="cronExpression_dw" value="?" />
+          <param name="cronExpression_hour" value="*" />
+          <param name="cronExpression_min" value="0" />
+          <param name="cronExpression_month" value="*" />
+          <param name="cronExpression_sec" value="0" />
+          <param name="cronExpression_year" value="*" />
+          <param name="dayOfWeek" value="Sunday" />
+          <param name="hour" value="0" />
+          <param name="minute" value="0" />
+          <param name="promoteWatchedBuild" value="true" />
+          <param name="revisionRule" value="lastFinished" />
+          <param name="revisionRuleBuildBranch" value="+:&lt;default&gt;" />
+          <param name="schedulingPolicy" value="daily" />
+          <param name="timezone" value="SERVER" />
+        </parameters>
+        <build-customization enforceCleanCheckout="true" enforceCleanCheckoutForDependencies="true">
+          <parameters />
+        </build-customization>
+      </build-trigger>
+    </build-triggers>
+    <artifact-dependencies>
+      <dependency id="ARTIFACT_DEPENDENCY_3" sourceBuildTypeId="ignite3_Release_Build_BinariesMavenJavadoc" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="%DIR_BINARIES% =&gt; %DIR_BINARIES%" />
+      </dependency>
+      <dependency id="ARTIFACT_DEPENDENCY_7" sourceBuildTypeId="ignite3_Release_Build_RpmDeb" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="%DIR_PACKAGES% =&gt; %DIR_PACKAGES%" />
+      </dependency>
+    </artifact-dependencies>
+    <dependencies>
+      <depend-on sourceBuildTypeId="ignite3_Release_Build_BinariesMavenJavadoc">
+        <options>
+          <option name="run-build-if-dependency-failed" value="CANCEL" />
+          <option name="run-build-if-dependency-failed-to-start" value="CANCEL" />
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+    </dependencies>
+    <cleanup />
+  </settings>
+</build-type>
+

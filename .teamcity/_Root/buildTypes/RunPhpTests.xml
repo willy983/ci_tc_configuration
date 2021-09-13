@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="c5ad4cd4-7440-4519-aee8-51300e71d990" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Run PHP tests</name>
+  <description>Installs Composer and runs main tests</description>
+  <settings>
+    <parameters>
+      <param name="VCS_ROOT_PHP" value="ignite-php-thin-client" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_87" name="Install Composer.phar" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+EXPECTED_SIGNATURE="$(wget -q -O - https://composer.github.io/installer.sig)"
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+ACTUAL_SIGNATURE="$(php -r "echo hash_file('SHA384', 'composer-setup.php');")"
+
+if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
+then
+    >&2 echo 'ERROR: Invalid installer signature'
+    rm composer-setup.php
+    exit 1
+fi
+
+php composer-setup.php || exit 1
+php composer.phar install]]></param>
+          <param name="teamcity.build.workingDir" value="%VCS_ROOT_PHP%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_88" name="Run PHP tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+# Run tests
+vendor/phpunit/phpunit/phpunit tests --teamcity]]></param>
+          <param name="teamcity.build.workingDir" value="%VCS_ROOT_PHP%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</template>
+

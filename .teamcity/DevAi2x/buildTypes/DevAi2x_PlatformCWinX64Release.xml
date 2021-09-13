@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="f237a222-5214-4c03-8eaa-316c21b2e72f" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Platform C++ (Win x64 | Release)</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="DevAi2x_RunTestSuitesJava" />
+      <ref id="DevAi2x_C" />
+    </inherits>
+    <options>
+      <option name="executionTimeoutMin" value="60" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="RQ_10" />
+      <setting-ref ref="RQ_14" />
+      <setting-ref ref="RUNNER_153" />
+      <setting-ref ref="RUNNER_265" />
+    </disabled-settings>
+    <parameters>
+      <param name="IGNITE_ODBC_PROFILE" value="ignite-odbc-amd64" />
+      <param name="SCALA_PROFILE" value="-scala" />
+      <param name="env.BOOST_LIB32_PATH" value="%env.BOOST_HOME%\lib32-msvc-10.0" />
+      <param name="env.BOOST_LIB64_PATH" value="%env.BOOST_HOME%\lib64-msvc-10.0" />
+      <param name="env.BOOST_LIB_SUFIX_D32" value="vc100-mt-gd-1_58" />
+      <param name="env.BOOST_LIB_SUFIX_D64" value="vc100-mt-gd-1_58" />
+      <param name="env.BOOST_LIB_SUFIX_R32" value="vc100-mt-1_58" />
+      <param name="env.BOOST_LIB_SUFIX_R64" value="vc100-mt-1_58" />
+      <param name="env.CPP_DIR" value="%env.IGNITE_HOME%\modules\platforms\cpp" />
+      <param name="env.ODBCDIR" value="C:\odbc\amd64" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_83, RUNNER_150, RUNNER_74, RUNNER_69, RUNNER_70, RUNNER_151, RUNNER_152, RUNNER_194, RUNNER_153, RUNNER_225, RUNNER_265, RUNNER_266">
+      <runner id="RUNNER_83" name="Build C++" type="VS.Solution">
+        <parameters>
+          <param name="build-file-path" value="modules/platforms/cpp/project/vs/ignite.sln" />
+          <param name="msbuild.prop.Configuration" value="Release" />
+          <param name="msbuild.prop.Platform" value="x64" />
+          <param name="msbuild_version" value="4.0" />
+          <param name="run-platform" value="x86" />
+          <param name="runnerArgs" value="/p:PlatformToolset=Windows7.1SDK /p:ShouldUnsetParentConfigurationAndPlatform=false" />
+          <param name="targets" value="Clean;Rebuild" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="toolsVersion" value="4.0" />
+          <param name="vs.version" value="vs2010" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_150" name="Build C++ Examples" type="VS.Solution">
+        <parameters>
+          <param name="build-file-path" value="modules/platforms/cpp/examples/project/vs/ignite-examples.sln" />
+          <param name="msbuild.prop.Configuration" value="Release" />
+          <param name="msbuild.prop.Platform" value="x64" />
+          <param name="msbuild_version" value="4.0" />
+          <param name="run-platform" value="x86" />
+          <param name="runnerArgs" value="/p:PlatformToolset=Windows7.1SDK /p:ShouldUnsetParentConfigurationAndPlatform=false" />
+          <param name="targets" value="Clean;Rebuild" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="toolsVersion" value="4.0" />
+          <param name="vs.version" value="vs2010" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_74" name="Uninstall ODBC driver" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+chcp 65001
+wmic product where 'Vendor like "%%%%Apache%%%%"' call uninstall || exit 0]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_69" name="Create MSI installer for ODBC driver" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+candle.exe %IGNITE_ODBC_PROFILE%.wxs || exit 1
+light.exe -ext WixUIExtension %IGNITE_ODBC_PROFILE%.wixobj || exit 1]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\odbc\install" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_70" name="Install ODBC driver" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+msiexec.exe /i %IGNITE_ODBC_PROFILE%.msi /qn]]></param>
+          <param name="teamcity.build.workingDir" value="%env.CPP_DIR%\odbc\install" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_151" name="Run Core tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+core-test.exe || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="modules\platforms\cpp\project\vs\x64\Release" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_152" name="Run ODBC tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+echo "Running ODBC tests"
+odbc-test.exe || echo "Some tests failed"]]></param>
+          <param name="teamcity.build.workingDir" value="modules\platforms\cpp\project\vs\x64\Release" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_194" name="Run Thin Client tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[@echo on
+
+IF EXIST thin-client-test.exe (
+    thin-client-test.exe || echo "Some tests failed"
+)]]></param>
+          <param name="teamcity.build.workingDir" value="modules\platforms\cpp\project\vs\x64\Release" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_153" name="Move examples" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[if not exist platforms\ (
+  echo "Creating platforms folder"
+  md platforms
+)
+
+if not exist platforms\cpp (
+  echo "Creating platforms\cpp folder"
+  md platforms\cpp
+)
+
+xcopy modules\platforms\cpp\examples platforms\cpp\examples\ /E]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements>
+      <exists id="RQ_14" name="DotNetFramework4.0_x86" />
+      <contains id="RQ_15" name="teamcity.agent.jvm.os.name" value="Windows" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="d65d73b5-e0cd-43ce-906c-b7c734ddf6f4" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[Apache Ignite 3.x]</name>
+  <parameters>
+    <param name="env.JAVA_HOME" value="%env.JDK_ORA_11%" spec="text display='hidden' validationMode='any'" />
+  </parameters>
+  <cleanup />
+</project>
+

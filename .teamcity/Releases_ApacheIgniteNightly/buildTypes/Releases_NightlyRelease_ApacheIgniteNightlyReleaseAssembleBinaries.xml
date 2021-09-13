@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="cb44de42-3801-4623-a923-1060cfc6e231" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[APACHE IGNITE NIGHTLY RELEASE] #2 :: Assemble Binaries</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="target/bin/*.zip =&gt; .&#xA;modules/web-console/web-agent/target/ignite-web-agent-%IGNITE_VERSION%.zip =&gt; .&#xA;staging =&gt; apache-ignite-%IGNITE_VERSION%-maven-staging.zip&#xA;modules/web-console/frontend =&gt; web-console.zip!/frontend&#xA;modules/web-console/backend =&gt; web-console.zip!/backend" />
+      <option name="cleanBuild" value="true" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="RUNNER_274" />
+    </disabled-settings>
+    <parameters>
+      <param name="IGNITE_VERSION" value="%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%" spec="text display='hidden' validationMode='any'" />
+      <param name="MYGET_PASSWORD" value="credentialsJSON:90ad346a-acca-46c4-92b5-03a0b55c4859" spec="password display='hidden'" />
+      <param name="env.JAVA_HOME" value="%env.JDK_ORA_8%" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_290" name="Prepare custom settings.xml" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+cat <<EOF > settings.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <servers>
+    <server>
+      <id>myget</id>
+      <username>apache-ignite</username>
+      <password>\${myget.password}</password>
+    </server>
+    <server>
+      <id>local-proxy</id>
+    </server>
+  </servers>
+  <profiles>
+    <profile>
+      <id>artifactory</id>
+      <repositories>
+        <repository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>local-proxy</id>
+          <name>local-proxy</name>
+          <url>http://172.25.4.107/artifactory/local-proxy</url>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+          <id>local-proxy</id>
+          <name>local-proxy</name>
+          <url>http://172.25.4.107/artifactory/local-proxy</url>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>artifactory</activeProfile>
+  </activeProfiles>
+</settings>
+EOF]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_274" name="Deploy to MyGet" type="Maven2">
+        <parameters>
+          <param name="goals" value="deploy" />
+          <param name="jvmArgs"><![CDATA[-Xmx1g
+-XX:MaxPermSize=512m]]></param>
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-T 2C
+-pl -:ignite-osgi-karaf -am
+-Pall-java,all-scala,licenses
+-DclientDocs
+-DskipTests
+-Dmyget.password=%MYGET_PASSWORD%
+-DaltDeploymentRepository=myget::default::https://www.myget.org/F/apache-ignite-nightly/maven/]]></param>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsPath" value="settings.xml" />
+          <param name="userSettingsSelection" value="userSettingsSelection:byPath" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_6" name="Build" type="Maven2">
+        <parameters>
+          <param name="goals" value="package" />
+          <param name="jvmArgs"><![CDATA[-Xmx1g
+-XX:MaxPermSize=512m]]></param>
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-pl -:ignite-osgi-karaf -am
+-Pall-java,all-scala,licenses
+-DclientDocs
+-DskipTests]]></param>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsPath" value="settings.xml" />
+          <param name="userSettingsSelection" value="userSettingsSelection:byPath" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_222" name="Deploy to Local Staging" type="Maven2">
+        <parameters>
+          <param name="goals" value="deploy" />
+          <param name="jvmArgs"><![CDATA[-Xmx1g
+-XX:MaxPermSize=512m]]></param>
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-Pall-java,all-scala,licenses
+-DclientDocs
+-DskipTests
+-DaltDeploymentRepository=local::default::file:staging]]></param>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_129" name="Generate Javadoc" type="Maven2">
+        <parameters>
+          <param name="goals" value="validate" />
+          <param name="jvmArgs" value="-Xmx1g -XX:MaxPermSize=512m" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="pomLocation" value="pom.xml" />
+          <param name="runnerArgs" value="-Pjavadoc" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_130" name="Assembly Apache Ignite" type="Maven2">
+        <parameters>
+          <param name="goals" value="initialize" />
+          <param name="jvmArgs" value="-Xmx1g -XX:MaxPermSize=512m" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-Prelease,all-scala
+-Dignite.edition=apache-ignite]]></param>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_34" name="Assembly Apache Ignite Slim" type="Maven2">
+        <parameters>
+          <param name="goals" value="initialize" />
+          <param name="jvmArgs" value="-Xmx1g -XX:MaxPermSize=512m" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-Prelease,all-scala
+-Dignite.edition=apache-ignite-slim]]></param>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite" />
+    </vcs-settings>
+    <requirements>
+      <contains id="RQ_26" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <artifact-dependencies>
+      <dependency id="ARTIFACT_DEPENDENCY_107" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="apache-ignite-%IGNITE_VERSION%-src.zip!** =&gt; ." />
+      </dependency>
+      <dependency id="ARTIFACT_DEPENDENCY_99" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="ignite.dotnet.bin.zip!** =&gt; modules/platforms/dotnet/bin&#xD;&#xA;ignite.odbc.installers.zip!** =&gt; modules/platforms/cpp/bin/odbc&#xD;&#xA;dotnetdoc.zip!** =&gt; modules/clients/target/dotnetdoc" />
+      </dependency>
+    </artifact-dependencies>
+    <dependencies>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp">
+        <options>
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare">
+        <options>
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+    </dependencies>
+    <cleanup />
+  </settings>
+</build-type>
+

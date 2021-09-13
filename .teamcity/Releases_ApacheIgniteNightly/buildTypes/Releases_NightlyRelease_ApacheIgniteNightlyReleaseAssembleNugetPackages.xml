@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="6b45b8d3-ee8a-4741-9b53-60ee674b6c40" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[APACHE IGNITE NIGHTLY RELEASE] #3 :: Assemble Nuget Packages</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="src/modules/platforms/dotnet/nupkg/*.nupkg =&gt; apache-ignite-%IGNITE_VERSION%-nuget-staging.zip" />
+      <option name="checkoutMode" value="ON_SERVER" />
+      <option name="cleanBuild" value="true" />
+    </options>
+    <parameters>
+      <param name="IGNITE_VERSION" value="%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_9" name="Get NuGet dependencies" type="jb.nuget.installer">
+        <parameters>
+          <param name="nuget.path" value="%teamcity.tool.NuGet.CommandLine.DEFAULT%" />
+          <param name="nuget.updatePackages.mode" value="sln" />
+          <param name="nuget.use.restore" value="restore" />
+          <param name="sln.path" value="src\modules\platforms\dotnet\Apache.Ignite.sln" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_160" name="Pack NuGet" type="jetbrains_powershell">
+        <parameters>
+          <param name="jetbrains_powershell_execution" value="PS1" />
+          <param name="jetbrains_powershell_noprofile" value="true" />
+          <param name="jetbrains_powershell_scriptArguments" value="-skipJava -skipDotNet -jarDirs ..\bin\libs -asmDirs ..\..\..\..\bin\platforms\dotnet\bin" />
+          <param name="jetbrains_powershell_script_file" value="src\modules\platforms\dotnet\build.ps1" />
+          <param name="jetbrains_powershell_script_mode" value="FILE" />
+          <param name="teamcity.build.workingDir" value="src\modules\platforms\dotnet\" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_273" name="Publish to MyGet" type="jb.nuget.publish">
+        <parameters>
+          <param name="nuget.path" value="%teamcity.tool.NuGet.CommandLine.4.7.0%" />
+          <param name="nuget.publish.files" value="**/Apache*.nupkg" />
+          <param name="nuget.publish.source" value="https://www.myget.org/F/apache-ignite-nightly/api/v2/package" />
+          <param name="secure:nuget.api.key" value="credentialsJSON:90ad346a-acca-46c4-92b5-03a0b55c4859" />
+          <param name="teamcity.step.mode" value="default" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite" />
+    </vcs-settings>
+    <requirements />
+    <build-triggers />
+    <artifact-dependencies>
+      <dependency id="ARTIFACT_DEPENDENCY_108" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare" cleanDestination="false">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="apache-ignite-%IGNITE_VERSION%-src.zip!** =&gt; src" />
+      </dependency>
+      <dependency id="ARTIFACT_DEPENDENCY_101" sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries" cleanDestination="true">
+        <revisionRule name="sameChainOrLastFinished" revision="latest.sameChainOrLastFinished" />
+        <artifact sourcePath="apache-ignite-%IGNITE_VERSION%-bin.zip!apache-ignite-%IGNITE_VERSION%-bin/** =&gt; bin" />
+      </dependency>
+    </artifact-dependencies>
+    <dependencies>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare">
+        <options>
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+      <depend-on sourceBuildTypeId="Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries">
+        <options>
+          <option name="take-started-build-with-same-revisions" value="true" />
+          <option name="take-successful-builds-only" value="true" />
+        </options>
+      </depend-on>
+    </dependencies>
+    <cleanup />
+  </settings>
+</build-type>
+

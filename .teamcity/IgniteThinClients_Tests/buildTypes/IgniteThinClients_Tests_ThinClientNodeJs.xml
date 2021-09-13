@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="f45d1b6a-481d-4568-95b1-cbee6bafecf0" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Thin Client: Node.js</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="Tests_IgniteThinClients_PreBuild" />
+      <ref id="RunNodeJsTests" />
+      <ref id="Tests_IgniteThinClients_PostBuild" />
+    </inherits>
+    <options>
+      <option name="artifactRules" value="work/log/** =&gt; logs.zip" />
+      <option name="checkoutMode" value="ON_AGENT" />
+      <option name="executionTimeoutMin" value="30" />
+    </options>
+    <parameters>
+      <param name="IGNITE_INIT_TIME" value="60" spec="text display='hidden' validationMode='any'" />
+      <param name="NODEJS_VERSION" value="10.16.3" spec="text display='normal' label='Node.js Version' validationMode='any'" />
+      <param name="env.APACHE_IGNITE_CLIENT_DEBUG" value="false" spec="text display='hidden' validationMode='any'" />
+      <param name="env.APACHE_IGNITE_CLIENT_ENDPOINTS" value="127.0.0.1:10800" spec="text display='hidden' validationMode='any'" />
+      <param name="env.IGNITE_HOME" value="%system.teamcity.build.checkoutDir%" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_84, RUNNER_144, RUNNER_145, RUNNER_146, RUNNER_147, RUNNER_266">
+      <runner id="RUNNER_84" name="Install Node.js" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+# Get and install Node
+wget -c https://nodejs.org/dist/v%NODEJS_VERSION%/node-v%NODEJS_VERSION%-linux-x64.tar.xz
+tar xf node-v%NODEJS_VERSION%-linux-x64.tar.xz
+mv -v node-v%NODEJS_VERSION%-linux-x64 node
+
+
+# Install AI Node.js Thin Client module
+npm install
+npm run build
+npm link
+npm link apache-ignite-client]]></param>
+          <param name="teamcity.build.workingDir" value="%VCS_ROOT_NODEJS%" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgniteNodejsThinClient">
+        <checkout-rule rule="+:. =&gt; %VCS_ROOT_NODEJS%" />
+      </vcs-entry-ref>
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_35" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

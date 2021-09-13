@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="97ffbebd-606b-42bd-ba36-3d974c62c603" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Cache 5</name>
+  <description />
+  <settings ref="IgniteTests24Java8_RunTestSuitesJava">
+    <options>
+      <option name="executionTimeoutMin" value="180" />
+    </options>
+    <parameters>
+      <param name="JVM_ARGS"><![CDATA[-XX:+UseG1GC
+-XX:+PerfDisableSharedMem]]></param>
+      <param name="MAVEN_MODULES" value=":ignite-core,:ignite-indexing" />
+      <param name="TEST_SUITE" value="IgniteCacheTestSuite5,IgniteCacheWithIndexingTestSuite" />
+      <param name="XMX" value="4g" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

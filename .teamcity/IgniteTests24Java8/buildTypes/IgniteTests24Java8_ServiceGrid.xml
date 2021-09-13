@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="46a61bde-0c8c-4dcb-b87d-0f8e89fa0257" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Service Grid</name>
+  <description />
+  <settings ref="IgniteTests24Java8_RunTestSuitesJava">
+    <options>
+      <option name="executionTimeoutMin" value="60" />
+    </options>
+    <parameters>
+      <param name="JVM_ARGS" value="-DIGNITE_MARSHAL_BUFFERS_RECHECK=1000" />
+      <param name="MAVEN_MODULES" value=":ignite-schedule,:ignite-jcl,:ignite-log4j,:ignite-log4j2,:ignite-slf4j,:ignite-core" />
+      <param name="TEST_SUITE" value="IgniteServiceGridTestSuite,IgniteServiceConfigVariationsFullApiTestSuite" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266">
+      <runner id="RUNNER_265" name="Run test suite" type="Maven2">
+        <parameters>
+          <param name="goals" value="%MAVEN_GOALS%" />
+          <param name="jvmArgs"><![CDATA[-ea
+-server
+-Xms%XMS%
+-Xmx%XMX%
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:+AggressiveOpts
+-DIGNITE_TEST_HOME="%teamcity.build.workingDir%"
+-DIGNITE_UPDATE_NOTIFIER=false
+-DIGNITE_NO_DISCO_ORDER=true
+-DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+-DIGNITE_QUIET=false
+-Djava.net.preferIPv4Stack=true
+-DTEST_SCALE_FACTOR=%TEST_SCALE_FACTOR%
+%JVM_ARGS% %JVM_EXTRA_ARGS%]]></param>
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="pomLocation" value="pom.xml" />
+          <param name="runnerArgs"><![CDATA[-P all-java,scala-2.10,tensorflow,scala,scala-test,surefire-fork-count-1
+-pl %MAVEN_MODULES% -am
+-Dmaven.test.failure.ignore=true
+-DfailIfNoTests=false
+-Dtest=%TEST_SUITE%
+-Dmaven.javadoc.skip=true
+%MAVEN_OPTS%]]></param>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsPath" value="settings.xml" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

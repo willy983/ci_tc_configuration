@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="8390be15-f884-4f86-9f95-9cc096428827" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>&lt;Build&gt;</name>
+  <description>Build and prepare project for testing</description>
+  <settings>
+    <options>
+      <option name="artifactRules" value="**/* =&gt; ignite.zip&#xA;./**/target/checkstyle-result.xml =&gt; checkstyle-result.zip" />
+      <option name="cleanBuild" value="true" />
+      <option name="executionTimeoutMin" value="30" />
+    </options>
+    <parameters>
+      <param name="OVERRIDDEN_BRANCH" value="%reverse.dep.*.OVERRIDDEN_BRANCH%" spec="text display='hidden' validationMode='any'" />
+      <param name="env.JAVA_HOME" value="%env.JDK_ORA_8%" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_82" name="Checkout target branch for Apache Ignite repository" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+git fetch -p
+git checkout %OVERRIDDEN_BRANCH%]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_285" name="Cleanup local maven repository" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+rm -rfv ~/.m2/repository/org/apache/ignite]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_262" name="Build Apache Ignite" type="Maven2">
+        <parameters>
+          <param name="goals" value="install" />
+          <param name="localRepoScope" value="mavenDefault" />
+          <param name="maven.path" value="%teamcity.tool.maven.DEFAULT%" />
+          <param name="runnerArgs"><![CDATA[-U
+-Pall-java,all-scala,scala,licenses,lgpl,examples,checkstyle
+-DskipTests
+-Dmaven.javadoc.skip=true]]></param>
+          <param name="target.jdk.home" value="%env.JDK_ORA_8%" />
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="userSettingsSelection" value="local-proxy.xml" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_286" name="Prepare built artifacts" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+
+
+mkdir -pv repository
+cp -rfv ~/.m2/repository/org/apache/ignite/* repository/]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="GitHubApacheIgnite" />
+    </vcs-settings>
+    <requirements>
+      <equals id="RQ_38" name="teamcity.agent.jvm.os.name" value="Linux" />
+      <starts-with id="RQ_39" name="teamcity.agent.name" value="aitc" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

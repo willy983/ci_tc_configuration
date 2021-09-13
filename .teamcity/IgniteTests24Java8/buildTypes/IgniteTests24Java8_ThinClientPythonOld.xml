@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="6a1e3ce6-39e7-4241-a324-51fd6d1a1d36" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Thin client: Python (old)</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="IgniteTests24Java8_ExcludeTests" />
+      <ref id="IgniteTests24Java8_PreBuild" />
+      <ref id="ThinClientStartIgnite" />
+      <ref id="ThinClientStopIgnite" />
+      <ref id="IgniteTests24Java8_PostBuild" />
+    </inherits>
+    <options>
+      <option name="artifactRules" value="work/log/** =&gt; logs.zip" />
+      <option name="executionTimeoutMin" value="30" />
+    </options>
+    <parameters>
+      <param name="ACTUAL_VERSION" value="%dep.IgniteTests24Java8_BuildApacheIgnite.ACTUAL_VERSION%" spec="text display='hidden' validationMode='any'" />
+      <param name="SKIP_BUILD_CONDITION" value="! -d &quot;modules/platforms/python&quot;" />
+      <param name="env.PYTHON_TEST_CONFIG_PATH" value="%system.teamcity.build.checkoutDir%/modules/platforms/python/tests/config" />
+    </parameters>
+    <build-runners order="RUNNER_159, RUNNER_264, RUNNER_287, RUNNER_3, RUNNER_186, RUNNER_12, RUNNER_45, RUNNER_46, RUNNER_52, RUNNER_50, RUNNER_266">
+      <runner id="RUNNER_186" name="Run Python tests" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+if %system.SKIP_BUILD%; then exit 0; fi
+
+
+# Run tests
+python3 ./setup.py pytest || exit 1]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/python" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_45" name="Start Ignite node with SSL" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+if %system.SKIP_BUILD%; then exit 0; fi
+
+
+# Run Apache Ignite node
+bash %system.teamcity.build.checkoutDir%/bin/ignite.sh %env.PYTHON_TEST_CONFIG_PATH%/ssl.xml &
+sleep %IGNITE_INIT_TIME%]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_46" name="Run Python tests - SSL" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+if %system.SKIP_BUILD%; then exit 0; fi
+
+
+# Run tests
+python3 ./setup.py pytest --addopts="--use-ssl=True --ssl-certfile=%env.PYTHON_TEST_CONFIG_PATH%/ssl/client_full.pem" || exit 1]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/python" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_52" name="Run Python tests - SSL with keyfile password" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+if %system.SKIP_BUILD%; then exit 0; fi
+
+
+# Run tests
+python3 ./setup.py pytest --addopts="--use-ssl=True --ssl-certfile=%env.PYTHON_TEST_CONFIG_PATH%/ssl/client_with_pass_full.pem --ssl-keyfile-password=654321" || exit 1]]></param>
+          <param name="teamcity.build.workingDir" value="modules/platforms/python" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+      <runner id="RUNNER_50" name="Stop Ignite node with SSL" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -x
+if %system.SKIP_BUILD%; then exit 0; fi
+
+
+# Stop node by it's PID (if it was not killed previously)
+ps ax | grep ignite.sh | sed '$d' | awk {'print $1'} | while read pid; do
+    kill -9 ${pid} || true
+done]]></param>
+          <param name="teamcity.step.mode" value="execute_always" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements>
+      <equals id="RQ_35" name="teamcity.agent.jvm.os.name" value="Linux" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

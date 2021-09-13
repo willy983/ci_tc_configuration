@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="5482248d-f8c9-40fb-a800-a99647dbd19f" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Thirdparty Checkout</name>
+  <description>Used to override checked out branch for external repositories</description>
+  <settings>
+    <parameters>
+      <param name="OVERRIDDEN_BRANCH" value="master" spec="text description='Overridden branch for external repositories' label='Branch' validationMode='not_empty' display='normal'" />
+      <param name="REPOSITORY_LIST" value="" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_77" name="Checkout target branch in remote repositories" type="simpleRunner">
+        <parameters>
+          <param name="script.content"><![CDATA[#!/usr/bin/env bash
+set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+set -x
+
+
+for repository in %REPOSITORY_LIST%; do
+    cd ${repository}
+    git fetch -p
+    git checkout %OVERRIDDEN_BRANCH%
+    cd ..
+done]]></param>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="use.custom.script" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</template>
+

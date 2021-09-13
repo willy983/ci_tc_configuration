@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="6a2338d5-1244-4ddd-b18d-23d418c526fa" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>&lt;Root project&gt;</name>
+  <description>Contains all other projects</description>
+  <parameters />
+  <project-extensions>
+    <extension id="PROJECT_EXT_1" type="ReportTab">
+      <parameters>
+        <param name="startPage" value="coverage.zip!index.html" />
+        <param name="title" value="Code Coverage" />
+        <param name="type" value="BuildReportTab" />
+      </parameters>
+    </extension>
+    <extension id="PROJECT_EXT_2" type="ReportTab">
+      <parameters>
+        <param name="startPage" value="javadoc.zip!index.html" />
+        <param name="title" value="JavaDoc" />
+        <param name="type" value="BuildReportTab" />
+      </parameters>
+    </extension>
+    <extension id="PROJECT_EXT_3" type="IssueTracker">
+      <parameters>
+        <param name="host" value="http://issues.apache.org/jira" />
+        <param name="idPrefix" value="IGNITE" />
+        <param name="name" value="Apache JIRA" />
+        <param name="secure:password" value="" />
+        <param name="type" value="jira" />
+        <param name="username" value="" />
+      </parameters>
+    </extension>
+    <extension id="PROJECT_EXT_4" type="ReportTab">
+      <parameters>
+        <param name="startPage" value="site-aggregate/index.html" />
+        <param name="title" value="JaCoCo Code Coverage" />
+        <param name="type" value="BuildReportTab" />
+      </parameters>
+    </extension>
+    <extension id="PROJECT_EXT_5" type="CloudIntegration">
+      <parameters>
+        <param name="enabled" value="false" />
+      </parameters>
+    </extension>
+    <extension id="PROJECT_EXT_7" type="CloudImage">
+      <parameters>
+        <param name="agent_pool_id" value="0" />
+        <param name="ebs-optimized" value="false" />
+        <param name="image-instances-limit" value="1" />
+        <param name="image-name-prefix" value="EC2-AGENT" />
+        <param name="instance-type" value="t2.large" />
+        <param name="key-pair-name" value="ec2_agent_keys" />
+        <param name="profileFeatureId" value="PROJECT_EXT_6" />
+        <param name="profileId" value="amazon-1" />
+        <param name="security-group-ids" value="sg-e1620086," />
+        <param name="source-id" value="ami-56d4ad31" />
+        <param name="subnet-id" value="subnet-6316d63a" />
+        <param name="use-spot-instances" value="false" />
+        <param name="user-tags" value="dep=dev,username=lexa,target=teamcity" />
+      </parameters>
+    </extension>
+    <extension id="PROJECT_EXT_8" type="versionedSettings">
+      <parameters>
+        <param name="buildSettings" value="ALWAYS_USE_CURRENT" />
+        <param name="credentialsStorageType" value="credentialsJSON" />
+        <param name="enabled" value="true" />
+        <param name="rootId" value="CiTcConfiguration" />
+        <param name="showChanges" value="false" />
+      </parameters>
+    </extension>
+    <extension id="amazon-1" type="CloudProfile">
+      <parameters>
+        <param name="agentPushPreset" value="1486034839928" />
+        <param name="cloud-code" value="amazon" />
+        <param name="description" value="" />
+        <param name="enabled" value="true" />
+        <param name="endpoint-url" value="ec2.ap-northeast-1.amazonaws.com" />
+        <param name="max-running-instances" value="1" />
+        <param name="name" value="ec2_agents" />
+        <param name="not-checked" value="" />
+        <param name="profileId" value="amazon-1" />
+        <param name="secure:access-id" value="credentialsJSON:bbc02895-c5c3-44c7-b20b-a6bbdb1644c9" />
+        <param name="secure:secret-key" value="credentialsJSON:0cceecb8-3b62-4a5d-a8b3-c052f205e917" />
+        <param name="source_images_json" value="[{&quot;image-name-prefix&quot;:&quot;EC2-AGENT&quot;,&quot;key-pair-name&quot;:&quot;ec2_agent_keys&quot;,&quot;use-spot-instances&quot;:&quot;false&quot;,&quot;security-group-ids&quot;:&quot;sg-e1620086,&quot;,&quot;user-tags&quot;:&quot;dep=dev,username=lexa,target=teamcity&quot;,&quot;subnet-id&quot;:&quot;subnet-6316d63a&quot;,&quot;image-instances-limit&quot;:&quot;1&quot;,&quot;agent_pool_id&quot;:&quot;0&quot;,&quot;ebs-optimized&quot;:&quot;false&quot;,&quot;instance-type&quot;:&quot;t2.large&quot;,&quot;source-id&quot;:&quot;ami-56d4ad31&quot;}]" />
+        <param name="system.cloud.profile_id" value="amazon-1" />
+        <param name="terminate-after-build" value="false" />
+        <param name="terminate-idle-time" value="30" />
+        <param name="user-script" value="" />
+      </parameters>
+    </extension>
+  </project-extensions>
+  <cleanup>
+    <policy type="days" cleanup-level="EVERYTHING">
+      <parameters>
+        <param name="keepDays.count" value="28" />
+      </parameters>
+    </policy>
+    <policy type="days" cleanup-level="HISTORY_ENTRY">
+      <parameters>
+        <param name="keepDays.count" value="28" />
+      </parameters>
+    </policy>
+    <policy type="days" cleanup-level="ARTIFACTS">
+      <parameters>
+        <param name="artifactPatterns"><![CDATA[+:**/*
++:.teamcity/**]]></param>
+        <param name="keepDays.count" value="28" />
+      </parameters>
+    </policy>
+    <options>
+      <option name="preventDependenciesArtifactsFromCleanup" value="false" />
+    </options>
+  </cleanup>
+</project>
+

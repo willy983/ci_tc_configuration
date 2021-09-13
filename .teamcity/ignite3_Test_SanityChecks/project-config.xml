@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" parent-id="ignite3_Test" uuid="7e54e5f2-7e91-4059-8530-7c43f9392d15" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>[Sanity Checks]</name>
+  <parameters />
+  <cleanup />
+</project>
+

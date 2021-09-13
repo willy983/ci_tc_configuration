@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="f144a5e0-d2ba-42fc-a64e-259098a7a5f7" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Cloud</name>
+  <description />
+  <settings ref="DevAi2x_RunTestSuitesJava">
+    <options>
+      <option name="artifactRules" value="work/log =&gt; logs.zip&#xA;**/hs_err*.log =&gt; crashdumps.zip&#xA;**/core =&gt; crashdumps.zip&#xA;./**/target/rat.txt =&gt; rat.zip&#xA;./dev-tools/IGNITE-*-*.patch =&gt; patch&#xA;/home/teamcity/ignite-startNodes/*.log =&gt; ignite-startNodes.zip" />
+      <option name="executionTimeoutMin" value="20" />
+    </options>
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-cloud" spec="text display='hidden' validationMode='any'" />
+      <param name="TEST_SUITE" value="IgniteCloudTestSuite" spec="text display='hidden' validationMode='any'" />
+      <param name="env.test.aws-ec2.access.key" value="credentialsJSON:f257dfe3-c19a-4734-bb3e-aa638df329f8" spec="password display='normal'" />
+      <param name="env.test.aws-ec2.regions.list" value="us-east-1" />
+      <param name="env.test.aws-ec2.secret.key" value="credentialsJSON:0e474af5-60f1-4d32-b5e6-50b36eabadb0" spec="password display='normal'" />
+      <param name="env.test.aws-ec2.zones.list" value="us-east-1b, us-east-1e" />
+      <param name="env.test.google-compute-engine.access.key" value="credentialsJSON:587148fc-3c11-4304-bd97-f2178857ae02" spec="password display='normal'" />
+      <param name="env.test.google-compute-engine.secret.key" value="/home/teamcity/test_keys/gridgain-gce-key.json" />
+      <param name="env.test.google-compute-engine.zones.list" value="us-central1-a, asia-east1-a" />
+      <param name="env.test.rackspace-cloudservers-us.access.key" value="credentialsJSON:50254a38-8b8c-4bf9-8cbf-1ad6442628fe" spec="password display='normal'" />
+      <param name="env.test.rackspace-cloudservers-us.regions.list" value="IAD,HKG" />
+      <param name="env.test.rackspace-cloudservers-us.secret.key" value="credentialsJSON:e0c8959f-39ad-4cfb-a259-874cf8c43786" spec="password display='normal'" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

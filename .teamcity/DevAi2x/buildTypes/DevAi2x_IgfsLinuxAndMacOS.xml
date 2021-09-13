@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="e5799993-083f-4dce-b99b-42af921d18e6" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>IGFS (Linux and MacOS)</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="DevAi2x_ExcludeTests" />
+      <ref id="DevAi2x_RunTestSuitesJava" />
+    </inherits>
+    <options>
+      <option name="artifactRules" value="work/log =&gt; logs.zip&#xA;**/hs_err*.log =&gt; crashdumps.zip&#xA;**/core =&gt; crashdumps.zip&#xA;./**/target/rat.txt =&gt; rat.zip&#xA;./dev-tools/IGNITE-*-*.patch =&gt; patch&#xA;/home/teamcity/ignite-startNodes/*.log =&gt; ignite-startNodes.zip" />
+      <option name="executionTimeoutMin" value="45" />
+    </options>
+    <parameters>
+      <param name="MAVEN_MODULES" value=":ignite-hadoop" spec="text display='hidden' validationMode='any'" />
+      <param name="SKIP_BUILD_CONDITION" value="! -f modules/hadoop/pom.xml" spec="text display='hidden' validationMode='any'" />
+      <param name="TEST_SUITE" value="IgniteIgfsLinuxAndMacOSTestSuite" spec="text display='hidden' validationMode='any'" />
+      <param name="system.hadoop.version" value="2.5.2" spec="text display='hidden' validationMode='any'" />
+    </parameters>
+    <build-runners order="RUNNER_159, RUNNER_264, RUNNER_287, RUNNER_225, RUNNER_265, RUNNER_266" />
+    <vcs-settings />
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

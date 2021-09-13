@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="528955d0-cd0b-4936-b999-f3764d26ede9" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
+  <name>Platform .NET</name>
+  <description />
+  <settings>
+    <inherits>
+      <ref id="IgniteTests24Java8_PreBuild" />
+      <ref id="IgniteTests24Java8_RunTestSuitesNet" />
+      <ref id="IgniteTests24Java8_PostBuild" />
+    </inherits>
+    <options>
+      <option name="executionTimeoutMin" value="120" />
+    </options>
+    <disabled-settings>
+      <setting-ref ref="RQ_64" />
+    </disabled-settings>
+    <parameters>
+      <param name="ASSEMBLY_FILES_INCLUDE_LIST" value="modules\platforms\dotnet\Apache.Ignite.Core.Tests\bin\%TARGET_RELEASE%\Apache.Ignite.Core.Tests.exe" />
+      <param name="TEST_CATEGORIES_EXCLUDE_LIST"><![CDATA[LONG_TEST
+EXAMPLES_TEST]]></param>
+      <param name="env.IGNITE_BASELINE_AUTO_ADJUST_ENABLED" value="false" />
+    </parameters>
+    <build-runners order="RUNNER_264, RUNNER_287, RUNNER_32, RUNNER_33, RUNNER_43, RUNNER_54, RUNNER_71, RUNNER_266" />
+    <vcs-settings />
+    <requirements>
+      <matches id="RQ_64" name="teamcity.agent.name" value="(publicagent01_0(1|3|4)_9090|publicagent02_02_9090)" />
+    </requirements>
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+
