@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" parent-id="Releases" uuid="a0a13c8e-46a8-452f-9caf-e20b1324acf4" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2021.1/project-config.xsd">
-  <name>Ignite H2</name>
-  <parameters />
-  <cleanup />
-</project>
-
