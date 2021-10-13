@@ -132,10 +132,14 @@ create(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild"), BuildType({
         }
         script {
             name = "Build 32-bit ODBC installer (1)"
-            workingDir = "ignite/modules/platforms/cpp/odbc/install"
+            workingDir = "ignite/modules/platforms/cpp"
             scriptContent = """
-                candle.exe ignite-odbc-x86.wxs || exit 1
-                light.exe -ext WixUIExtension ignite-odbc-x86.wixobj || exit 1
+                set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME_x86%
+                mkdir cmake-build-release-32
+                cd cmake-build-release-32
+                
+                cmake -DWITH_CORE=OFF -DWITH_ODBC=ON -DWITH_ODBC_MSI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=Win32 -DCMAKE_INSTALL_PREFIX=..\install\x86 ..
+                cmake --build . --target install --config Release
             """.trimIndent()
         }
         script {
