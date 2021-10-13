@@ -30,18 +30,18 @@ create(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild"), BuildType({
         ignite\modules\platforms\dotnet\Apache.Ignite.NLog\bin\Release\** => ignite.dotnet.bin.zip
         ignite\modules\platforms\dotnet\Apache.Ignite.Log4net\bin\Release\** => ignite.dotnet.bin.zip
         ignite\modules\platforms\dotnet\nupkg\*.nupkg => .
-        ignite\modules\platforms\cpp\install\amd64\*.msi => ignite.odbc.installers.zip
-        ignite\modules\platforms\cpp\odbc\install\dummy => ignite.odbc.installers.zip
+        ignite\modules\platforms\cpp\install\amd64\bin\*.msi => ignite.odbc.installers.zip
+        ignite\modules\platforms\cpp\install\x86\bin\*.msi => ignite.odbc.installers.zip
         ignite\modules\clients\target\dotnetdoc => dotnetdoc.zip
         vote.patch
     """.trimIndent()
 
     params {
         param("env.OPENSSL_HOME", """C:\openssl\1.1.0l\x86_64""")
-        param("system.JAVA_HOME", "%env.JAVA_HOME%")
         param("IGNITE_VERSION", "")
         param("RC_NAME", "")
         param("env.JAVA_HOME", "%env.JDK_ORA_8%")
+        param("system.JAVA_HOME", "%env.JAVA_HOME%")
         param("env.OPENSSL_HOME_X86", """C:\openssl\1.1.0l\x86""")
     }
 
