@@ -107,7 +107,7 @@ create(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild"), BuildType({
             """.trimIndent()
         }
         script {
-            name = "Build 64-bit ODBC installer (1)"
+            name = "Build 64-bit ODBC installer"
             workingDir = "ignite/modules/platforms/cpp"
             scriptContent = """
                 set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME%
