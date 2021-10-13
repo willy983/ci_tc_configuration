@@ -95,7 +95,7 @@ create(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild"), BuildType({
             param("jetbrains_powershell_scriptArguments", "-skipJava -skipNuget")
         }
         script {
-            name = "Build 32-bit ODBC installer (1)"
+            name = "Build 32-bit ODBC installer"
             workingDir = "ignite/modules/platforms/cpp"
             scriptContent = """
                 set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME_x86%
