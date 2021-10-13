@@ -97,18 +97,6 @@ create(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild"), BuildType({
             param("jetbrains_powershell_scriptArguments", "-skipJava -skipNuget")
         }
         visualStudio {
-            name = "Build 32-bit ODBC binary"
-            enabled = false
-            path = "ignite/modules/platforms/cpp/project/vs/ignite.sln"
-            version = VisualStudioStep.VisualStudioVersion.vs2017
-            runPlatform = VisualStudioStep.Platform.x86
-            msBuildVersion = VisualStudioStep.MSBuildVersion.V15_0
-            msBuildToolsVersion = VisualStudioStep.MSBuildToolsVersion.V15_0
-            targets = "odbc:Rebuild"
-            configuration = "Release"
-            platform = "Win32"
-        }
-        visualStudio {
             name = "Build 64-bit ODBC binary"
             enabled = false
             executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
