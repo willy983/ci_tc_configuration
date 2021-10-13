@@ -95,15 +95,6 @@ create(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild"), BuildType({
             param("jetbrains_powershell_scriptArguments", "-skipJava -skipNuget")
         }
         script {
-            name = "Build 32-bit ODBC installer"
-            enabled = false
-            workingDir = "ignite/modules/platforms/cpp/odbc/install"
-            scriptContent = """
-                candle.exe ignite-odbc-x86.wxs || exit 1
-                light.exe -ext WixUIExtension ignite-odbc-x86.wixobj || exit 1
-            """.trimIndent()
-        }
-        script {
             name = "Build 32-bit ODBC installer (1)"
             workingDir = "ignite/modules/platforms/cpp"
             scriptContent = """
