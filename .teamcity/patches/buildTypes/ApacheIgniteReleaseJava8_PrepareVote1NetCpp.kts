@@ -42,7 +42,6 @@ create(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild"), BuildType({
         param("RC_NAME", "")
         param("env.JAVA_HOME", "%env.JDK_ORA_8%")
         param("system.JAVA_HOME", "%env.JAVA_HOME%")
-        param("env.OPENSSL_HOME_X86", """C:\openssl\1.1.0l\x86""")
     }
 
     vcs {
