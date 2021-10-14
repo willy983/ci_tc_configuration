@@ -5,7 +5,7 @@
                 ## Set default inspection profile in case of absence
                 ls -l idea
                 if [ ! -f idea/ignite_inspections_teamcity.xml ]; then
-                    cat <<EOF>idea/ignite_inspections_teamcity.xml
+                    cat << EOF>idea/ignite_inspections_teamcity.xml
                 <profile version="1.0">
                   <option name="myName" value="ignite_inspections_teamcity" />
                   <inspection_tool class="SizeReplaceableByIsEmpty" enabled="false" level="WARNING" enabled_by_default="true" />
@@ -1384,5 +1384,5 @@
                     <option name="ADD_NONJAVA_TO_ENTRIES" value="true" />
                   </inspection_tool>
                 </profile>
-                EOF
-                fi
+EOF
+fi

@@ -1384,5 +1384,5 @@
                     <option name="ADD_NONJAVA_TO_ENTRIES" value="true" />
                   </inspection_tool>
                 </profile>
-                EOF
-                fi
+EOF
+fi
