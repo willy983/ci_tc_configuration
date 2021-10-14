@@ -23,16 +23,6 @@ changeProject(DslContext.projectId) {
         }
         expect {
             baseRule {
-                history(days = 28)
-            }
-        }
-        update {
-            baseRule {
-                history(days = 25)
-            }
-        }
-        expect {
-            baseRule {
                 artifacts(days = 28, artifactPatterns = """
                     +:**/*
                     +:.teamcity/**
@@ -41,7 +31,7 @@ changeProject(DslContext.projectId) {
         }
         update {
             baseRule {
-                artifacts(days = 25, artifactPatterns = """
+                artifacts(days = 22, artifactPatterns = """
                     +:**/*
                     +:.teamcity/**
                 """.trimIndent())
