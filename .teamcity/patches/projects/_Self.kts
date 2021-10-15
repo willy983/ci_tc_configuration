@@ -28,7 +28,7 @@ changeProject(DslContext.projectId) {
         }
         update {
             baseRule {
-                history(days = 26)
+                history(days = 22)
             }
         }
         expect {
