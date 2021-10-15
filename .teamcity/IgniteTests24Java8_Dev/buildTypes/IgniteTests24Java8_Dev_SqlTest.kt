@@ -9,7 +9,6 @@ object IgniteTests24Java8_Dev_SqlTest : BuildType({
 
     artifactRules = """
         sqltest/out_tc.xml
-        sqltest/out_tc1.xml
         sqltest/dbs/ignite/v/result/2016.json
     """.trimIndent()
 
