@@ -75,5 +75,5 @@ object IgniteTests24Java8_Dev_SqlTest : BuildType({
         executionTimeoutMin = 60
     }
     
-    disableSettings("RUNNER_265", "swabra")
+    disableSettings("RUNNER_265", "RUNNER_266", "swabra")
 })
