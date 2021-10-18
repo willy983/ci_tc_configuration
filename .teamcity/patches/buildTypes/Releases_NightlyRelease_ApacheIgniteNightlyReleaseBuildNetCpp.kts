@@ -3,11 +3,9 @@ package patches.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.PowerShellStep
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.VisualStudioStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetInstaller
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.visualStudio
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 /*
@@ -28,16 +26,16 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         modules\platforms\dotnet\Apache.Ignite.EntityFramework\bin\Release\** => ignite.dotnet.bin.zip
         modules\platforms\dotnet\Apache.Ignite.NLog\bin\Release\** => ignite.dotnet.bin.zip
         modules\platforms\dotnet\Apache.Ignite.Log4net\bin\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\cpp\odbc\install\*.msi => ignite.odbc.installers.zip
-        modules\platforms\cpp\odbc\install\dummy => ignite.odbc.installers.zip
+        modules\platforms\cpp\install\amd64\bin\*.msi => ignite.odbc.installers.zip
+        modules\platforms\cpp\install\x86\bin\*.msi => ignite.odbc.installers.zip
         modules\clients\target\dotnetdoc => dotnetdoc.zip
     """.trimIndent()
 
     params {
-        text("env.OPENSSL_HOME", """C:\OpenSSL-Win64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("env.OPENSSL_HOME", """C:\openssl\1.1.0l\x86_64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        param("env.OPENSSL_HOME_x86", """C:\openssl\1.1.0l\x86""")
         param("IGNITE_VERSION", "%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%")
         text("env.JAVA_HOME", "%env.JDK_ORA_8%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        param("env.OPENSSL_HOME_X86", """C:\OpenSSL-Win32""")
     }
 
     vcs {
@@ -66,43 +64,28 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
                 -skipNuget
             """.trimIndent())
         }
-        visualStudio {
-            name = "Build 32-bit ODBC"
-            path = "modules/platforms/cpp/project/vs/ignite.sln"
-            version = VisualStudioStep.VisualStudioVersion.vs2017
-            runPlatform = VisualStudioStep.Platform.x86
-            msBuildVersion = VisualStudioStep.MSBuildVersion.V15_0
-            msBuildToolsVersion = VisualStudioStep.MSBuildToolsVersion.V15_0
-            targets = "odbc:Rebuild"
-            configuration = "Release"
-            platform = "Win32"
-        }
-        visualStudio {
-            name = "Build 64-bit ODBC"
-            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
-            path = "modules/platforms/cpp/project/vs/ignite.sln"
-            version = VisualStudioStep.VisualStudioVersion.vs2017
-            runPlatform = VisualStudioStep.Platform.x86
-            msBuildVersion = VisualStudioStep.MSBuildVersion.V15_0
-            msBuildToolsVersion = VisualStudioStep.MSBuildToolsVersion.V15_0
-            targets = "odbc:Rebuild"
-            configuration = "Release"
-            platform = "x64"
-        }
         script {
             name = "Build 32-bit ODBC installer"
-            workingDir = "modules/platforms/cpp/odbc/install"
+            workingDir = "modules/platforms/cpp"
             scriptContent = """
-                candle.exe ignite-odbc-x86.wxs || exit 1
-                light.exe -ext WixUIExtension ignite-odbc-x86.wixobj || exit 1
+                set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME_x86%
+                mkdir cmake-build-release-32
+                cd cmake-build-release-32
+                
+                cmake -DWITH_CORE=OFF -DWITH_ODBC=ON -DWITH_ODBC_MSI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=Win32 -DCMAKE_INSTALL_PREFIX=..\install\x86 ..
+                cmake --build . --target install --config Release
             """.trimIndent()
         }
         script {
             name = "Build 64-bit ODBC installer"
-            workingDir = "modules/platforms/cpp/odbc/install"
+            workingDir = "modules/platforms/cpp"
             scriptContent = """
-                candle.exe ignite-odbc-amd64.wxs || exit 1
-                light.exe -ext WixUIExtension ignite-odbc-amd64.wixobj || exit 1
+                set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME%
+                mkdir cmake-build-release-64
+                cd cmake-build-release-64
+                
+                cmake -DWITH_CORE=OFF -DWITH_ODBC=ON -DWITH_ODBC_MSI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_INSTALL_PREFIX=..\install\amd64 ..
+                cmake --build . --target install --config Release
             """.trimIndent()
         }
         script {
