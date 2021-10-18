@@ -3,11 +3,9 @@ package patches.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.PowerShellStep
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.VisualStudioStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetInstaller
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.visualStudio
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 /*
@@ -65,19 +63,6 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
                 -skipJava
                 -skipNuget
             """.trimIndent())
-        }
-        visualStudio {
-            name = "Build 64-bit ODBC"
-            enabled = false
-            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
-            path = "modules/platforms/cpp/project/vs/ignite.sln"
-            version = VisualStudioStep.VisualStudioVersion.vs2017
-            runPlatform = VisualStudioStep.Platform.x86
-            msBuildVersion = VisualStudioStep.MSBuildVersion.V15_0
-            msBuildToolsVersion = VisualStudioStep.MSBuildToolsVersion.V15_0
-            targets = "odbc:Rebuild"
-            configuration = "Release"
-            platform = "x64"
         }
         script {
             name = "Build 32-bit ODBC installer"
