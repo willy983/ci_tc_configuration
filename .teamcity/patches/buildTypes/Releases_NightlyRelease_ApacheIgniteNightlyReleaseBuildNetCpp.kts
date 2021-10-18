@@ -80,6 +80,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         }
         visualStudio {
             name = "Build 64-bit ODBC"
+            enabled = false
             executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
             path = "modules/platforms/cpp/project/vs/ignite.sln"
             version = VisualStudioStep.VisualStudioVersion.vs2017
