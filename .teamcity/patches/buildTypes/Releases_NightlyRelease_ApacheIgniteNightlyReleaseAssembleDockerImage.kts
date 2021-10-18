@@ -33,6 +33,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
     steps {
         script {
             name = "Prepare"
+            enabled = false
             scriptContent = """
                 #!/usr/bin/env bash
                 set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
