@@ -66,7 +66,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
                           </snapshots>
                           <id>local-proxy</id>
                           <name>local-proxy</name>
-                          <url>http://172.25.4.107/artifactory/local-proxy</url>
+                          <url>http://10.100.100.250:8081/nexus</url>
                         </repository>
                       </repositories>
                       <pluginRepositories>
@@ -76,7 +76,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
                           </snapshots>
                           <id>local-proxy</id>
                           <name>local-proxy</name>
-                          <url>http://172.25.4.107/artifactory/local-proxy</url>
+                          <url>http://10.100.100.250:8081/nexus</url>
                         </pluginRepository>
                       </pluginRepositories>
                     </profile>
