@@ -28,8 +28,8 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         modules\platforms\dotnet\Apache.Ignite.EntityFramework\bin\Release\** => ignite.dotnet.bin.zip
         modules\platforms\dotnet\Apache.Ignite.NLog\bin\Release\** => ignite.dotnet.bin.zip
         modules\platforms\dotnet\Apache.Ignite.Log4net\bin\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\cpp\odbc\install\*.msi => ignite.odbc.installers.zip
-        modules\platforms\cpp\odbc\install\dummy => ignite.odbc.installers.zip
+        modules\platforms\cpp\install\amd64\bin\*.msi => ignite.odbc.installers.zip
+        modules\platforms\cpp\install\x86\bin\*.msi => ignite.odbc.installers.zip
         modules\clients\target\dotnetdoc => dotnetdoc.zip
     """.trimIndent()
 
