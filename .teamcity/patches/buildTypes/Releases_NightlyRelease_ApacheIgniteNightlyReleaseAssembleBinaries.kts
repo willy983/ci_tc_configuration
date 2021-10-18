@@ -121,7 +121,6 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
                 -DclientDocs
                 -DskipTests
             """.trimIndent()
-            userSettingsSelection = "userSettingsSelection:byPath"
             userSettingsPath = "settings.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jvmArgs = """
