@@ -93,7 +93,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         }
         script {
             name = "Build 32-bit ODBC installer"
-            workingDir = "modules/platforms/cpp/odbc"
+            workingDir = "modules/platforms/cpp"
             scriptContent = """
                 set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME_x86%
                 mkdir cmake-build-release-32
