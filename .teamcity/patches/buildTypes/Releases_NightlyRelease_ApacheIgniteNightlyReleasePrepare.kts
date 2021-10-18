@@ -36,8 +36,8 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
                 #!/usr/bin/env bash
                 set -x
                 
-                igniteVersion=${'$'}(cat pom.xml | \
-                              grep -E -m 1 '<version>[0-9]+.[0-9]+.[0-9]+(-SNAPSHOT)?</version>' | \
+                igniteVersion=${'$'}(cat parent/pom.xml | \
+                              grep -E -m 1 '<revision>[0-9]+.[0-9]+.[0-9]+(-SNAPSHOT)?</revision>'| \
                               sed -r 's|.*>(.*)<.*|\1|' | sed -r 's|(.*)-SNAPSHOT|\1|').${'$'}(date +%%Y%%m%%d -d "+3 hours")
                 echo "##teamcity[setParameter name='IGNITE_VERSION' value='${'$'}{igniteVersion}']"
             """.trimIndent()
