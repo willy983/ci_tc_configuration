@@ -105,10 +105,14 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         }
         script {
             name = "Build 64-bit ODBC installer"
-            workingDir = "modules/platforms/cpp/odbc/install"
+            workingDir = "modules/platforms/cpp/odbc"
             scriptContent = """
-                candle.exe ignite-odbc-amd64.wxs || exit 1
-                light.exe -ext WixUIExtension ignite-odbc-amd64.wixobj || exit 1
+                set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME%
+                mkdir cmake-build-release-64
+                cd cmake-build-release-64
+                
+                cmake -DWITH_CORE=OFF -DWITH_ODBC=ON -DWITH_ODBC_MSI=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_GENERATOR_PLATFORM=x64 -DCMAKE_INSTALL_PREFIX=..\install\amd64 ..
+                cmake --build . --target install --config Release
             """.trimIndent()
         }
         script {
