@@ -34,7 +34,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
     """.trimIndent()
 
     params {
-        text("env.OPENSSL_HOME", """C:\OpenSSL-Win64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("env.OPENSSL_HOME", """C:\openssl\1.1.0l\x86_64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("IGNITE_VERSION", "%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%")
         text("env.JAVA_HOME", "%env.JDK_ORA_8%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("env.OPENSSL_HOME_X86", """C:\OpenSSL-Win32""")
