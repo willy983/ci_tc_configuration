@@ -39,6 +39,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
     steps {
         script {
             name = "Prepare custom settings.xml"
+            enabled = false
             scriptContent = """
                 #!/usr/bin/env bash
                 set -x
