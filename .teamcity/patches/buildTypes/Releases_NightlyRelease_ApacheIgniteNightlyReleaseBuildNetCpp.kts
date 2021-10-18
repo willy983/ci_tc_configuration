@@ -67,18 +67,6 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
             """.trimIndent())
         }
         visualStudio {
-            name = "Build 32-bit ODBC"
-            enabled = false
-            path = "modules/platforms/cpp/project/vs/ignite.sln"
-            version = VisualStudioStep.VisualStudioVersion.vs2017
-            runPlatform = VisualStudioStep.Platform.x86
-            msBuildVersion = VisualStudioStep.MSBuildVersion.V15_0
-            msBuildToolsVersion = VisualStudioStep.MSBuildToolsVersion.V15_0
-            targets = "odbc:Rebuild"
-            configuration = "Release"
-            platform = "Win32"
-        }
-        visualStudio {
             name = "Build 64-bit ODBC"
             enabled = false
             executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
