@@ -53,6 +53,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         step {
             name = "Assemble Apache Ignite Docker image"
             type = "DockerBuildRemote"
+            enabled = false
             executionMode = BuildStep.ExecutionMode.DEFAULT
             param("DOCKER_TAG_NAME", "apacheignite/ignite")
             param("DOCKER_ARCHIVE_NAME", "%DOCKER_ARCHIVE_NAME%")
