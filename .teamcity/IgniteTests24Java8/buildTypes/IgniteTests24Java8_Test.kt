@@ -53,6 +53,10 @@ object IgniteTests24Java8_Test : BuildType({
                 set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
                 set -x
                 
+                cat /etc/hosts
+                ehco "Hostname IP: ${'$'}(hostname -I)"
+                echo "Hostname: ${'$'}(hostname)"
+                
                 
                 # Pre-clean info
                 echo "User: ${'$'}(whoami)"
