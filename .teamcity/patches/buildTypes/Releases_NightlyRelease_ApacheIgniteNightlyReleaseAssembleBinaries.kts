@@ -121,6 +121,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
                 -DclientDocs
                 -DskipTests
             """.trimIndent()
+            userSettingsSelection = "local-proxy.xml"
             userSettingsPath = "settings.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jvmArgs = """
