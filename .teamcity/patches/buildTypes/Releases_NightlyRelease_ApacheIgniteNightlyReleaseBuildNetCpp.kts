@@ -91,6 +91,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         }
         script {
             name = "Build .NET documentation"
+            enabled = false
             workingDir = "modules/platforms/dotnet/docfx"
             scriptContent = "generate-docs.cmd"
         }
