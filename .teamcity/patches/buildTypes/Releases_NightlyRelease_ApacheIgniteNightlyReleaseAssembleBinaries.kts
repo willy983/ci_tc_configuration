@@ -161,7 +161,10 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
             scriptMode = file {
                 path = "modules/platforms/dotnet/build.ps1"
             }
-            param("jetbrains_powershell_scriptArguments", "-skipJava")
+            param("jetbrains_powershell_scriptArguments", """
+                -skipJava
+                -skipExamples
+            """.trimIndent())
         }
         maven {
             name = "Assembly Apache Ignite"
