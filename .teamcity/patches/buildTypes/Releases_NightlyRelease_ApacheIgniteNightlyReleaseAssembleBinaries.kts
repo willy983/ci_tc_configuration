@@ -4,6 +4,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
@@ -177,6 +178,13 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
             userSettingsSelection = "local-proxy.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jvmArgs = "-Xmx1g -XX:MaxPermSize=512m"
+        }
+        powerShell {
+            name = "Build .NET binaries."
+            scriptMode = file {
+                path = "modules/platforms/dotnet/build.ps1"
+            }
+            param("jetbrains_powershell_scriptArguments", "-skipJava")
         }
     }
 
