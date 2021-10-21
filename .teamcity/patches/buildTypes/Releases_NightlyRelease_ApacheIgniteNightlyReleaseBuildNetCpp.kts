@@ -18,17 +18,8 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #1 :: Build .Net & C++"
 
     artifactRules = """
-        modules\platforms\dotnet\Apache.Ignite\bin\x64\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\dotnet\Apache.Ignite\bin\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\dotnet\Apache.Ignite\bin\x86\Release\** => ignite.dotnet.bin.zip!x86
-        modules\platforms\dotnet\Apache.Ignite.Linq\bin\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\dotnet\Apache.Ignite.AspNet\bin\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\dotnet\Apache.Ignite.EntityFramework\bin\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\dotnet\Apache.Ignite.NLog\bin\Release\** => ignite.dotnet.bin.zip
-        modules\platforms\dotnet\Apache.Ignite.Log4net\bin\Release\** => ignite.dotnet.bin.zip
         modules\platforms\cpp\install\amd64\bin\*.msi => ignite.odbc.installers.zip
         modules\platforms\cpp\install\x86\bin\*.msi => ignite.odbc.installers.zip
-        modules\clients\target\dotnetdoc => dotnetdoc.zip
     """.trimIndent()
 
     params {
