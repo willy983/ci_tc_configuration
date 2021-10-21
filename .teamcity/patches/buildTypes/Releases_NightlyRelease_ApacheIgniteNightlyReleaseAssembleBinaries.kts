@@ -19,6 +19,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
 
     artifactRules = """
         target/bin/*.zip => .
+        src/modules/platforms/dotnet/nupkg/*.nupkg => apache-ignite-%IGNITE_VERSION%-nuget-staging.zip
         modules/web-console/web-agent/target/ignite-web-agent-%IGNITE_VERSION%.zip => .
         staging => apache-ignite-%IGNITE_VERSION%-maven-staging.zip
         modules/web-console/frontend => web-console.zip!/frontend
