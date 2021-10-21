@@ -47,6 +47,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
     steps {
         nuGetInstaller {
             name = "Get NuGet dependencies"
+            enabled = false
             toolPath = "%teamcity.tool.NuGet.CommandLine.4.7.0%"
             projects = "modules/platforms/dotnet/Apache.Ignite.sln"
         }
