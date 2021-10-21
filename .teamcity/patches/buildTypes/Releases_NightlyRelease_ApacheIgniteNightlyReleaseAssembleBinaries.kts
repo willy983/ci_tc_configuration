@@ -188,11 +188,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
 
             artifacts {
                 cleanDestination = true
-                artifactRules = """
-                    ignite.dotnet.bin.zip!** => modules/platforms/dotnet/bin
-                    ignite.odbc.installers.zip!** => modules/platforms/cpp/bin/odbc
-                    dotnetdoc.zip!** => modules/clients/target/dotnetdoc
-                """.trimIndent()
+                artifactRules = "ignite.odbc.installers.zip!** => modules/platforms/cpp/bin/odbc"
             }
         }
         dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
