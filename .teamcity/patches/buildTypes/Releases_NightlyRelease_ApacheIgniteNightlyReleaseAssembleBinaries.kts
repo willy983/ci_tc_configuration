@@ -155,6 +155,13 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jvmArgs = "-Xmx1g -XX:MaxPermSize=512m"
         }
+        powerShell {
+            name = "Build .NET binaries."
+            scriptMode = file {
+                path = "modules/platforms/dotnet/build.ps1"
+            }
+            param("jetbrains_powershell_scriptArguments", "-skipJava")
+        }
         maven {
             name = "Assembly Apache Ignite"
             goals = "initialize"
@@ -178,13 +185,6 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
             userSettingsSelection = "local-proxy.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jvmArgs = "-Xmx1g -XX:MaxPermSize=512m"
-        }
-        powerShell {
-            name = "Build .NET binaries."
-            scriptMode = file {
-                path = "modules/platforms/dotnet/build.ps1"
-            }
-            param("jetbrains_powershell_scriptArguments", "-skipJava")
         }
     }
 
