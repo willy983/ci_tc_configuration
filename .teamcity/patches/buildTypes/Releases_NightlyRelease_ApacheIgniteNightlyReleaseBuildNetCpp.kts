@@ -52,6 +52,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
         }
         powerShell {
             name = "Build .NET"
+            enabled = false
             platform = PowerShellStep.Platform.x64
             edition = PowerShellStep.Edition.Desktop
             workingDir = "modules/platforms/dotnet"
