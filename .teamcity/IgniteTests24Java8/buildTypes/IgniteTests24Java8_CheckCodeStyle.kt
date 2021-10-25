@@ -44,7 +44,7 @@ object IgniteTests24Java8_CheckCodeStyle : BuildType({
                 -DskipTests
                 -Dmaven.javadoc.skip=true
                 -Dmaven.source.skip=true
-                -pl -:ignite-scalar_2.10,-:ignite-scalar,-:ignite-visor-console,-:ignite-visor-console_2.10,-:ignite-spark
+                -pl -:ignite-scalar_2.10,-:ignite-scalar,-:ignite-visor-console,-:ignite-visor-console_2.10
             """.trimIndent()
             mavenVersion = custom {
                 path = "%teamcity.tool.maven.3.6.0%"
