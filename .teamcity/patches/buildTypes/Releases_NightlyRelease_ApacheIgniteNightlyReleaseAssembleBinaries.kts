@@ -164,6 +164,7 @@ create(RelativeId("Releases_ApacheIgniteNightly"), BuildType({
             param("jetbrains_powershell_scriptArguments", """
                 -skipJava
                 -skipExamples
+                -versionSuffix "-nightly"
             """.trimIndent())
         }
         maven {
