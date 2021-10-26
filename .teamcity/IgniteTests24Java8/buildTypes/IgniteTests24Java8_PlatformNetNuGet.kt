@@ -12,7 +12,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 
 object IgniteTests24Java8_PlatformNetNuGet : BuildType({
     templates(IgniteTests24Java8_PreBuild, IgniteTests24Java8_RunTestSuitesNet, IgniteTests24Java8_PostBuild)
-    name = "[DEPRECATED] Platform .NET (NuGet)*"
+    name = "~[DEPRECATED] Platform .NET (NuGet)*"
     description = "Disabled dependency"
     paused = true
 
