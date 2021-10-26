@@ -183,8 +183,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_PlatformCPPCMakeLinuxClang) {
         }
-        snapshot(IgniteTests24Java8_PlatformCWinX64Release) {
-        }
         snapshot(IgniteTests24Java8_PlatformNetCoreLinux) {
         }
         snapshot(IgniteTests24Java8_PlatformNetWindows) {
