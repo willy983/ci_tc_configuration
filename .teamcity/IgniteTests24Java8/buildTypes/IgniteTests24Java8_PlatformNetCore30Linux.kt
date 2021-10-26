@@ -7,7 +7,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_PlatformNetCore30Linux : BuildType({
     templates(IgniteTests24Java8_PreBuild, IgniteTests24Java8_PostBuild)
-    name = "[DEPRECATED] Platform .NET (Core 3.0 / Linux)"
+    name = "~[DEPRECATED] Platform .NET (Core 3.0 / Linux)"
     paused = true
 
     artifactRules = """
