@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_PlatformCCMakeWinX64Debug : BuildType({
     templates(IgniteTests24Java8_RunTestSuitesJava, IgniteTests24Java8_C)
-    name = "~[DEPRECATED] Platform C++ CMake (Win x64 | Debug)"
+    name = "Platform C++ CMake (Win x64 | Debug)"
 
     artifactRules = """
         work/log => logs.zip
