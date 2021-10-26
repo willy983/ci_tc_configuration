@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnMetr
 
 object IgniteTests24Java8_PlatformNetInspections : BuildType({
     templates(IgniteTests24Java8_PreBuild, IgniteTests24Java8_RunTestSuitesNet, IgniteTests24Java8_PostBuild)
-    name = "[DEPRECATED] Platform .NET (Inspections)*"
+    name = "~[DEPRECATED] Platform .NET (Inspections)*"
     paused = true
 
     steps {
