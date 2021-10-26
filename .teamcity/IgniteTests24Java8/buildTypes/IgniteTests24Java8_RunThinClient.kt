@@ -30,8 +30,6 @@ object IgniteTests24Java8_RunThinClient : BuildType({
         }
         snapshot(IgniteTests24Java8_PlatformCPPCMakeLinuxClang) {
         }
-        snapshot(IgniteTests24Java8_PlatformCWinX64Debug) {
-        }
         snapshot(IgniteTests24Java8_PlatformCWinX64Release) {
         }
         snapshot(IgniteTests24Java8_ThinClientNodeJs) {
