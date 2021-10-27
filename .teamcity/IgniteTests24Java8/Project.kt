@@ -35,9 +35,9 @@ object Project : Project({
     buildType(IgniteTests24Java8_CacheFullApiConfigVariations)
     buildType(IgniteTests24Java8_ContinuousQuery3)
     buildType(IgniteTests24Java8_ContinuousQuery2)
-    buildType(IgniteTests24Java8_PlatformNetNuGet)
     buildType(IgniteTests24Java8_CacheFullApi)
     buildType(IgniteTests24Java8_ContinuousQuery1)
+    buildType(IgniteTests24Java8_PlatformNetNuGet)
     buildType(IgniteTests24Java8_ExamplesLgpl)
     buildType(IgniteTests24Java8_BinaryObjectsSimpleMapperBasic)
     buildType(IgniteTests24Java8_CacheFullApiBasicConfigVariations)
@@ -83,9 +83,9 @@ object Project : Project({
     buildType(IgniteTests24Java8_RunAllNightly)
     buildType(IgniteTests24Java8_MvccCache8)
     buildType(IgniteTests24Java8_Spring)
-    buildType(IgniteTests24Java8_PlatformNetLongRunning)
     buildType(IgniteTests24Java8_MvccCache1)
     buildType(IgniteTests24Java8_MvccPds3)
+    buildType(IgniteTests24Java8_PlatformNetLongRunning)
     buildType(IgniteTests24Java8_MvccCache2)
     buildType(IgniteTests24Java8_MvccPds2)
     buildType(IgniteTests24Java8_MvccPds1)
@@ -128,11 +128,11 @@ object Project : Project({
     buildType(IgniteTests24Java8_SpiWindows)
     buildType(IgniteTests24Java8_ThinClientPhp)
     buildType(IgniteTests24Java8_Cache5)
-    buildType(IgniteTests24Java8_PlatformNet)
     buildType(IgniteTests24Java8_CacheTxRecovery)
     buildType(IgniteTests24Java8_Cache4)
     buildType(IgniteTests24Java8_Jta)
     buildType(IgniteTests24Java8_MvccPds4)
+    buildType(IgniteTests24Java8_PlatformNet)
     buildType(IgniteTests24Java8_WebSessions)
     buildType(IgniteTests24Java8_ThinClientPython)
     buildType(IgniteTests24Java8_Ml)
@@ -150,10 +150,10 @@ object Project : Project({
     buildType(IgniteTests24Java8_PdsDirectIo1)
     buildType(IgniteTests24Java8_RunAll)
     buildType(IgniteTests24Java8_Rdd)
-    buildType(IgniteTests24Java8_PlatformNetIntegrations)
     buildType(IgniteTests24Java8_BinaryObjectsSimpleMapperComputeGrid)
     buildType(IgniteTests24Java8_ContinuousQueryConfigVariations)
     buildType(IgniteTests24Java8_PdsDirectIo2)
+    buildType(IgniteTests24Java8_PlatformNetIntegrations)
     buildType(IgniteTests24Java8_PlatformCMac)
     buildType(IgniteTests24Java8_JavaClient)
     buildType(IgniteTests24Java8_RunAllNet)
@@ -190,6 +190,12 @@ object Project : Project({
         text("env.MALLOC_ARENA_MAX", "4", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_PROFILES", "all-java,all-scala,all-other,compatibility,lgpl,yardstick,benchmarks,examples", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("system.SKIP_BUILD", "false")
+    }
+
+    cleanup {
+        baseRule {
+            all(days = 20)
+        }
     }
 
     subProject(IgniteTests24Java8_Dev.Project)
