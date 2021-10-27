@@ -194,9 +194,9 @@ object Project : Project({
 
     cleanup {
         baseRule {
-            all(days = 14)
-            history(days = 14)
-            artifacts(days = 14, artifactPatterns = """
+            all(days = 11)
+            history(days = 11)
+            artifacts(days = 11, artifactPatterns = """
                 +:**/*
                 +:.teamcity/**
             """.trimIndent())
