@@ -194,7 +194,7 @@ object Project : Project({
 
     cleanup {
         baseRule {
-            all(days = 20)
+            all(days = 14)
         }
     }
 
