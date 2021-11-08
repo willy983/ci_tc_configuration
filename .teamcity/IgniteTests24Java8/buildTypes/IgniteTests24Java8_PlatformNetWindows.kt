@@ -1,7 +1,6 @@
 package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.exec
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.BuildFailureOnMetric
@@ -71,14 +70,23 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
                 """.trimIndent()
             }
         }
-        exec {
+        powerShell {
             name = "NUnit: Apache.Ignite.EntityFramework.Tests"
             id = "RUNNER_148"
-            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
             workingDir = "modules/platforms/dotnet/Apache.Ignite.EntityFramework.Tests/bin/Debug/net461"
-            path = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
-            arguments = "Apache.Ignite.EntityFramework.Tests.dll --teamcity"
-            formatStderrAsError = true
+            scriptMode = script {
+                content = """
+                    ${'$'}runner = "%system.teamcity.build.checkoutDir%/modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
+                    iex "& ${'$'}runner Apache.Ignite.EntityFramework.Tests.dll --teamcity"
+                    
+                    ${'$'}res = ${'$'}lastexitcode
+                    
+                    if (${'$'}res -lt 0) {
+                      echo "Failed to run tests"
+                      exit ${'$'}res
+                    }
+                """.trimIndent()
+            }
         }
         stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_119", "RUNNER_171", "RUNNER_148", "RUNNER_266")
     }
