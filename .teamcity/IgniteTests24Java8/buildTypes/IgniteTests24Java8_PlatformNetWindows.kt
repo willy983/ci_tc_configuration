@@ -2,7 +2,6 @@ package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.exec
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nunit
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.BuildFailureOnMetric
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnMetricChange
@@ -34,12 +33,6 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             id = "RUNNER_79"
             workingDir = "modules/platforms/dotnet"
             scriptContent = "dotnet build Apache.Ignite.sln"
-        }
-        nunit {
-            name = "NUnit: Apache.Ignite.Core.Tests (new)"
-            id = "RUNNER_63"
-            nunitPath = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
-            includeTests = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/Apache.Ignite.Core.Tests.exe"
         }
         exec {
             name = "NUnit: Apache.Ignite.Core.Tests"
