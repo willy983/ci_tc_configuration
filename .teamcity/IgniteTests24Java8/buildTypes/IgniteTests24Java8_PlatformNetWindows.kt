@@ -37,7 +37,6 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
         exec {
             name = "NUnit: Apache.Ignite.Core.Tests"
             id = "RUNNER_119"
-            enabled = false
             workingDir = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461"
             path = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
             arguments = "Apache.Ignite.Core.Tests.exe --teamcity"
