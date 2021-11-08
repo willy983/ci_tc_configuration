@@ -35,6 +35,12 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             workingDir = "modules/platforms/dotnet"
             scriptContent = "dotnet build Apache.Ignite.sln"
         }
+        nunit {
+            name = "NUnit: Apache.Ignite.Core.Tests (new)"
+            id = "RUNNER_63"
+            nunitPath = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
+            includeTests = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/Apache.Ignite.Core.Tests.exe"
+        }
         exec {
             name = "NUnit: Apache.Ignite.Core.Tests"
             id = "RUNNER_119"
@@ -61,13 +67,7 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             arguments = "Apache.Ignite.EntityFramework.Tests.dll --teamcity"
             formatStderrAsError = true
         }
-        nunit {
-            name = "NUnit: Apache.Ignite.Core.Tests (new)"
-            id = "RUNNER_63"
-            nunitPath = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
-            includeTests = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/Apache.Ignite.Core.Tests.exe"
-        }
-        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_119", "RUNNER_171", "RUNNER_148", "RUNNER_266")
+        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_63", "RUNNER_119", "RUNNER_171", "RUNNER_148", "RUNNER_266")
     }
 
     failureConditions {
