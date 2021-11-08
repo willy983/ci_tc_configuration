@@ -34,12 +34,14 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             workingDir = "modules/platforms/dotnet"
             scriptContent = "dotnet build Apache.Ignite.sln"
         }
-        exec {
+        script {
             name = "NUnit: Apache.Ignite.Core.Tests"
             id = "RUNNER_119"
             workingDir = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461"
-            path = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
-            arguments = "Apache.Ignite.Core.Tests.exe --teamcity"
+            scriptContent = """
+                modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe Apache.Ignite.Core.Tests.exe --teamcity
+                if %ERRORLEVEL% LSS 0 exit /b %ERRORLEVEL%
+            """.trimIndent()
             formatStderrAsError = true
         }
         exec {
@@ -60,7 +62,7 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             arguments = "Apache.Ignite.EntityFramework.Tests.dll --teamcity"
             formatStderrAsError = true
         }
-        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_63", "RUNNER_119", "RUNNER_171", "RUNNER_148", "RUNNER_266")
+        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_119", "RUNNER_171", "RUNNER_148", "RUNNER_266")
     }
 
     failureConditions {
