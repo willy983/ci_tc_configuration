@@ -41,7 +41,8 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             workingDir = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461"
             scriptMode = script {
                 content = """
-                    iex "& nunit/nunit3-console.exe Apache.Ignite.Core.Tests.exe --teamcity"
+                    ${'$'}runner = "%system.teamcity.build.checkoutDir%/modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
+                    iex "& ${'$'}runner Apache.Ignite.Core.Tests.exe --teamcity"
                     
                     ${'$'}res = ${'$'}lastexitcode
                     
