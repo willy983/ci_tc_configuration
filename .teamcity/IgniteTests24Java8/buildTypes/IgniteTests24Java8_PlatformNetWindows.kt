@@ -65,7 +65,6 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
 
     failureConditions {
         executionTimeoutMin = 120
-        nonZeroExitCode = false
         failOnMetricChange {
             id = "BUILD_EXT_16"
             metric = BuildFailureOnMetric.MetricType.INSPECTION_ERROR_COUNT
