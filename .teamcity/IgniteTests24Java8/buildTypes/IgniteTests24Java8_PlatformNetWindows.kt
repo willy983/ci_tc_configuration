@@ -2,6 +2,7 @@ package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.exec
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nunit
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.BuildFailureOnMetric
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnMetricChange
@@ -59,6 +60,12 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             path = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
             arguments = "Apache.Ignite.EntityFramework.Tests.dll --teamcity"
             formatStderrAsError = true
+        }
+        nunit {
+            name = "NUnit: Apache.Ignite.Core.Tests (new)"
+            id = "RUNNER_63"
+            nunitPath = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
+            includeTests = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/Apache.Ignite.Core.Tests.exe"
         }
         stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_119", "RUNNER_171", "RUNNER_148", "RUNNER_266")
     }
