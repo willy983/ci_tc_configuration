@@ -53,14 +53,23 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
                 """.trimIndent()
             }
         }
-        exec {
+        powerShell {
             name = "NUnit: Apache.Ignite.AspNet.Tests"
             id = "RUNNER_171"
-            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
             workingDir = "modules/platforms/dotnet/Apache.Ignite.AspNet.Tests/bin/Debug/net461"
-            path = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
-            arguments = "Apache.Ignite.AspNet.Tests.dll --teamcity"
-            formatStderrAsError = true
+            scriptMode = script {
+                content = """
+                    ${'$'}runner = "%system.teamcity.build.checkoutDir%/modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe"
+                    iex "& ${'$'}runner Apache.Ignite.AspNet.Tests.dll --teamcity"
+                    
+                    ${'$'}res = ${'$'}lastexitcode
+                    
+                    if (${'$'}res -lt 0) {
+                      echo "Failed to run tests"
+                      exit ${'$'}res
+                    }
+                """.trimIndent()
+            }
         }
         exec {
             name = "NUnit: Apache.Ignite.EntityFramework.Tests"
