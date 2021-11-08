@@ -2,6 +2,7 @@ package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.exec
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.BuildFailureOnMetric
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnMetricChange
@@ -34,15 +35,22 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
             workingDir = "modules/platforms/dotnet"
             scriptContent = "dotnet build Apache.Ignite.sln"
         }
-        script {
+        powerShell {
             name = "NUnit: Apache.Ignite.Core.Tests"
             id = "RUNNER_119"
             workingDir = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461"
-            scriptContent = """
-                modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe Apache.Ignite.Core.Tests.exe --teamcity
-                if errorlevel LSS 0 exit /b -1
-            """.trimIndent()
-            formatStderrAsError = true
+            scriptMode = script {
+                content = """
+                    iex "& modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461/nunit/nunit3-console.exe Apache.Ignite.Core.Tests.exe --teamcity"
+                    
+                    ${'$'}res = ${'$'}lastexitcode
+                    
+                    if (${'$'}res -lt 0) {
+                      echo "Failed to run tests"
+                      exit ${'$'}res
+                    }
+                """.trimIndent()
+            }
         }
         exec {
             name = "NUnit: Apache.Ignite.AspNet.Tests"
