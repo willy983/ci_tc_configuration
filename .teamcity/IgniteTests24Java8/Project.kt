@@ -192,16 +192,5 @@ object Project : Project({
         param("system.SKIP_BUILD", "false")
     }
 
-    cleanup {
-        baseRule {
-            all(days = 11)
-            history(days = 11)
-            artifacts(days = 11, artifactPatterns = """
-                +:**/*
-                +:.teamcity/**
-            """.trimIndent())
-        }
-    }
-
     subProject(IgniteTests24Java8_Dev.Project)
 })
