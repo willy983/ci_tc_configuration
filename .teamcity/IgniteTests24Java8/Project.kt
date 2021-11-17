@@ -48,6 +48,7 @@ object Project : Project({
     buildType(IgniteTests24Java8_SpiUriDeploy)
     buildType(IgniteTests24Java8_Pds3)
     buildType(IgniteTests24Java8_Pds2)
+    buildType(IgniteTests24Java8_NumaAllocator)
     buildType(IgniteTests24Java8_Pds1)
     buildType(IgniteTests24Java8_ClientNodes)
     buildType(IgniteTests24Java8_BinaryObjectsSimpleMapperCacheFullApi)
