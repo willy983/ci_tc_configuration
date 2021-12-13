@@ -163,6 +163,8 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_MissingTests) {
         }
+        snapshot(IgniteTests24Java8_NumaAllocator) {
+        }
         snapshot(IgniteTests24Java8_OpenCensus) {
         }
         snapshot(IgniteTests24Java8_Pds1) {
