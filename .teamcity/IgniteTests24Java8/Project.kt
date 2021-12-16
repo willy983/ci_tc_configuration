@@ -2,7 +2,10 @@ package IgniteTests24Java8
 
 import IgniteTests24Java8.buildTypes.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.CustomChart
+import jetbrains.buildServer.configs.kotlin.v2019_2.CustomChart.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildTypeCustomChart
 
 object Project : Project({
     id("IgniteTests24Java8")
@@ -290,6 +293,17 @@ object Project : Project({
         text("env.MALLOC_ARENA_MAX", "4", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_PROFILES", "all-java,all-scala,scala,all-other,compatibility,lgpl,yardstick,benchmarks,examples", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("system.SKIP_BUILD", "false")
+    }
+    features {
+        buildTypeCustomChart {
+            id = "PROJECT_EXT_6"
+            title = "BuildDuration"
+            seriesTitle = "Serie"
+            format = CustomChart.Format.TEXT
+            series = listOf(
+                Serie(title = "Build Duration (all stages)", key = SeriesKey.BUILD_DURATION)
+            )
+        }
     }
 
     subProject(IgniteTests24Java8_Dev.Project)
