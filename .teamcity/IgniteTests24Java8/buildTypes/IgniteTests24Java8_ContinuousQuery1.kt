@@ -3,21 +3,12 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_ContinuousQuery1 : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
+    templates(IgniteTests24Java8_RunTestsJava)
     name = "Continuous Query 1"
 
-    artifactRules = """
-        work/log => logs.zip
-        **/hs_err*.log => crashdumps.zip
-        **/core => crashdumps.zip
-        ./**/target/rat.txt => rat.zip
-        ./dev-tools/IGNITE-*-*.patch => patch
-        /home/teamcity/ignite-startNodes/*.log => ignite-startNodes.zip
-    """.trimIndent()
-
     params {
-        param("MAVEN_MODULES", ":ignite-indexing")
-        param("TEST_SUITE", "IgniteCacheQuerySelfTestSuite3")
+        text("MAVEN_MODULES", ":ignite-indexing", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteCacheQuerySelfTestSuite3", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

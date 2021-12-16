@@ -38,24 +38,16 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
     }
 
-    triggers {
-        vcs {
-            branchFilter = "+:refs/head/master"
-        }
-    }
-
     dependencies {
         snapshot(IgniteTests24Java8_ActivateDeactivateCluster) {
         }
         snapshot(IgniteTests24Java8_Aop) {
         }
-        snapshot(IgniteTests24Java8_Aws) {
-        }
         snapshot(IgniteTests24Java8_Basic1) {
         }
         snapshot(IgniteTests24Java8_Basic2) {
         }
-        snapshot(IgniteTests24Java8_BasicTestsWithPersistence) {
+        snapshot(IgniteTests24Java8_Basic3) {
         }
         snapshot(IgniteTests24Java8_BinaryObjects) {
         }
@@ -129,15 +121,15 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_ExamplesLgpl) {
         }
-        snapshot(IgniteTests24Java8_Gce) {
-        }
         snapshot(IgniteTests24Java8_GeospatialIndexing) {
         }
-        snapshot(IgniteTests24Java8_Hibernate1) {
+        snapshot(IgniteTests24Java8_Hibernate42) {
         }
-        snapshot(IgniteTests24Java8_Hibernate2) {
+        snapshot(IgniteTests24Java8_Hibernate51) {
         }
         snapshot(IgniteTests24Java8_Hibernate53) {
+        }
+        snapshot(IgniteTests24Java8_IndexQueryApi) {
         }
         snapshot(IgniteTests24Java8_InspectionsCore) {
         }
@@ -146,8 +138,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         snapshot(IgniteTests24Java8_JCacheTck11) {
         }
         snapshot(IgniteTests24Java8_JavaClient) {
-        }
-        snapshot(IgniteTests24Java8_JavaThinClient) {
         }
         snapshot(IgniteTests24Java8_Javadoc) {
         }
@@ -165,7 +155,7 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_NumaAllocator) {
         }
-        snapshot(IgniteTests24Java8_OpenCensus) {
+        snapshot(IgniteTests24Java8_OpenCensusNew) {
         }
         snapshot(IgniteTests24Java8_Pds1) {
         }
@@ -180,6 +170,8 @@ object IgniteTests24Java8_RunAll : BuildType({
         snapshot(IgniteTests24Java8_PdsIndexing) {
         }
         snapshot(IgniteTests24Java8_PdsUnitTests) {
+        }
+        snapshot(IgniteTests24Java8_PlatformCCMakeWinX64Release) {
         }
         snapshot(IgniteTests24Java8_PlatformCPPCMakeLinux) {
         }
@@ -207,6 +199,10 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_ServiceGridLegacyMode) {
         }
+        snapshot(IgniteTests24Java8_Snapshots) {
+        }
+        snapshot(IgniteTests24Java8_SnapshotsWithIndexes) {
+        }
         snapshot(IgniteTests24Java8_Spi) {
         }
         snapshot(IgniteTests24Java8_SpiUriDeploy) {
@@ -217,13 +213,13 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_Streamers) {
         }
+        snapshot(IgniteTests24Java8_ThinClientJava) {
+        }
         snapshot(IgniteTests24Java8_ThinClientNodeJs) {
         }
         snapshot(IgniteTests24Java8_ThinClientPhp) {
         }
         snapshot(IgniteTests24Java8_WebSessions) {
-        }
-        snapshot(IgniteTests24Java8_WiPPlatformCCMakeWinX64Release) {
         }
         snapshot(IgniteTests24Java8_WiPThinClientPython) {
         }

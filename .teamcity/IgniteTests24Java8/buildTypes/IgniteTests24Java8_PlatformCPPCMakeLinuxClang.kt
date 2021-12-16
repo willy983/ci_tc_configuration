@@ -4,23 +4,14 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_PlatformCPPCMakeLinuxClang : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava, IgniteTests24Java8_CLinux)
+    templates(IgniteTests24Java8_C, IgniteTests24Java8_RunTestsJava, IgniteTests24Java8_RunNodeLibs)
     name = "Platform C++ CMake (Linux Clang)"
 
-    artifactRules = """
-        work/log => logs.zip
-        **/hs_err*.log => crashdumps.zip
-        **/core => crashdumps.zip
-        ./**/target/rat.txt => rat.zip
-        ./dev-tools/IGNITE-*-*.patch => patch
-        /home/teamcity/ignite-startNodes/*.log => ignite-startNodes.zip
-    """.trimIndent()
-
     params {
-        param("env.PATH", "/usr/lib/llvm-%CLANG_VERSION%/bin:%env.PATH%")
-        param("env.CC", "clang")
-        param("env.CXX", "clang++")
-        param("CLANG_VERSION", "3.9")
+        text("env.PATH", "/usr/lib/llvm-%CLANG_VERSION%/bin:%env.PATH%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("env.CC", "clang", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("env.CXX", "clang++", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("CLANG_VERSION", "3.9", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     steps {
@@ -181,10 +172,6 @@ object IgniteTests24Java8_PlatformCPPCMakeLinuxClang : BuildType({
             """.trimIndent()
         }
         stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_225", "RUNNER_18", "RUNNER_20", "RUNNER_23", "RUNNER_24", "RUNNER_193", "RUNNER_55", "RUNNER_27", "RUNNER_28", "RUNNER_29", "RUNNER_30", "RUNNER_31", "RUNNER_265", "RUNNER_266")
-    }
-
-    requirements {
-        startsWith("teamcity.agent.name", "aitc", "RQ_33")
     }
     
     disableSettings("RUNNER_265")

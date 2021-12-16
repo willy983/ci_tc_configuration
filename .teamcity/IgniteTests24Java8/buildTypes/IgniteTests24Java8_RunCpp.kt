@@ -24,11 +24,11 @@ object IgniteTests24Java8_RunCpp : BuildType({
         }
         snapshot(IgniteTests24Java8_PlatformCCMakeWinX64Debug) {
         }
+        snapshot(IgniteTests24Java8_PlatformCCMakeWinX64Release) {
+        }
         snapshot(IgniteTests24Java8_PlatformCPPCMakeLinux) {
         }
         snapshot(IgniteTests24Java8_PlatformCPPCMakeLinuxClang) {
-        }
-        snapshot(IgniteTests24Java8_WiPPlatformCCMakeWinX64Release) {
         }
     }
 })

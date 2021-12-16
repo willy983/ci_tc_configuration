@@ -52,6 +52,7 @@ object IgniteTests24Java8_PlatformNetCoreLinux : BuildType({
         dotnetRun {
             name = "Run .NET (verify startup)"
             id = "RUNNER_167"
+            enabled = false
             projects = "modules/platforms/dotnet/*/Apache.Ignite.Core.Tests.DotNetCore.csproj"
             param("dotNetCoverage.dotCover.home.path", "%teamcity.tool.JetBrains.dotCover.CommandLineTools.DEFAULT%")
         }

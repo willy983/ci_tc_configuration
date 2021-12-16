@@ -3,12 +3,13 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_Aop : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
+    templates(IgniteTests24Java8_RunTestsJava)
     name = "AOP"
 
     params {
-        param("MAVEN_MODULES", ":ignite-aop")
-        param("TEST_SUITE", "IgniteAopSelfTestSuite")
+        text("MAVEN_MODULES", ":ignite-aop", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        param("IGNITE_LOGGING_OPTS", "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true")
+        text("TEST_SUITE", "IgniteAopSelfTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

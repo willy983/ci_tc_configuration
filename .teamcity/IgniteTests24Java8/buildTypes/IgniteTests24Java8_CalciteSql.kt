@@ -3,12 +3,16 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_CalciteSql : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
+    templates(IgniteTests24Java8_RunTestsJava)
     name = "Calcite SQL"
     description = "Run Calcite-based SQL engine tests"
 
     params {
-        param("MAVEN_MODULES", ":ignite-calcite")
-        param("TEST_SUITE", "IgniteCalciteTestSuite")
+        text("MAVEN_MODULES", ":ignite-calcite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteCalciteTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+    }
+
+    failureConditions {
+        executionTimeoutMin = 120
     }
 })
