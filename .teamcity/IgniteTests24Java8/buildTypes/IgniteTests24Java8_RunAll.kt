@@ -2,7 +2,6 @@ package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 
 object IgniteTests24Java8_RunAll : BuildType({
     name = "--> Run :: All"

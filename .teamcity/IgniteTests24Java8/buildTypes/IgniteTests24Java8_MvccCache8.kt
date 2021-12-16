@@ -5,8 +5,8 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 
 object IgniteTests24Java8_MvccCache8 : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
-    name = "MVCC Cache 8"
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld)
+    name = "~[DEPRECATED] MVCC Cache 8"
 
     params {
         param("MAVEN_MODULES", ":ignite-core")

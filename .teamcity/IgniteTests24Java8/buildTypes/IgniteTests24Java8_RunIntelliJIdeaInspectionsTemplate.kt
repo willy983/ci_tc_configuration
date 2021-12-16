@@ -35,7 +35,6 @@ object IgniteTests24Java8_RunIntelliJIdeaInspectionsTemplate : Template({
 
     steps {
         script {
-            //type = "bash"
             name = "Set default inspection profile"
             id = "RUNNER_59"
             scriptContent = readScript("scripts/inspect.sh").trimIndent()
@@ -45,6 +44,7 @@ object IgniteTests24Java8_RunIntelliJIdeaInspectionsTemplate : Template({
             pathToProject = "%MODULE_PATH%/pom.xml"
             jvmArgs = "-Xms2G -Xmx4G -XX:ReservedCodeCacheSize=240m -XX:+UseG1GC"
             targetJdkHome = "%env.JDK_18%"
+            ideaAppHome = "%teamcity.tool.intellij.DEFAULT%"
             disabledPlugins = """
                 AntSupport
                 CVS

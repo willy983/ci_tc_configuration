@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_BuildApacheIgnite : BuildType({
-    name = "~Build"
+    name = "[Build]"
     description = "Build and prepare project for testing"
 
     artifactRules = """

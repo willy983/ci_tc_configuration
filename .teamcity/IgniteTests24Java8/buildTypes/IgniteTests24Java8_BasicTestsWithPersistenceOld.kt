@@ -3,7 +3,7 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_BasicTestsWithPersistenceOld : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld)
     name = "~[DEPRECATED] Basic 3"
 
     params {

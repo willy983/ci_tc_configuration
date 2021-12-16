@@ -3,8 +3,8 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_MvccQueries : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
-    name = "MVCC Queries"
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld)
+    name = "~[DEPRECATED] MVCC Queries"
 
     artifactRules = """
         work/log => logs.zip

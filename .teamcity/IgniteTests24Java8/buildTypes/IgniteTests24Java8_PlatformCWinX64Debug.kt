@@ -7,8 +7,9 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.visualStudio
 
 object IgniteTests24Java8_PlatformCWinX64Debug : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava, IgniteTests24Java8_C)
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld, IgniteTests24Java8_C)
     name = "~[DEPRECATED] Platform C++ (Win x64 | Debug)"
+    paused = true
 
     params {
         param("SCALA_PROFILE", "-scala")

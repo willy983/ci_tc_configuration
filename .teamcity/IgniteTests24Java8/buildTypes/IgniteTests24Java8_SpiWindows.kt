@@ -3,8 +3,8 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_SpiWindows : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
-    name = "SPI [Windows]"
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld)
+    name = "~[DEPRECATED] SPI [Windows]"
 
     artifactRules = """
         work/log => logs.zip
