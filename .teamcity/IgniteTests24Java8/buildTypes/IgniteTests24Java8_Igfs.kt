@@ -3,8 +3,8 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_Igfs : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
-    name = "IGFS"
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld)
+    name = "~[DEPRECATED] IGFS"
 
     artifactRules = """
         work/log => logs.zip

@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_PlatformNet : BuildType({
     templates(IgniteTests24Java8_PreBuild, IgniteTests24Java8_RunTestSuitesNet, IgniteTests24Java8_PostBuild)
-    name = "~ [DEPRECATED] Platform .NET"
+    name = "~[DEPRECATED] Platform .NET"
     paused = true
 
     params {

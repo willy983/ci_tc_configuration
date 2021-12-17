@@ -67,12 +67,11 @@ object IgniteTests24Java8_RunAllNightly : BuildType({
             enforceCleanCheckoutForDependencies = true
         }
         schedule {
-            enabled = false
             schedulingPolicy = daily {
-                hour = 23
+                hour = 1
                 minute = 30
             }
-            branchFilter = "+:ignite-2.11"
+            branchFilter = "+:ignite-2.12"
             triggerBuild = always()
             withPendingChangesOnly = false
             enableQueueOptimization = false
@@ -87,21 +86,15 @@ object IgniteTests24Java8_RunAllNightly : BuildType({
         }
         snapshot(IgniteTests24Java8_BinaryObjectsSimpleMapperComputeGrid) {
         }
-        snapshot(IgniteTests24Java8_BinaryObjectsSimpleMapperQueries) {
+        snapshot(IgniteTests24Java8_CacheFullApiConfigVariationsBasic) {
         }
-        snapshot(IgniteTests24Java8_CacheFullApiBasicConfigVariations) {
-        }
-        snapshot(IgniteTests24Java8_CacheFullApiConfigVariations) {
+        snapshot(IgniteTests24Java8_CacheFullApiConfigVariationsWithKeepBinary) {
         }
         snapshot(IgniteTests24Java8_ContinuousQueryConfigVariations) {
         }
-        snapshot(IgniteTests24Java8_DiskPageCompressions) {
+        snapshot(IgniteTests24Java8_DiskPageCompressions1) {
         }
-        snapshot(IgniteTests24Java8_Hadoop) {
-        }
-        snapshot(IgniteTests24Java8_Igfs) {
-        }
-        snapshot(IgniteTests24Java8_IgfsLinuxAndMacOS) {
+        snapshot(IgniteTests24Java8_DiskPageCompressions2) {
         }
         snapshot(IgniteTests24Java8_MemoryLeaks) {
         }
@@ -111,9 +104,9 @@ object IgniteTests24Java8_RunAllNightly : BuildType({
         }
         snapshot(IgniteTests24Java8_PdsDirectIo2) {
         }
-        snapshot(IgniteTests24Java8_RunAll) {
+        snapshot(IgniteTests24Java8_QueriesBinaryObjectsSimpleMapper) {
         }
-        snapshot(IgniteTests24Java8_TensorFlow) {
+        snapshot(IgniteTests24Java8_RunAll) {
         }
     }
 

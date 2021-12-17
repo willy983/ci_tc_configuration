@@ -1,8 +1,6 @@
 package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.Swabra
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.swabra
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_PostBuild : Template({
@@ -12,9 +10,6 @@ object IgniteTests24Java8_PostBuild : Template({
         work/log => logs.zip
         **/hs_err*.log => crashdumps.zip
         **/core => crashdumps.zip
-        ./**/target/rat.txt => rat.zip
-        /home/teamcity/ignite-startNodes/*.log => ignite-startNodes.zip
-        ./dev-tools/IGNITE-*-*.patch => patch
     """.trimIndent()
 
     vcs {
@@ -82,15 +77,6 @@ object IgniteTests24Java8_PostBuild : Template({
                     }
                 done
             """.trimIndent()
-        }
-    }
-
-    features {
-        swabra {
-            id = "swabra"
-            filesCleanup = Swabra.FilesCleanup.AFTER_BUILD
-            forceCleanCheckout = true
-            lockingProcesses = Swabra.LockingProcessPolicy.KILL
         }
     }
 })

@@ -4,8 +4,8 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_PlatformCPPLinuxClang : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava, IgniteTests24Java8_CLinux)
-    name = "Platform C++ (Linux Clang)"
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld, IgniteTests24Java8_C)
+    name = "~[DEPRECATED] Platform C++ (Linux Clang)"
 
     artifactRules = """
         work/log => logs.zip

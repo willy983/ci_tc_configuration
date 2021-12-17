@@ -7,18 +7,18 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_Build : BuildType({
     name = "> Build"
-    description = "Build and prepare project for testing"
+    description = "Build / Check / Prepare project for testing"
 
     artifactRules = """
         ignite.zip
         repository.zip
+        run.zip
         **/checkstyle-result.xml => checkstyle.zip
         **/target/rat.txt => rat.zip
     """.trimIndent()
 
     params {
-        checkbox("FLAG_RUN_SANITY_CHECKS", "true", label = "Run Sanity Checks", description = "Check Licenses, Javadoc and Code Style along the main Build", display = ParameterDisplay.PROMPT,
-                  checked = "true", unchecked = "false")
+        text("FLAG_RUN_SANITY_CHECKS", "true", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("JVM_EXTRA_ARGS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
@@ -42,7 +42,7 @@ object IgniteTests24Java8_Build : BuildType({
             """.trimIndent()
         }
         maven {
-            name = "Build Apache Ignite"
+            name = "Build Apache Ignite [JDK8]"
             goals = "install"
             pomLocation = ""
             runnerArgs = """
@@ -57,7 +57,7 @@ object IgniteTests24Java8_Build : BuildType({
             jdkHome = "%env.JDK_ORA_8%"
         }
         maven {
-            name = "Check Code Style"
+            name = "Check Code Style [JDK8]"
 
             conditions {
                 equals("FLAG_RUN_SANITY_CHECKS", "true")
@@ -70,7 +70,7 @@ object IgniteTests24Java8_Build : BuildType({
             jdkHome = "%env.JDK_ORA_8%"
         }
         maven {
-            name = "Check Javadoc"
+            name = "Check Javadoc [JDK8]"
 
             conditions {
                 equals("FLAG_RUN_SANITY_CHECKS", "true")
@@ -83,7 +83,7 @@ object IgniteTests24Java8_Build : BuildType({
             jdkHome = "%env.JDK_ORA_8%"
         }
         maven {
-            name = "Check License Headers"
+            name = "Check License Headers [JDK8]"
 
             conditions {
                 equals("FLAG_RUN_SANITY_CHECKS", "true")
@@ -96,7 +96,7 @@ object IgniteTests24Java8_Build : BuildType({
             jdkHome = "%env.JDK_ORA_8%"
         }
         maven {
-            name = "Check Missing Tests (prepare modules)"
+            name = "Check Missing Tests (prepare modules) [JDK8]"
 
             conditions {
                 equals("FLAG_RUN_SANITY_CHECKS", "true")
@@ -109,7 +109,7 @@ object IgniteTests24Java8_Build : BuildType({
             jdkHome = "%env.JDK_ORA_8%"
         }
         maven {
-            name = "Check Missing Tests"
+            name = "Check Missing Tests [JDK8]"
 
             conditions {
                 equals("FLAG_RUN_SANITY_CHECKS", "true")
@@ -125,6 +125,31 @@ object IgniteTests24Java8_Build : BuildType({
             jdkHome = "%env.JDK_ORA_8%"
         }
         script {
+            name = "Prepare ignite-tools for rebuilding"
+            scriptContent = """
+                #!/usr/bin/env bash
+                set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
+                set -x
+                
+                
+                rm -rfv modules/tools/target
+            """.trimIndent()
+        }
+        maven {
+            name = "Rebuild ignite-tools (to restore default surefire provider) [JDK8]"
+            goals = "install"
+            pomLocation = ""
+            runnerArgs = """
+                -pl :ignite-tools -am
+                -DskipTests
+                -Dmaven.javadoc.skip
+                -Dmaven.source.skip
+            """.trimIndent()
+            userSettingsSelection = "local-proxy.xml"
+            localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
+            jdkHome = "%env.JDK_ORA_8%"
+        }
+        script {
             name = "Prepare built artifacts"
             scriptContent = """
                 #!/usr/bin/env bash
@@ -133,8 +158,23 @@ object IgniteTests24Java8_Build : BuildType({
                 
                 
                 # Prepare archive with 'target' directories
-                zip -r ignite target modules/*/target -x '*.jar'
-                zip -ur ignite modules/*/target -i */aspectjweaver-*.jar
+                zip -r ignite target examples/target modules/{*,*/*}/target -x '*.jar'
+                zip -ur ignite modules/{*,*/*}/target -i */aspectjweaver-*.jar \
+                                                      -i */cache-api-*.jar \
+                                                      -i */h2-*.jar
+                zip -r run modules/ssh/target/libs/jsch-*.jar \
+                           modules/zookeeper/target/libs/*.jar \
+                           modules/spring/target/libs/spring-*.jar \
+                           modules/spring/target/libs/commons-logging-*.jar \
+                           modules/jta/target/libs/jta-*.jar \
+                           modules/schedule/target/libs/cron4j-*.jar
+                zip -ur run modules/direct-io/target/libs/jna-*.jar \
+                            modules/log4j2/target/libs/log4j-*.jar \
+                            modules/direct-io/target/ignite-direct-io-*.jar \
+                            modules/indexing/target/libs/lucene-*.jar
+                zip -ur run modules/rest-http/target/libs/jetty-*.jar \
+                            modules/rest-http/target/libs/jackson-*.jar \
+                            modules/ducktests/target/libs/servlet-*.jar
                 
                 
                 # Prepare archive with installed artifacts

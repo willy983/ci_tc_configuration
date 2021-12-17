@@ -4,12 +4,11 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_Dev_SqlTest : BuildType({
-    templates(IgniteTests24Java8.buildTypes.IgniteTests24Java8_RunTestSuitesJava)
+    templates(IgniteTests24Java8.buildTypes.IgniteTests24Java8_RunTestSuitesJavaOld)
     name = "SQL Test"
 
     artifactRules = """
         sqltest/out_tc.xml
-        sqltest/out_tc2.xml
         sqltest/dbs/ignite/v/result/2016.json
     """.trimIndent()
 

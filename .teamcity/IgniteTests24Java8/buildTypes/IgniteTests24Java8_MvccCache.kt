@@ -3,8 +3,8 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_MvccCache : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
-    name = "MVCC JDBC"
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld)
+    name = "~[DEPRECATED] MVCC JDBC"
 
     params {
         param("MAVEN_MODULES", ":ignite-clients")

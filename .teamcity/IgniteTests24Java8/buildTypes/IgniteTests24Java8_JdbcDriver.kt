@@ -3,13 +3,13 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_JdbcDriver : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
+    templates(IgniteTests24Java8_RunTestsJava)
     name = "JDBC Driver"
 
     params {
-        param("MAVEN_MODULES", ":ignite-clients")
-        param("TEST_SUITE", "IgniteJdbcDriverTestSuite")
-        param("XMX", "4g")
+        text("MAVEN_MODULES", ":ignite-clients", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteJdbcDriverTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("XMX", "4g", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

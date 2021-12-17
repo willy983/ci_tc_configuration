@@ -1,6 +1,8 @@
 package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.Swabra
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.swabra
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.BuildFailureOnMetric
@@ -9,16 +11,6 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnMetr
 object IgniteTests24Java8_PlatformNetWindows : BuildType({
     templates(IgniteTests24Java8_PreBuild, IgniteTests24Java8_PostBuild)
     name = "Platform .NET (Windows)"
-
-    artifactRules = """
-        work/log => logs.zip
-        **/hs_err*.log => crashdumps.zip
-        **/core => crashdumps.zip
-        ./**/target/rat.txt => rat.zip
-        /home/teamcity/ignite-startNodes/*.log => ignite-startNodes.zip
-        ./dev-tools/IGNITE-*-*.patch => patch
-        modules/platforms/dotnet/Apache.Ignite.Core.Tests.DotNetCore/bin/Debug/netcoreapp2.0/*.log => logs.zip
-    """.trimIndent()
 
     params {
         param("env.IGNITE_BASELINE_AUTO_ADJUST_ENABLED", "false")
@@ -92,7 +84,7 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
     }
 
     failureConditions {
-        executionTimeoutMin = 120
+        executionTimeoutMin = 190
         failOnMetricChange {
             id = "BUILD_EXT_16"
             metric = BuildFailureOnMetric.MetricType.INSPECTION_ERROR_COUNT
@@ -111,9 +103,16 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
         }
     }
 
+    features {
+        swabra {
+            id = "swabra"
+            enabled = false
+            forceCleanCheckout = true
+            lockingProcesses = Swabra.LockingProcessPolicy.KILL
+        }
+    }
+
     requirements {
         exists("env.windir", "RQ_22")
     }
-    
-    disableSettings("swabra")
 })

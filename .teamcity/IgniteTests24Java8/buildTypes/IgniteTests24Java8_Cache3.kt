@@ -3,13 +3,13 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_Cache3 : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
+    templates(IgniteTests24Java8_RunTestsJava)
     name = "Cache 3"
 
     params {
-        param("MAVEN_MODULES", ":ignite-core")
-        param("TEST_SUITE", "IgniteBinaryObjectsCacheTestSuite3")
-        param("XMX", "4g")
+        text("MAVEN_MODULES", ":ignite-core", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("XMX", "4g", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteBinaryObjectsCacheTestSuite3", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

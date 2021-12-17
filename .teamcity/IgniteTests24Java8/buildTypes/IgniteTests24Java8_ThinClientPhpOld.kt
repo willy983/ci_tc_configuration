@@ -5,7 +5,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_ThinClientPhpOld : BuildType({
     templates(IgniteTests24Java8_ExcludeTests, IgniteTests24Java8_PreBuild, _Self.buildTypes.ThinClientStartIgnite, _Self.buildTypes.ThinClientStopIgnite, IgniteTests24Java8_PostBuild)
-    name = "Thin client: PHP (old)"
+    name = "~[DEPRECATED] Thin client: PHP (old)"
 
     artifactRules = "work/log/** => logs.zip"
 

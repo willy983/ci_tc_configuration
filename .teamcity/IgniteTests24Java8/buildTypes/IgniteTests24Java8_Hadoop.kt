@@ -3,8 +3,8 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_Hadoop : BuildType({
-    templates(IgniteTests24Java8_ExcludeTests, IgniteTests24Java8_RunTestSuitesJava)
-    name = "Hadoop"
+    templates(IgniteTests24Java8_ExcludeTests, IgniteTests24Java8_RunTestSuitesJavaOld)
+    name = "~[DEPRECATED] Hadoop"
 
     artifactRules = """
         work/log => logs.zip

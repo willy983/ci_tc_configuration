@@ -1,6 +1,9 @@
 package IgniteTests24Java8.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ReSharperInspections
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.fxCop
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.reSharperInspections
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.BuildFailureOnMetric
 import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnMetricChange
 
@@ -10,32 +13,31 @@ object IgniteTests24Java8_PlatformNetInspections : BuildType({
     paused = true
 
     steps {
-        step {
+        fxCop {
             name = "FxCop static analysis"
             id = "RUNNER_125"
-            type = "FxCop"
             executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
-            param("fxcop.version", "not_specified")
-            param("fxcop.project", """modules\platforms\dotnet\Apache.Ignite.FxCop""")
-            param("fxcop.what", "project")
+            inspectionSource = project {
+                projectFile = """modules\platforms\dotnet\Apache.Ignite.FxCop"""
+            }
+            failOnAnalysisError = false
         }
-        step {
+        reSharperInspections {
             name = "ReSharper Inspections"
             id = "RUNNER_126"
-            type = "dotnet-tools-inspectcode"
             executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
-            param("dotnet-tools-inspectcode.customCmdArgs", """--profile="modules/platforms/dotnet/Apache.Ignite.sln.TeamCity.DotSettings"""")
-            param("TargetDotNetFramework_4.0", "true")
-            param("dotnet-tools-inspectcode.solution", "modules/platforms/dotnet/Apache.Ignite.sln")
-            param("dotnet-tools-inspectcodeCustomSettingsProfile", "modules/platforms/dotnet/Apache.Ignite.sln.TeamCity.DotSettings")
-            param("dotnet-tools-inspectcode.project.filter", """
+            solutionPath = "modules/platforms/dotnet/Apache.Ignite.sln"
+            projectFilter = """
                 Apache.Ignite.Core
                 Apache.Ignite.Linq
                 Apache.Ignite.AspNet
                 Apache.Ignite.EntityFramework
-            """.trimIndent())
-            param("jetbrains.resharper-clt.platform", "x64")
-            param("jetbrains.resharper-clt.clt-path", "%teamcity.tool.jetbrains.resharper-clt.bundled%")
+            """.trimIndent()
+            targetDotNetFramework_4_0 = true
+            cltPath = "%teamcity.tool.jetbrains.resharper-clt.bundled%"
+            cltPlatform = ReSharperInspections.Platform.X64
+            customSettingsProfilePath = "modules/platforms/dotnet/Apache.Ignite.sln.TeamCity.DotSettings"
+            customCmdArgs = """--profile="modules/platforms/dotnet/Apache.Ignite.sln.TeamCity.DotSettings""""
         }
         stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_32", "RUNNER_33", "RUNNER_43", "RUNNER_54", "RUNNER_71", "RUNNER_125", "RUNNER_126", "RUNNER_266")
     }

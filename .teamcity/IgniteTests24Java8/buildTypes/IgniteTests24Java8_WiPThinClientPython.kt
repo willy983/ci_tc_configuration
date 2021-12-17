@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_WiPThinClientPython : BuildType({
-    templates(IgniteTests24Java8_ThirdpartyCheckout, IgniteTests24Java8_PreBuild, _Self.buildTypes.RunPythonTestsBasic, _Self.buildTypes.RunPythonTestsSsl, IgniteTests24Java8_PostBuild)
+    templates(IgniteTests24Java8_ThirdpartyCheckout, IgniteTests24Java8_PreBuild, _Self.buildTypes.RunPythonTestsBasic, _Self.buildTypes.RunPythonTestsSsl, IgniteTests24Java8_PostBuild, IgniteTests24Java8_PostBuild)
     name = "Thin client: Python"
 
     artifactRules = "work/log/** => logs.zip"

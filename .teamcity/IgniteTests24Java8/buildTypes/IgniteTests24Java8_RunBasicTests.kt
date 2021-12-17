@@ -30,7 +30,7 @@ object IgniteTests24Java8_RunBasicTests : BuildType({
     dependencies {
         snapshot(IgniteTests24Java8_Basic1) {
         }
-        snapshot(IgniteTests24Java8_BasicTestsWithPersistence) {
+        snapshot(IgniteTests24Java8_Basic3) {
         }
         snapshot(IgniteTests24Java8_CacheFullApi) {
         }

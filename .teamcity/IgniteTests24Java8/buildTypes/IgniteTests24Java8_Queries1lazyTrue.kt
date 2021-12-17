@@ -3,8 +3,8 @@ package IgniteTests24Java8.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_Queries1lazyTrue : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava)
-    name = "Queries 1 (lazy=true)"
+    templates(IgniteTests24Java8_RunTestSuitesJavaOld)
+    name = "~[DEPRECATED] Queries 1 (lazy=true)"
 
     artifactRules = """
         work/log => logs.zip

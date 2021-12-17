@@ -4,17 +4,8 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteTests24Java8_PlatformCPPCMakeLinux : BuildType({
-    templates(IgniteTests24Java8_RunTestSuitesJava, IgniteTests24Java8_CLinux)
+    templates(IgniteTests24Java8_C, IgniteTests24Java8_RunTestsJava, IgniteTests24Java8_RunNodeLibs)
     name = "Platform C++ CMake (Linux)"
-
-    artifactRules = """
-        work/log => logs.zip
-        **/hs_err*.log => crashdumps.zip
-        **/core => crashdumps.zip
-        ./**/target/rat.txt => rat.zip
-        ./dev-tools/IGNITE-*-*.patch => patch
-        /home/teamcity/ignite-startNodes/*.log => ignite-startNodes.zip
-    """.trimIndent()
 
     steps {
         script {
@@ -36,7 +27,7 @@ object IgniteTests24Java8_PlatformCPPCMakeLinux : BuildType({
                 mkdir cmake-build-release
                 cd cmake-build-release
                 
-                cmake -DWITH_ODBC=ON -DWITH_THIN_CLIENT=ON -DWITH_TESTS=ON -DCMAKE_BUILD_TYPE=Release -DWARNINGS_AS_ERRORS=ON -DCMAKE_INSTALL_PREFIX=%env.CPP_STAGING% ..
+                cmake -DWITH_ODBC=ON -DWITH_THIN_CLIENT=ON -DWITH_TESTS=ON -DWARNINGS_AS_ERRORS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%env.CPP_STAGING% ..
                 make -j4 || exit 1
                 make install || exit 1
             """.trimIndent()

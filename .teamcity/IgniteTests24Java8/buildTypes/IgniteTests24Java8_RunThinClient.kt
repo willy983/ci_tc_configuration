@@ -18,23 +18,25 @@ object IgniteTests24Java8_RunThinClient : BuildType({
     dependencies {
         snapshot(IgniteTests24Java8_CheckCodeStyle) {
         }
-        snapshot(IgniteTests24Java8_JavaThinClient) {
-        }
         snapshot(IgniteTests24Java8_Javadoc) {
         }
         snapshot(IgniteTests24Java8_LicensesHeaders) {
         }
         snapshot(IgniteTests24Java8_PlatformCCMakeWinX64Debug) {
         }
+        snapshot(IgniteTests24Java8_PlatformCCMakeWinX64Release) {
+        }
         snapshot(IgniteTests24Java8_PlatformCPPCMakeLinux) {
         }
         snapshot(IgniteTests24Java8_PlatformCPPCMakeLinuxClang) {
         }
+        snapshot(IgniteTests24Java8_RunAllNet) {
+        }
+        snapshot(IgniteTests24Java8_ThinClientJava) {
+        }
         snapshot(IgniteTests24Java8_ThinClientNodeJs) {
         }
         snapshot(IgniteTests24Java8_ThinClientPhp) {
-        }
-        snapshot(IgniteTests24Java8_WiPPlatformCCMakeWinX64Release) {
         }
         snapshot(IgniteTests24Java8_WiPThinClientPython) {
         }

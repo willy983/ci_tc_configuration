@@ -7,15 +7,6 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.failureConditions.failOnText
 object IgniteTests24Java8_C : Template({
     name = "C++"
 
-    artifactRules = """
-        work/log => logs.zip
-        **/hs_err*.log => crashdumps.zip
-        **/core => crashdumps.zip
-        ./**/target/rat.txt => rat.zip
-        ./dev-tools/IGNITE-*-*.patch => patch
-        /home/teamcity/ignite-startNodes/*.log => ignite-startNodes.zip
-    """.trimIndent()
-
     params {
         param("env.IGNITE_NATIVE_TEST_CLASSPATH", "true")
         param("env.IGNITE_NATIVE_TEST_CPP_THIN_CONFIG_PATH", "%env.IGNITE_HOME%/modules/platforms/cpp/thin-client-test/config")
