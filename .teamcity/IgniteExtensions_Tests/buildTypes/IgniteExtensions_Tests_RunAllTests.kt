@@ -1,6 +1,7 @@
 package IgniteExtensions_Tests.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object IgniteExtensions_Tests_RunAllTests : BuildType({
     name = "--> Run :: All Tests"
@@ -12,13 +13,17 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
     }
 
     vcs {
-        root(_Self.vcsRoots.GitHubApacheIgniteExtensions)
+        root(AbsoluteId("GitHubApacheIgniteExtensions"))
 
         showDependenciesChanges = true
     }
 
     dependencies {
+        snapshot(IgniteExtensions_Tests_Aws_2) {
+        }
         snapshot(IgniteExtensions_Tests_Camel) {
+        }
+        snapshot(IgniteExtensions_Tests_Cdc) {
         }
         snapshot(IgniteExtensions_Tests_Flink) {
         }
@@ -57,6 +62,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         snapshot(IgniteExtensions_Tests_Twitter) {
         }
         snapshot(IgniteExtensions_Tests_ZeroMQ) {
+        }
+        snapshot(IgniteExtensions_Tests_ZookeeperIpFinder) {
         }
     }
 })

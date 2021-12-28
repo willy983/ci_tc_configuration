@@ -6,46 +6,53 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.swabra
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
 
-object IgniteExtensions_Tests_OldRunAllTests : BuildType({
-    name = "~(OLD) Run All Tests"
-    paused = true
+object IgniteExtensions_Tests_RunTestSuitesJava : Template({
+    name = "Run test suites (Java)"
 
     artifactRules = """
         work/log => logs.zip
         **/hs_err*.log => crashdumps.zip
         **/core => crashdumps.zip
         ./**/target/rat.txt => rat.zip
-        ./dev-tools/IGNITE-*-*.patch => patch
         /home/teamcity/ignite-startNodes/*.log => ignite-startNodes.zip
+        ./dev-tools/IGNITE-*-*.patch => patch
     """.trimIndent()
 
     params {
-        text("MAVEN_GOALS", "package", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("MAVEN_GOALS", "surefire:test", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("XMX", "2g", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("TEST_SUITE", "FlinkIgniteSinkSelfTestSuite,FlinkIgniteSourceSelfTestSuite,PubSubStreamerTestSuite,IgniteAutoconfigureTest,IgniteClientAutoConfigureTest,RocketMQStreamerTestSuite,IgniteMqttStreamerTestSuite,IgniteStormStreamerSelfTestSuite,IgniteCamelStreamerTestSuite,IgniteJmsStreamerTestSuite,IgniteKafkaStreamerSelfTestSuite,IgniteSpringData2TestSuite,IgniteSpringData22TestSuite,IgniteSpringDataTestSuite,IgnitePerformanceStatisticsReportTestSuite,IgniteRepositoriesAutoconfigureTest,IgniteClientRepositoriesAutoconfigureTest", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("EXTRA_MAVEN_PROFILES", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.JAVA_HOME", "%reverse.dep.*.env.JAVA_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        checkbox("IGNITE_LOGGING_OPTS", "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true", label = "Quite console output",
+        checkbox("IGNITE_LOGGING_OPTS", "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=false", label = "Quite console output",
                   checked = "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true", unchecked = "-DIGNITE_QUIET=false")
-        text("JVM_EXTRA_ARGS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("JVM_EXTRA_ARGS", "%dep.IgniteTests24Java8_BuildApacheIgnite.JVM_EXTRA_ARGS%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         select("reverse.dep.*.env.JAVA_HOME", "%env.JDK_ORA_8%", label = "JDK version", description = "Select JDK version for all tests",
                 options = listOf("JDK 8" to "%env.JDK_ORA_8%", "JDK 9" to "%env.JDK_ORA_9%", "JDK 10" to "%env.JDK_ORA_10%", "JDK 11" to "%env.JDK_OPEN_11%"))
         text("MAVEN_OPTS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("MAVEN_MODULES", ":ignite-flink-ext,:ignite-spring-boot-autoconfigure-ext,:ignite-spring-boot-thin-client-autoconfigure-ext,:ignite-flume-ext,:ignite-pub-sub-ext,:ignite-twitter-ext,:ignite-zeromq-ext,:ignite-rocketmq-ext,:ignite-mqtt-ext,:ignite-storm-ext,:ignite-camel-ext,:ignite-jms11-ext,:ignite-kafka-ext,:ignite-spring-data-2.0-ext,:ignite-spring-data-2.2-ext,:ignite-spring-data-ext,:ignite-performance-statistics-ext", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("MAVEN_MODULES", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("JVM_ARGS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("TEST_SCALE_FACTOR", "1.0")
+        text("ACTUAL_VERSION", "%dep.IgniteTests24Java8_BuildApacheIgnite.ACTUAL_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("XMS", "2g", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     vcs {
-        root(_Self.vcsRoots.GitHubApacheIgniteExtensions)
+        root(AbsoluteId("GitHubApacheIgnite"))
+
+        checkoutMode = CheckoutMode.ON_SERVER
+        cleanCheckout = true
     }
 
     steps {
         script {
             name = "Pre-build cleanup"
+            id = "RUNNER_264"
+
+            conditions {
+                doesNotEqual("system.SKIP_BUILD", "true")
+            }
             scriptContent = """
                 :<<BATCH
                 
@@ -66,7 +73,8 @@ object IgniteExtensions_Tests_OldRunAllTests : BuildType({
                 do
                     echo "    ${'$'}{process}"
                 done
-                echo
+                
+                ps -C java -wwo pid,args --no-header | grep IGNITE | awk '{print ${'$'}1}' | xargs -r -n1 kill -9
                 
                 # Kill processes
                 echo "Killing processes starters"
@@ -121,6 +129,11 @@ object IgniteExtensions_Tests_OldRunAllTests : BuildType({
         }
         script {
             name = "Install built artifacts to local maven repository"
+            id = "RUNNER_287"
+
+            conditions {
+                doesNotEqual("system.SKIP_BUILD", "true")
+            }
             scriptContent = """
                 :<<BATCH
                 
@@ -129,7 +142,7 @@ object IgniteExtensions_Tests_OldRunAllTests : BuildType({
                 @echo on
                 del /s /f /q C:\.m2\repository\org\apache\ignite
                 md C:\.m2\repository\org\apache\ignite\
-                xcopy ignite\repository\* C:\.m2\repository\org\apache\ignite\ /s
+                xcopy repository\* C:\.m2\repository\org\apache\ignite\ /s
                 exit /b
                 BATCH
                 
@@ -138,21 +151,32 @@ object IgniteExtensions_Tests_OldRunAllTests : BuildType({
                 set -x
                 rm -rfv ~/.m2/repository/org/apache/ignite
                 mkdir -pv ~/.m2/repository/org/apache/ignite
-                cp -rfv ignite/repository/* ~/.m2/repository/org/apache/ignite/
+                cp -rfv repository/* ~/.m2/repository/org/apache/ignite/
             """.trimIndent()
         }
         maven {
             name = "Add JDK9+ libraries to local Maven repository (~/.m2/repository)"
+            id = "RUNNER_225"
+
+            conditions {
+                doesNotEqual("system.SKIP_BUILD", "true")
+            }
             goals = "org.apache.maven.plugins:maven-dependency-plugin:2.8:get"
-            pomLocation = "ignite/pom.xml"
             runnerArgs = "-Dartifact=javax.transaction:javax.transaction-api:1.3"
             userSettingsSelection = "local-proxy.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
         }
         maven {
-            name = "Build"
+            name = "Run test suite"
+            id = "RUNNER_265"
+
+            conditions {
+                doesNotEqual("system.SKIP_BUILD", "true")
+            }
             goals = "%MAVEN_GOALS%"
             runnerArgs = """
+                -P all-java,all-other,scala-2.10,tensorflow,scala,scala-test
+                %EXTRA_MAVEN_PROFILES%
                 -pl %MAVEN_MODULES% -am
                 -Dmaven.test.failure.ignore=true
                 -DfailIfNoTests=false
@@ -161,10 +185,34 @@ object IgniteExtensions_Tests_OldRunAllTests : BuildType({
                 %MAVEN_OPTS%
             """.trimIndent()
             userSettingsSelection = "local-proxy.xml"
+            userSettingsPath = "settings.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
+            jvmArgs = """
+                -ea
+                -server
+                -Xms%XMS%
+                -Xmx%XMX%
+                -XX:+HeapDumpOnOutOfMemoryError
+                -DIGNITE_HOME=%teamcity.build.workingDir%
+                -DIGNITE_TEST_HOME=%teamcity.build.workingDir%
+                -DIGNITE_UPDATE_NOTIFIER=false
+                -DIGNITE_NO_DISCO_ORDER=true
+                -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+                -Djava.net.preferIPv4Stack=true
+                -DTEST_SCALE_FACTOR=%TEST_SCALE_FACTOR%
+                %IGNITE_LOGGING_OPTS%
+                %JVM_ARGS%
+                %JVM_EXTRA_ARGS%
+            """.trimIndent()
         }
         script {
             name = "Post-build cleanup"
+            id = "RUNNER_266"
+            executionMode = BuildStep.ExecutionMode.ALWAYS
+
+            conditions {
+                doesNotEqual("system.SKIP_BUILD", "true")
+            }
             scriptContent = """
                 :<<BATCH
                 
@@ -177,6 +225,8 @@ object IgniteExtensions_Tests_OldRunAllTests : BuildType({
                 
                 # === SH ===
                 set -x
+                
+                ps -C java -wwo pid,args --no-header | grep IGNITE | awk '{print ${'$'}1}' | xargs -r -n1 kill -9
                 
                 # Kill remaining nodes
                 echo "Killing CommandLineStartup processes"
@@ -222,27 +272,31 @@ object IgniteExtensions_Tests_OldRunAllTests : BuildType({
         }
     }
 
-    triggers {
-        vcs {
-        }
-    }
-
     features {
         swabra {
+            id = "swabra"
             filesCleanup = Swabra.FilesCleanup.AFTER_BUILD
+            forceCleanCheckout = true
             lockingProcesses = Swabra.LockingProcessPolicy.KILL
         }
     }
 
     dependencies {
-        artifacts(IgniteTests24Java8.buildTypes.IgniteTests24Java8_BuildApacheIgnite) {
-            buildRule = lastSuccessful()
-            cleanDestination = true
-            artifactRules = "ignite.zip!** => ./ignite/"
+        dependency(AbsoluteId("IgniteTests24Java8_BuildApacheIgnite")) {
+            snapshot {
+                onDependencyFailure = FailureAction.CANCEL
+                onDependencyCancel = FailureAction.CANCEL
+            }
+
+            artifacts {
+                id = "ARTIFACT_DEPENDENCY_103"
+                cleanDestination = true
+                artifactRules = "ignite.zip!** => ./"
+            }
         }
     }
 
     requirements {
-        equals("teamcity.agent.jvm.os.name", "Linux")
+        equals("teamcity.agent.jvm.os.name", "Linux", "RQ_10")
     }
 })
