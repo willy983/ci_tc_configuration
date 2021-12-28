@@ -12,7 +12,7 @@ in the project with id = 'Releases_ApacheIgniteMain', and delete the patch scrip
 create(RelativeId("Releases_ApacheIgniteMain"), GitVcsRoot({
     id("Releases_ApacheIgniteMain_GitBoxIgnite")
     name = "GitBox [ignite]"
-    url = "https://gitbox.apache.org/repos/asf/ignite.git"
+    url = "https://github.com/apache/ignite.git"
     branch = "master"
     branchSpec = """
         +:refs/heads/(ignite-*)
