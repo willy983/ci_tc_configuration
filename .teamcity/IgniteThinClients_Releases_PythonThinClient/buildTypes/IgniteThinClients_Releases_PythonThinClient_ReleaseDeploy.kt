@@ -3,7 +3,7 @@ package IgniteThinClients_Releases_PythonThinClient.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object Releases_ApacheIgnitePythonThinClient_ReleaseDeploy : BuildType({
+object IgniteThinClients_Releases_PythonThinClient_ReleaseDeploy : BuildType({
     name = "[2] Release Deploy"
 
     vcs {

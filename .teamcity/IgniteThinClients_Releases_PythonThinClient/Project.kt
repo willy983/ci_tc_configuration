@@ -8,6 +8,6 @@ object Project : Project({
     id("IgniteThinClients_Releases_PythonThinClient")
     name = "Python Thin Client"
 
-    buildType(Releases_ApacheIgnitePythonThinClient_ReleaseDeploy)
+    buildType(IgniteThinClients_Releases_PythonThinClient_ReleaseDeploy)
     buildType(IgniteThinClients_Releases_PythonThinClient_ReleaseBuild)
 })
