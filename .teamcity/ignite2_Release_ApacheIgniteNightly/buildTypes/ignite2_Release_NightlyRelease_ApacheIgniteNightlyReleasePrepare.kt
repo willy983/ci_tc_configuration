@@ -1,11 +1,11 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #0 :: Prepare"
 
     artifactRules = "apache-ignite-%IGNITE_VERSION%-src.zip"

@@ -1,4 +1,4 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #2 :: Assemble Binaries"
 
     artifactRules = """
@@ -17,8 +17,8 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
 
     params {
         text("env.JAVA_HOME", "%env.JDK_ORA_8%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        password("MYGET_PASSWORD", "zxx90a9b89d006d43dc655e5289158b20b3efc4745b263047f7055fb6011affde957fc082dc66ee48bd", display = ParameterDisplay.HIDDEN)
-        text("IGNITE_VERSION", "${Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        password("MYGET_PASSWORD", "credentialsJSON:90ad346a-acca-46c4-92b5-03a0b55c4859", display = ParameterDisplay.HIDDEN)
+        text("IGNITE_VERSION", "%dep.ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     vcs {
@@ -57,7 +57,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
                           </snapshots>
                           <id>local-proxy</id>
                           <name>local-proxy</name>
-                          <url>http://172.25.4.107/artifactory/local-proxy</url>
+                          <url>http://10.100.100.250:8081/nexus</url>
                         </repository>
                       </repositories>
                       <pluginRepositories>
@@ -67,7 +67,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
                           </snapshots>
                           <id>local-proxy</id>
                           <name>local-proxy</name>
-                          <url>http://172.25.4.107/artifactory/local-proxy</url>
+                          <url>http://10.100.100.250:8081/nexus</url>
                         </pluginRepository>
                       </pluginRepositories>
                     </profile>
@@ -161,7 +161,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
     }
 
     dependencies {
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -171,7 +171,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
                 artifactRules = "ignite.odbc.installers.zip!** => modules/platforms/cpp/bin/odbc"
             }
         }
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }

@@ -1,13 +1,14 @@
-package Releases_ApacheIgniteMain.buildTypes
+package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
+import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
-    id("Releases_ApacheIgniteMain_ReleaseBuild")
+object ignite2_Release_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
+    id("ignite2_Release_ApacheIgniteMain_ReleaseBuild")
     name = "[1] Release Build"
     description = "Assemble Apache Ignite release artifacts"
 
@@ -30,8 +31,8 @@ object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
     }
 
     vcs {
-        root(_Self.vcsRoots.GitHubApacheIgniteRelease, "+:. => %IGNITE_RELEASE_ROOT%")
-        root(_Self.vcsRoots.GitHubApacheIgnite, "+:. => %IGNITE_ROOT%")
+        root(RelativeId("GitHubApacheIgniteRelease"), "+:. => %IGNITE_RELEASE_ROOT%")
+        root(RelativeId("ignite2_Release_ApacheIgniteMain_GitBoxIgnite"), "+:. => %IGNITE_ROOT%")
 
         cleanCheckout = true
     }
@@ -130,7 +131,7 @@ object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
         }
         maven {
-            name = "Build Java"
+            name = "Deploy All"
             goals = "deploy"
             pomLocation = "%IGNITE_ROOT%/pom.xml"
             runnerArgs = """
@@ -142,16 +143,6 @@ object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
             userSettingsSelection = "local-proxy.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jvmArgs = "%JVM_ARGS%"
-        }
-        powerShell {
-            name = "Build .NET"
-            scriptMode = file {
-                path = "%IGNITE_ROOT%/modules/platforms/dotnet/build.ps1"
-            }
-            param("jetbrains_powershell_scriptArguments", """
-                -skipJava
-                -skipExamples
-            """.trimIndent())
         }
         maven {
             name = "Generate javadoc"
@@ -165,7 +156,6 @@ object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
         }
         script {
             name = "Copy .NET docs"
-            enabled = false
             scriptContent = """
                 #!/usr/bin/env bash
                 set -x
@@ -209,9 +199,6 @@ object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
                 
                 
                 cp -rfv target/bin/apache-ignite-%IGNITE_VERSION%-bin.zip packaging/
-                # Workaround for arch-dependant files in package
-                grep -q '_binaries_in_noarch_packages_terminate_build' packaging/rpm/apache-ignite.spec \
-                	|| sed '1h;1!H;${'$'}!d;x;s/.*%define[^\n]*/&\n%define _binaries_in_noarch_packages_terminate_build 0/' -i packaging/rpm/apache-ignite.spec
                 bash packaging/package.sh --rpm
                 bash packaging/package.sh --deb
             """.trimIndent()
@@ -223,22 +210,12 @@ object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
                 set -x
                 
                 
-                PACKAGE_DIR="release/packages"
-                NUGET_DIR="apache-ignite-%IGNITE_VERSION%-nuget"
-                
-                
-                # Prepare files
-                mkdir -pv "${'$'}{NUGET_DIR}"
-                mv -fv %IGNITE_ROOT%/modules/platforms/dotnet/nupkg/*.nupkg "${'$'}{NUGET_DIR}"
-                zip -r ${'$'}{NUGET_DIR}.zip ${'$'}{NUGET_DIR}/
-                
                 # Copy files
-                mkdir -p ${'$'}{PACKAGE_DIR}/pkg
-                mv -fv %IGNITE_ROOT%/target/bin/*.* ${'$'}{NUGET_DIR}.zip release/svn/vote
-                mv -fv %IGNITE_ROOT%/packaging/{*.rpm,*.deb} ${'$'}{PACKAGE_DIR}/pkg
-                mv -fv %IGNITE_ROOT%/packaging/rpm ${'$'}{PACKAGE_DIR}
-                mv -fv %IGNITE_ROOT%/packaging/deb ${'$'}{PACKAGE_DIR}
-                
+                mkdir -p release/packages/pkg
+                cp -rfv %IGNITE_ROOT%/target/bin/*.* release/svn/vote
+                mv -fv %IGNITE_ROOT%/packaging/{*.rpm,*.deb} release/packages/pkg
+                mv -fv %IGNITE_ROOT%/packaging/rpm release/packages
+                mv -fv %IGNITE_ROOT%/packaging/deb release/packages
                 
                 # Calculate checkksums
                 cd release/svn/vote
@@ -253,14 +230,16 @@ object Releases_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
     }
 
     dependencies {
-        dependency(Releases_ApacheIgniteMain_ReleaseBuild.buildTypes.Releases_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc) {
+        dependency(ignite2_Release_ApacheIgniteMain_ReleaseBuild.buildTypes.ignite2_Release_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
 
             artifacts {
                 artifactRules = """
-                    ignite.odbc.installers.zip!** => %IGNITE_ROOT%/modules/platforms/cpp/bin/odbc
+                    ignite.dotnet.bin.zip!** => ignite/modules/platforms/dotnet/bin
+                    ignite.odbc.installers.zip!** => ignite/modules/platforms/cpp/bin/odbc
+                    dotnetdoc.zip!** => dotnetdoc
                     vote.patch
                 """.trimIndent()
             }

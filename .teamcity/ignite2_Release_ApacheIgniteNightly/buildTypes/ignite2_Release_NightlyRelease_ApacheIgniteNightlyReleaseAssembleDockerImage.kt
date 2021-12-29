@@ -1,9 +1,9 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #3 :: Assemble Docker Image"
 
     artifactRules = "*.tar.gz"
@@ -11,7 +11,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
     params {
         param("WEBAGENT_ARCHIVE_NAME", "web-agent-%IGNITE_VERSION%-docker-image")
         text("DOCKER_ARCHIVE_NAME", "apache-ignite-%IGNITE_VERSION%-docker-image", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("IGNITE_VERSION", "${Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_VERSION", "${ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("WEBCONSOLE_ARCHIVE_NAME", "web-console-standalone-%IGNITE_VERSION%-docker-image")
         text("DIR__DOCKERFILE", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
@@ -52,7 +52,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
     }
 
     dependencies {
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -61,7 +61,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
                 artifactRules = "apache-ignite-%IGNITE_VERSION%-bin.zip!apache-ignite-%IGNITE_VERSION%-bin/** => apache-ignite"
             }
         }
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }

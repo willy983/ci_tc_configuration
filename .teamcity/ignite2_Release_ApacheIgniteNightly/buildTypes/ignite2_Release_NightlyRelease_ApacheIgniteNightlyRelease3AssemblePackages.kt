@@ -1,9 +1,9 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #3 :: Assemble Linux Packages"
 
     artifactRules = """
@@ -12,7 +12,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : Bui
     """.trimIndent()
 
     params {
-        text("IGNITE_VERSION", "${Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_VERSION", "${ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     vcs {
@@ -28,16 +28,13 @@ object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : Bui
                 #
                 # Build packages
                 #
-                # Workaround for arch-dependant files in package
-                grep -q '_binaries_in_noarch_packages_terminate_build' packaging/rpm/apache-ignite.spec \
-                	|| sed '1h;1!H;${'$'}!d;x;s/.*%define[^\n]*/&\n%define _binaries_in_noarch_packages_terminate_build 0/' -i packaging/rpm/apache-ignite.spec
                 packaging/package.sh --rpm --deb
             """.trimIndent()
         }
     }
 
     dependencies {
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -46,7 +43,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : Bui
                 artifactRules = "apache-ignite-%IGNITE_VERSION%-bin.zip => packaging"
             }
         }
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }

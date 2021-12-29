@@ -1,10 +1,12 @@
-package Releases_ApacheIgniteMain.buildTypes
+package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetPublish
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
+import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-object ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages : BuildType({
+object ignite2_Release_AIJava8_PrepareVote3BuildNuGetPackages : BuildType({
     name = "[3] Build & Upload Nuget Staging Packages"
     description = "Pack NuGet from existing binaries"
 
@@ -54,7 +56,7 @@ object ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages : BuildType({
             toolPath = "%teamcity.tool.NuGet.CommandLine.DEFAULT%"
             packages = "**/*.nupkg"
             serverUrl = "https://www.myget.org/F/apache-ignite-staging/"
-            apiKey = "zxx07f1a6d5292c76e6e0c9dc43a12e07311fc3ab54969cd5be7d3d5f57e728c2d57d6ea1f9fce89ad0"
+            apiKey = "credentialsJSON:8bf475af-b46f-48a2-a03f-d9c414b2ea06"
         }
         powerShell {
             name = "Run NuGet verification script"
@@ -70,7 +72,7 @@ object ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages : BuildType({
     }
 
     dependencies {
-        artifacts(Releases_ApacheIgniteMain_ReleaseBuild_1) {
+        artifacts(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
             buildRule = build("%VOTE_BUILD_NUM%")
             cleanDestination = true
             artifactRules = """

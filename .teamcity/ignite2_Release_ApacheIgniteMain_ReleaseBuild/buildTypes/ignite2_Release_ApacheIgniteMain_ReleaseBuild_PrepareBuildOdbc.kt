@@ -1,31 +1,40 @@
-package Releases_ApacheIgniteMain_ReleaseBuild.buildTypes
+package ignite2_Release_ApacheIgniteMain_ReleaseBuild.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.PowerShellStep
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.VisualStudioStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.visualStudio
+import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-object Releases_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
-    name = "[1] Prepare & Build ODBC"
+object ignite2_Release_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
+    name = "[1] Build .Net & C++"
 
     artifactRules = """
-        %IGNITE_ROOT%\modules\platforms\cpp\install\amd64\bin\*.msi => ignite.odbc.installers.zip
-        %IGNITE_ROOT%\modules\platforms\cpp\install\x86\bin\*.msi => ignite.odbc.installers.zip
+        ignite\modules\platforms\dotnet\Apache.Ignite\bin\x64\Release\** => ignite.dotnet.bin.zip
+        ignite\modules\platforms\dotnet\Apache.Ignite\bin\Release\** => ignite.dotnet.bin.zip
+        ignite\modules\platforms\dotnet\Apache.Ignite\bin\x86\Release\** => ignite.dotnet.bin.zip!x86
+        ignite\modules\platforms\dotnet\Apache.Ignite.Linq\bin\Release\** => ignite.dotnet.bin.zip
+        ignite\modules\platforms\dotnet\Apache.Ignite.AspNet\bin\Release\** => ignite.dotnet.bin.zip
+        ignite\modules\platforms\dotnet\Apache.Ignite.EntityFramework\bin\Release\** => ignite.dotnet.bin.zip
+        ignite\modules\platforms\dotnet\Apache.Ignite.NLog\bin\Release\** => ignite.dotnet.bin.zip
+        ignite\modules\platforms\dotnet\Apache.Ignite.Log4net\bin\Release\** => ignite.dotnet.bin.zip
+        ignite\modules\platforms\dotnet\nupkg\*.nupkg => .
+        ignite\modules\platforms\cpp\install\amd64\bin\*.msi => ignite.odbc.installers.zip
+        ignite\modules\platforms\cpp\install\x86\bin\*.msi => ignite.odbc.installers.zip
+        ignite\modules\clients\target\dotnetdoc => dotnetdoc.zip
         vote.patch
     """.trimIndent()
 
     params {
-        param("env.OPENSSL_HOME", """C:\OpenSSL-Win64""")
-        param("system.JAVA_HOME", "%env.JAVA_HOME%")
-        text("IGNITE_ROOT", "ignite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        param("env.OPENSSL_HOME", """C:\openssl\1.1.0l\x86_64""")
+        param("env.OPENSSL_HOME_x86", """C:\openssl\1.1.0l\x86""")
         param("IGNITE_VERSION", "")
         param("RC_NAME", "")
         param("env.JAVA_HOME", "%env.JDK_ORA_8%")
-        param("env.OPENSSL_HOME_X86", """C:\OpenSSL-Win32""")
+        param("system.JAVA_HOME", "%env.JAVA_HOME%")
     }
 
     vcs {
@@ -38,7 +47,6 @@ object Releases_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
     steps {
         script {
             name = "Add NuGet executable to PATH"
-            enabled = false
             scriptContent = """
                 @echo on
                 
@@ -47,40 +55,30 @@ object Releases_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
         }
         script {
             name = "Git setup (Ignore chmod settings)"
-            workingDir = "%IGNITE_ROOT%"
+            workingDir = "ignite"
             scriptContent = "git config core.filemode false"
         }
         maven {
             name = "Change maven version"
             goals = "versions:set"
-            pomLocation = """%IGNITE_ROOT%\pom.xml"""
-            runnerArgs = """
-                -DnewVersion=%IGNITE_VERSION%
-                -Pall-java,all-scala,all-other
-                -DgenerateBackupPoms=false
-                -DgroupId=* -DartifactId=* -DoldVersion=*
-                -DprocessDependencies=false
-            """.trimIndent()
+            pomLocation = "ignite/pom.xml"
+            runnerArgs = "-DnewVersion=%IGNITE_VERSION% -Pall-java,all-scala,all-other -DgenerateBackupPoms=false  -DgroupId=* -DartifactId=* -DoldVersion=* -DprocessDependencies=false"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
         }
         maven {
             name = "Change dotnet & cpp versions"
             goals = "validate"
-            pomLocation = """%IGNITE_ROOT%\pom.xml"""
-            runnerArgs = """
-                -P update-versions
-                -Dnew.ignite.version=%IGNITE_VERSION%
-            """.trimIndent()
+            pomLocation = "ignite/pom.xml"
+            runnerArgs = "-P update-versions -Dnew.ignite.version=%IGNITE_VERSION%"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
         }
         script {
             name = "Git patch (with changed versions) generation"
-            workingDir = "%IGNITE_ROOT%"
+            workingDir = "ignite"
             scriptContent = "git diff > ../vote.patch"
         }
         powerShell {
             name = "Build Ignite.NET"
-            enabled = false
             platform = PowerShellStep.Platform.x64
             edition = PowerShellStep.Edition.Desktop
             workingDir = "ignite/modules/platforms/dotnet"
@@ -90,36 +88,11 @@ object Releases_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
             noProfile = false
             param("jetbrains_powershell_scriptArguments", "-skipJava -skipNuget")
         }
-        visualStudio {
-            name = "Build 32-bit ODBC binary"
-            enabled = false
-            path = "ignite/modules/platforms/cpp/project/vs/ignite.sln"
-            version = VisualStudioStep.VisualStudioVersion.vs2010
-            runPlatform = VisualStudioStep.Platform.x86
-            msBuildVersion = VisualStudioStep.MSBuildVersion.V4_0
-            msBuildToolsVersion = VisualStudioStep.MSBuildToolsVersion.V4_0
-            targets = "odbc:Rebuild"
-            configuration = "Release"
-            platform = "Win32"
-        }
-        visualStudio {
-            name = "Build 64-bit ODBC binary"
-            enabled = false
-            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
-            path = "ignite/modules/platforms/cpp/project/vs/ignite.sln"
-            version = VisualStudioStep.VisualStudioVersion.vs2010
-            runPlatform = VisualStudioStep.Platform.x86
-            msBuildVersion = VisualStudioStep.MSBuildVersion.V4_0
-            msBuildToolsVersion = VisualStudioStep.MSBuildToolsVersion.V4_0
-            targets = "odbc:Rebuild"
-            configuration = "Release"
-            platform = "x64"
-        }
         script {
             name = "Build 32-bit ODBC installer"
-            workingDir = """%IGNITE_ROOT%\modules\platforms\cpp"""
+            workingDir = "ignite/modules/platforms/cpp"
             scriptContent = """
-                set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME_X86%
+                set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME_x86%
                 mkdir cmake-build-release-32
                 cd cmake-build-release-32
                 
@@ -129,7 +102,7 @@ object Releases_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
         }
         script {
             name = "Build 64-bit ODBC installer"
-            workingDir = """%IGNITE_ROOT%\modules\platforms\cpp"""
+            workingDir = "ignite/modules/platforms/cpp"
             scriptContent = """
                 set OPENSSL_ROOT_DIR=%env.OPENSSL_HOME%
                 mkdir cmake-build-release-64
@@ -141,13 +114,9 @@ object Releases_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
         }
         script {
             name = "Build dotnetdoc"
-            enabled = false
             workingDir = "ignite/modules/platforms/dotnet/docfx"
             scriptContent = "generate-docs.cmd"
         }
     }
-
-    requirements {
-        equals("teamcity.agent.jvm.os.name", "Windows 10")
-    }
 })
+

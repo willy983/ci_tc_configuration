@@ -1,9 +1,9 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #1 :: Build .Net & C++"
 
     artifactRules = """
@@ -12,8 +12,8 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : BuildType
     """.trimIndent()
 
     params {
-        text("env.OPENSSL_HOME", """C:\OpenSSL-Win64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        param("IGNITE_VERSION", "${Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}")
+        text("env.OPENSSL_HOME", """C:\openssl\1.1.0l\x86_64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        param("IGNITE_VERSION", "${ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}")
         text("env.JAVA_HOME", "%env.JDK_ORA_8%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("env.OPENSSL_HOME_X86", """C:\OpenSSL-Win32""")
     }
@@ -52,7 +52,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : BuildType
     }
 
     dependencies {
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }

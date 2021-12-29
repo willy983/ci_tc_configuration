@@ -1,16 +1,16 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.schedule
 
-object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
+object ignite2_Release_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
     name = "-> Run :: Apache Ignite Nightly Release"
 
     artifactRules = "*.zip"
     type = BuildTypeSettings.Type.COMPOSITE
 
     params {
-        text("IGNITE_VERSION", "${Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_VERSION", "${ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     vcs {
@@ -37,7 +37,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
     }
 
     dependencies {
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -50,7 +50,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 """.trimIndent()
             }
         }
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -60,7 +60,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 artifactRules = "*.zip"
             }
         }
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage) {
             snapshot {
                 onDependencyFailure = FailureAction.IGNORE
                 onDependencyCancel = FailureAction.IGNORE
@@ -71,7 +71,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 artifactRules = "*.tar.gz"
             }
         }
-        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 reuseBuilds = ReuseBuilds.NO
                 onDependencyFailure = FailureAction.FAIL_TO_START
