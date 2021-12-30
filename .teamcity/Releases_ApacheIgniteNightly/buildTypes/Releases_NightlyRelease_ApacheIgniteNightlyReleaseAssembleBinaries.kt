@@ -22,7 +22,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
 
     params {
         text("env.JAVA_HOME", "%env.JDK_ORA_8%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        password("MYGET_PASSWORD", "credentialsJSON:90ad346a-acca-46c4-92b5-03a0b55c4859", display = ParameterDisplay.HIDDEN)
+        password("MYGET_PASSWORD", "zxx90a9b89d006d43dc655e5289158b20b3efc4745b263047f7055fb6011affde957fc082dc66ee48bd", display = ParameterDisplay.HIDDEN)
         text("IGNITE_VERSION", "%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
