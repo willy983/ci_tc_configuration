@@ -4,7 +4,7 @@
   <settings>
     <parameters>
       <param name="DOCKER_ARCHIVE_NAME" value="" spec="text description='Final name of archive (without extension) with docker image' label='Docker image archive name' validationMode='any' display='prompt'" />
-      <param name="DOCKER_HOST" value="prtagent@172.25.1.251" spec="text display='hidden' validationMode='any'" />
+<!--      <param name="DOCKER_HOST" value="prtagent@172.25.1.251" spec="text display='hidden' validationMode='any'" />-->
       <param name="DOCKER_SRC_DIR" value="" spec="text description='The specified path should be relative to the checkout directory' label='Dockerfile and root context directory' validationMode='any' display='prompt'" />
       <param name="DOCKER_TAG_NAME" value="" spec="text label='Docker image tag name' validationMode='any' display='prompt'" />
       <param name="DOCKER_TAG_VERSION" value="" spec="text display='prompt' label='Docker image tag version' validationMode='any'" />
@@ -19,29 +19,35 @@ set -x
 #
 # Create temporary dir (and store path to it)
 #
-workDir=$(ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "mktemp -d")
+#workDir=$(mktemp -d)
 echo "##teamcity[setParameter name='DOCKER_WORK_DIR' value='${workDir}']"
 
 #
 # Copy sources for build
 #
-scp -r -o StrictHostKeyChecking=no %DOCKER_SRC_DIR%/* %DOCKER_HOST%:${workDir} || exit 1
+#scp -r -o StrictHostKeyChecking=no %DOCKER_SRC_DIR%/* %DOCKER_HOST%:${workDir} || exit 1
 
 #
 # Build docker image
 #
-ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION%"  || exit 1
+#ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION%"  || exit 1
+
+cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION%
 
 #
 # Save built docker image
 #
-ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "docker save %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% > ${workDir}/%DOCKER_ARCHIVE_NAME%.tar" || exit 1
-ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar" || exit 1
+#ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "docker save %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% > ${workDir}/%DOCKER_ARCHIVE_NAME%.tar" || exit 1
+#ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar" || exit 1
+
+docker save %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% > ${workDir}/%DOCKER_ARCHIVE_NAME%.tar
+gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar
+
 
 #
 # Download image archive
 #
-scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1]]></param>
+#scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
@@ -54,12 +60,16 @@ set -x
 #
 # Remove built docker images
 #
-ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "docker image rm \$(docker images | fgrep '%DOCKER_TAG_NAME%' | fgrep '%DOCKER_TAG_VERSION%' | awk '{ print \$3 }')"
+#ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "docker image rm \$(docker images | fgrep '%DOCKER_TAG_NAME%' | fgrep '%DOCKER_TAG_VERSION%' | awk '{ print \$3 }')"
+
+docker image rm \$(docker images | fgrep '%DOCKER_TAG_NAME%' | fgrep '%DOCKER_TAG_VERSION%' | awk '{ print \$3 }')
 
 #
 # Remove temporary directory
 #
-ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "rm -rfv %DOCKER_WORK_DIR%"]]></param>
+#ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "rm -rfv %DOCKER_WORK_DIR%"
+
+rm -rfv %DOCKER_WORK_DIR%]]></param>
           <param name="teamcity.step.mode" value="execute_always" />
           <param name="use.custom.script" value="true" />
         </parameters>
