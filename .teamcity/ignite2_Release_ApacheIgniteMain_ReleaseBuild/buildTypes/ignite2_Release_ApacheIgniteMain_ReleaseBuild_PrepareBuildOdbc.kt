@@ -150,6 +150,6 @@ object ignite2_Release_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildTyp
     }
 
     requirements {
-        equals("teamcity.agent.jvm.os.name", "Windows")
+        equals("teamcity.agent.jvm.os.name", "Windows 10")
     }
 })

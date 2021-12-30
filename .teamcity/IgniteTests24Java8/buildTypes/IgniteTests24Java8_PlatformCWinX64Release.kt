@@ -158,7 +158,7 @@ object IgniteTests24Java8_PlatformCWinX64Release : BuildType({
 
     requirements {
         exists("DotNetFramework4.0_x86", "RQ_14")
-        contains("teamcity.agent.jvm.os.name", "Windows", "RQ_15")
+        contains("teamcity.agent.jvm.os.name", "Windows 10", "RQ_15")
     }
     
     disableSettings("RQ_10", "RQ_14", "RUNNER_265")

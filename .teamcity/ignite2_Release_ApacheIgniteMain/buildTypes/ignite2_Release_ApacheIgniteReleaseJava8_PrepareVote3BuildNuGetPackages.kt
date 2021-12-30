@@ -83,6 +83,6 @@ object ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages :
     }
 
     requirements {
-        contains("env.OS", "Windows")
+        contains("env.OS", "Windows 10")
     }
 })

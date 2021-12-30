@@ -118,7 +118,7 @@ object ApacheIgniteReleaseJava8_PrepareVote4CheckRcLicensesChecksum : BuildType(
     }
 
     requirements {
-        doesNotEqual("teamcity.agent.jvm.os.name", "Windows")
+        doesNotEqual("teamcity.agent.jvm.os.name", "Windows 10")
     }
 })
 

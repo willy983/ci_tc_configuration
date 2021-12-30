@@ -216,7 +216,7 @@ object IgniteTests24Java8_PlatformCCMakeWinX64Debug : BuildType({
 
     requirements {
         exists("DotNetFramework4.0_x86", "RQ_14")
-        contains("teamcity.agent.jvm.os.name", "Windows", "RQ_15")
+        contains("teamcity.agent.jvm.os.name", "Windows 10", "RQ_15")
     }
     
     disableSettings("RQ_10", "RQ_14", "RUNNER_264", "RUNNER_265", "RUNNER_266")
