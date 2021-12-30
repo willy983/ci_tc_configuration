@@ -51,9 +51,7 @@ gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar || exit 1
 #
 # Download image archive
 #
-#scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1
-
-mv ${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1 ]]></param>
+#scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1 ]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
@@ -68,7 +66,7 @@ set -x
 #
 #ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "docker image rm \$(docker images | fgrep '%DOCKER_TAG_NAME%' | fgrep '%DOCKER_TAG_VERSION%' | awk '{ print \$3 }')"
 
-docker image rm $(docker images | fgrep '%DOCKER_TAG_NAME%' | fgrep '%DOCKER_TAG_VERSION%' | awk '{ print \$3 }') || exit 1
+docker image rm $(docker images | fgrep '%DOCKER_TAG_NAME%' | fgrep '%DOCKER_TAG_VERSION%' | awk '{ print $3 }') || exit 1
 
 #
 # Remove temporary directory
