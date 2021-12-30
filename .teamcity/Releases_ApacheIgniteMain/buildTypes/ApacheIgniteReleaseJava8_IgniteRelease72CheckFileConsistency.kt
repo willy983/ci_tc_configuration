@@ -88,7 +88,7 @@ object ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency :BuildType({
     }
 
     dependencies {
-        artifacts(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild")) {
+        artifacts(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild_1")) {
             buildRule = lastSuccessful("ignite-%IGNITE_VERSION%")
             artifactRules = "release*.zip!svn/vote** => raw/cur"
         }

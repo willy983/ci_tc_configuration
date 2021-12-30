@@ -72,7 +72,7 @@ object ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages:  BuildType({
     }
 
     dependencies {
-        artifacts(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild")) {
+        artifacts(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild_1")) {
             buildRule = build("%VOTE_BUILD_NUM%")
             cleanDestination = true
             artifactRules = """

@@ -25,6 +25,6 @@ object DevAi2x_SpiWindows : BuildType({
     }
 
     requirements {
-        equals("teamcity.agent.jvm.os.name", "Windows 10", "RQ_10")
+        equals("teamcity.agent.jvm.os.name", "Windows", "RQ_10")
     }
 })

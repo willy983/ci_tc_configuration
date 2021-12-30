@@ -65,6 +65,6 @@ object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : Bu
     }
 
     requirements {
-        equals("teamcity.agent.jvm.os.name", "Windows 10")
+        equals("teamcity.agent.jvm.os.name", "Windows")
     }
 })
