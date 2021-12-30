@@ -1,7 +1,8 @@
 package Releases_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
+import jetbrains.buildServer.configs.kotlin.v2019_2.BuildStep
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
@@ -28,7 +29,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
     steps {
         script {
             name = "Prepare"
-            enabled = false
+            enabled = true
             scriptContent = """
                 #!/usr/bin/env bash
                 set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
@@ -48,12 +49,12 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
         step {
             name = "Assemble Apache Ignite Docker image"
             type = "DockerBuildRemote"
-            enabled = false
+            enabled = true
             executionMode = BuildStep.ExecutionMode.DEFAULT
-            param("DOCKER_TAG_NAME", "apacheignite/ignite")
             param("DOCKER_ARCHIVE_NAME", "%DOCKER_ARCHIVE_NAME%")
-            param("DOCKER_TAG_VERSION", "%IGNITE_VERSION%")
             param("DOCKER_SRC_DIR", "%DIR__DOCKERFILE%")
+            param("DOCKER_TAG_NAME", "apacheignite/ignite")
+            param("DOCKER_TAG_VERSION", "%IGNITE_VERSION%")
         }
     }
 

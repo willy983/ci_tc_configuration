@@ -7,7 +7,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 object Project : Project({
     id("Releases_ApacheIgniteNightly")
-    name = "Apache Ignite / Nightly"
+    name = "~[DEPRECATED] Apache Ignite / Nightly"
 
     buildType(Releases_NightlyRelease_RunApacheIgniteNightlyRelease)
     buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare)
