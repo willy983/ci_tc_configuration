@@ -15,7 +15,7 @@ object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : Bu
         text("env.OPENSSL_HOME", """C:\openssl\1.1.0l\x86_64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("IGNITE_VERSION", "${ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}")
         text("env.JAVA_HOME", "%env.JDK_ORA_8%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        param("env.OPENSSL_HOME_X86", """C:\OpenSSL-Win32""")
+        param("env.OPENSSL_HOME_X86", """C:\openssl\1.1.0l\x86""")
     }
 
     vcs {

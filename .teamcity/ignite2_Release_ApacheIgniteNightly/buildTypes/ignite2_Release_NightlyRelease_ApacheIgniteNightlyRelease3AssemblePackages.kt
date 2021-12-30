@@ -28,6 +28,9 @@ object ignite2_Release_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackage
                 #
                 # Build packages
                 #
+                # Workaround for arch-dependant files in package
+                grep -q '_binaries_in_noarch_packages_terminate_build' packaging/rpm/apache-ignite.spec \
+                	|| sed '1h;1!H;${'$'}!d;x;s/.*%define[^\n]*/&\n%define _binaries_in_noarch_packages_terminate_build 0/' -i packaging/rpm/apache-ignite.spec
                 packaging/package.sh --rpm --deb
             """.trimIndent()
         }
