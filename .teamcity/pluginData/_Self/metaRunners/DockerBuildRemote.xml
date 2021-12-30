@@ -19,20 +19,21 @@ set -x
 #
 # Create temporary dir (and store path to it)
 #
-#workDir=$(mktemp -d)
+workDir=$(mktemp -d)
 echo "##teamcity[setParameter name='DOCKER_WORK_DIR' value='${workDir}']"
 
 #
 # Copy sources for build
 #
 #scp -r -o StrictHostKeyChecking=no %DOCKER_SRC_DIR%/* %DOCKER_HOST%:${workDir} || exit 1
+cp %DOCKER_SRC_DIR%/* %DOCKER_HOST%:${workDir} || exit 1
 
 #
 # Build docker image
 #
 #ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION%"  || exit 1
 
-cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION%
+cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% || exit 1
 
 #
 # Save built docker image
@@ -40,14 +41,16 @@ cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION%
 #ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "docker save %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% > ${workDir}/%DOCKER_ARCHIVE_NAME%.tar" || exit 1
 #ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar" || exit 1
 
-docker save %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% > ${workDir}/%DOCKER_ARCHIVE_NAME%.tar
-gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar
+docker save %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% > ${workDir}/%DOCKER_ARCHIVE_NAME%.tar || exit 1
+gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar || exit 1
 
 
 #
 # Download image archive
 #
-#scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1]]></param>
+#scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1
+
+mv ${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1 ]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
