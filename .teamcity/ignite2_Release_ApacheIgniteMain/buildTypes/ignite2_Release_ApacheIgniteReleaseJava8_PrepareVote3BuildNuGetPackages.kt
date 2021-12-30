@@ -56,7 +56,7 @@ object ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages :
             toolPath = "%teamcity.tool.NuGet.CommandLine.DEFAULT%"
             packages = "**/*.nupkg"
             serverUrl = "https://www.myget.org/F/apache-ignite-staging/"
-            apiKey = "credentialsJSON:8bf475af-b46f-48a2-a03f-d9c414b2ea06"
+            apiKey = "zxx07f1a6d5292c76e6e0c9dc43a12e07311fc3ab54969cd5be7d3d5f57e728c2d57d6ea1f9fce89ad0"
         }
         powerShell {
             name = "Run NuGet verification script"
