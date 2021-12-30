@@ -51,7 +51,8 @@ gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar || exit 1
 #
 # Download image archive
 #
-#scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1 ]]></param>
+#scp -o StrictHostKeyChecking=no %DOCKER_HOST%:${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz ./  || exit 1 
+mv ${workDir}/%DOCKER_ARCHIVE_NAME%.tar.gz %teamcity.build.checkoutDir%  || exit 1 ]]></param>
           <param name="teamcity.step.mode" value="default" />
           <param name="use.custom.script" value="true" />
         </parameters>
