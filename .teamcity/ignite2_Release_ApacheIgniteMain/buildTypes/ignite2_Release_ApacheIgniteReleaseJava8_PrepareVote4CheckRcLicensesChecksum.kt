@@ -1,4 +1,4 @@
-package Releases_ApacheIgniteMain.buildTypes
+package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object ApacheIgniteReleaseJava8_PrepareVote4CheckRcLicensesChecksum : BuildType({
+object ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote4CheckRcLicensesChecksum : BuildType({
     name = "[4] Check RC: Licenses, compile, chksum"
     description = "Run AFTER vote artifacts are uploaded to vote"
 
@@ -121,4 +121,3 @@ object ApacheIgniteReleaseJava8_PrepareVote4CheckRcLicensesChecksum : BuildType(
         doesNotEqual("teamcity.agent.jvm.os.name", "Windows 10")
     }
 })
-

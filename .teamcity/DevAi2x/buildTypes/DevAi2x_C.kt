@@ -20,7 +20,7 @@ object DevAi2x_C : Template({
         param("env.IGNITE_NATIVE_TEST_CLASSPATH", "true")
         param("env.IGNITE_NATIVE_TEST_CPP_THIN_CONFIG_PATH", "%env.IGNITE_HOME%/modules/platforms/cpp/thin-client-test/config")
         param("env.LD_LIBRARY_PATH", "%env.JAVA_HOME%/jre/lib/amd64/server:%env.JAVA_HOME%/lib/server:%env.CPP_STAGING%/lib")
-        param("env.OPENSSL_HOME", """C:\OpenSSL-Win64""")
+        param("env.OPENSSL_HOME", """C:\openssl\1.1.0l\x86_64""")
         param("env.IGNITE_HOME", "%teamcity.build.checkoutDir%")
         param("env.BOOST_TEST_CATCH_SYSTEM_ERRORS", "no")
         param("env.IGNITE_CPP_PRINT_STACK", "true")

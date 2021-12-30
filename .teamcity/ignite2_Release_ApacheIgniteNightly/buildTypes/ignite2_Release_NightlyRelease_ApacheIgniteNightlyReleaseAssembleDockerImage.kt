@@ -1,12 +1,9 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-
-object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #3 :: Assemble Docker Image"
 
     artifactRules = "*.tar.gz"
@@ -14,13 +11,13 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
     params {
         param("WEBAGENT_ARCHIVE_NAME", "web-agent-%IGNITE_VERSION%-docker-image")
         text("DOCKER_ARCHIVE_NAME", "apache-ignite-%IGNITE_VERSION%-docker-image", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("IGNITE_VERSION", "%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_VERSION", "${ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("WEBCONSOLE_ARCHIVE_NAME", "web-console-standalone-%IGNITE_VERSION%-docker-image")
         text("DIR__DOCKERFILE", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     vcs {
-        root(RelativeId("GitHubApacheIgnite"))
+        root(_Self.vcsRoots.GitHubApacheIgnite)
 
         cleanCheckout = true
     }
@@ -28,7 +25,6 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
     steps {
         script {
             name = "Prepare"
-            enabled = false
             scriptContent = """
                 #!/usr/bin/env bash
                 set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
@@ -48,8 +44,6 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
         step {
             name = "Assemble Apache Ignite Docker image"
             type = "DockerBuildRemote"
-            enabled = false
-            executionMode = BuildStep.ExecutionMode.DEFAULT
             param("DOCKER_TAG_NAME", "apacheignite/ignite")
             param("DOCKER_ARCHIVE_NAME", "%DOCKER_ARCHIVE_NAME%")
             param("DOCKER_TAG_VERSION", "%IGNITE_VERSION%")
@@ -58,7 +52,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries")) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -67,7 +61,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
                 artifactRules = "apache-ignite-%IGNITE_VERSION%-bin.zip!apache-ignite-%IGNITE_VERSION%-bin/** => apache-ignite"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -78,4 +72,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
         }
     }
 })
-

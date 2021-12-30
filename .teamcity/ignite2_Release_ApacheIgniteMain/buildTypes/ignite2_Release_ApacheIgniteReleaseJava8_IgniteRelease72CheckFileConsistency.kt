@@ -1,12 +1,10 @@
-package Releases_ApacheIgniteMain.buildTypes
+package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-
-object ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency :BuildType({
+object ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency : BuildType({
     name = "[2] Compare w/ Previous Release"
 
     artifactRules = """
@@ -88,7 +86,7 @@ object ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency :BuildType({
     }
 
     dependencies {
-        artifacts(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild")) {
+        artifacts(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
             buildRule = lastSuccessful("ignite-%IGNITE_VERSION%")
             artifactRules = "release*.zip!svn/vote** => raw/cur"
         }
@@ -98,4 +96,3 @@ object ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency :BuildType({
         equals("teamcity.agent.jvm.os.name", "Linux")
     }
 })
-

@@ -1,33 +1,28 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #2 :: Assemble Binaries"
 
     artifactRules = """
         target/bin/*.zip => .
         modules/platforms/dotnet/nupkg/*.nupkg => apache-ignite-%IGNITE_VERSION%-nuget-staging.zip
-        modules/web-console/web-agent/target/ignite-web-agent-%IGNITE_VERSION%.zip => .
         staging => apache-ignite-%IGNITE_VERSION%-maven-staging.zip
-        modules/web-console/frontend => web-console.zip!/frontend
-        modules/web-console/backend => web-console.zip!/backend
     """.trimIndent()
 
     params {
         text("env.JAVA_HOME", "%env.JDK_ORA_8%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         password("MYGET_PASSWORD", "credentialsJSON:90ad346a-acca-46c4-92b5-03a0b55c4859", display = ParameterDisplay.HIDDEN)
-        text("IGNITE_VERSION", "%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_VERSION", "%dep.ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     vcs {
-        root(RelativeId("GitHubApacheIgnite"))
+        root(_Self.vcsRoots.GitHubApacheIgnite)
 
         cleanCheckout = true
     }
@@ -35,7 +30,6 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
     steps {
         script {
             name = "Prepare custom settings.xml"
-            enabled = false
             scriptContent = """
                 #!/usr/bin/env bash
                 set -x
@@ -86,18 +80,15 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
             """.trimIndent()
         }
         maven {
-            name = "Deploy to MyGet"
+            name = "Build"
             enabled = false
-            goals = "deploy"
+            goals = "package"
             pomLocation = ""
             runnerArgs = """
-                -T 2C
                 -pl -:ignite-osgi-karaf -am
                 -Pall-java,all-scala,licenses
                 -DclientDocs
                 -DskipTests
-                -Dmyget.password=%MYGET_PASSWORD%
-                -DaltDeploymentRepository=myget::default::https://www.myget.org/F/apache-ignite-nightly/maven/
             """.trimIndent()
             userSettingsSelection = "userSettingsSelection:byPath"
             userSettingsPath = "settings.xml"
@@ -108,25 +99,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
             """.trimIndent()
         }
         maven {
-            name = "Build"
-            goals = "package"
-            pomLocation = ""
-            runnerArgs = """
-                -pl -:ignite-osgi-karaf -am
-                -Pall-java,all-scala,licenses
-                -DclientDocs
-                -DskipTests
-            """.trimIndent()
-            userSettingsSelection = "local-proxy.xml"
-            userSettingsPath = "settings.xml"
-            localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
-            jvmArgs = """
-                -Xmx1g
-                -XX:MaxPermSize=512m
-            """.trimIndent()
-        }
-        maven {
-            name = "Deploy to Local Staging"
+            name = "Build Java"
             goals = "deploy"
             pomLocation = ""
             runnerArgs = """
@@ -142,16 +115,8 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
                 -XX:MaxPermSize=512m
             """.trimIndent()
         }
-        maven {
-            name = "Generate Javadoc"
-            goals = "validate"
-            runnerArgs = "-Pjavadoc"
-            userSettingsSelection = "local-proxy.xml"
-            localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
-            jvmArgs = "-Xmx1g -XX:MaxPermSize=512m"
-        }
         powerShell {
-            name = "Build .NET binaries."
+            name = "Build .NET"
             scriptMode = file {
                 path = "modules/platforms/dotnet/build.ps1"
             }
@@ -160,6 +125,14 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
                 -skipExamples
                 -versionSuffix "-nightly"
             """.trimIndent())
+        }
+        maven {
+            name = "Generate Javadoc"
+            goals = "validate"
+            runnerArgs = "-Pjavadoc"
+            userSettingsSelection = "local-proxy.xml"
+            localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
+            jvmArgs = "-Xmx1g -XX:MaxPermSize=512m"
         }
         maven {
             name = "Assembly Apache Ignite"
@@ -188,7 +161,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp")) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -198,7 +171,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
                 artifactRules = "ignite.odbc.installers.zip!** => modules/platforms/cpp/bin/odbc"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -214,4 +187,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
         contains("teamcity.agent.jvm.os.name", "Linux")
     }
 })
-

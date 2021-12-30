@@ -1,4 +1,4 @@
-package Releases_ApacheIgniteMain.buildTypes
+package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetPublish
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-object ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages:  BuildType({
+object ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages : BuildType({
     name = "[3] Build & Upload Nuget Staging Packages"
     description = "Pack NuGet from existing binaries"
 
@@ -72,7 +72,7 @@ object ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages:  BuildType({
     }
 
     dependencies {
-        artifacts(RelativeId("Releases_ApacheIgniteMain_ReleaseBuild")) {
+        artifacts(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
             buildRule = build("%VOTE_BUILD_NUM%")
             cleanDestination = true
             artifactRules = """
@@ -86,4 +86,3 @@ object ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages:  BuildType({
         contains("env.OS", "Windows")
     }
 })
-

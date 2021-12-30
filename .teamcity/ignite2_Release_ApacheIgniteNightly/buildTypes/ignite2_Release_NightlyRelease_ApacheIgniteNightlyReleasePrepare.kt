@@ -1,14 +1,11 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-
-object Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #0 :: Prepare"
 
     artifactRules = "apache-ignite-%IGNITE_VERSION%-src.zip"
@@ -19,7 +16,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
     }
 
     vcs {
-        root(RelativeId("GitHubApacheIgnite"))
+        root(_Self.vcsRoots.GitHubApacheIgnite)
 
         cleanCheckout = true
     }
@@ -110,4 +107,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
         equals("teamcity.agent.jvm.os.name", "Linux")
     }
 })
-

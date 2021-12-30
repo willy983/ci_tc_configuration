@@ -109,8 +109,10 @@ object Project : Project({
     }
 
     subProject(IgniteExtensions.Project)
+    subProject(Releases.Project)
     subProject(IgniteTests24Java8.Project)
     subProject(ignite3.Project)
+    subProject(ignite2.Project)
     subProject(IgniteThinClients.Project)
     subProject(DevAi2x.Project)
 })

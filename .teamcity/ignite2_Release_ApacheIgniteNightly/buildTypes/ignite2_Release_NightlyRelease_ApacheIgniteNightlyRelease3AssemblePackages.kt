@@ -1,11 +1,9 @@
-package Releases_ApacheIgniteNightly.buildTypes
+package ignite2_Release_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : BuildType({
+object ignite2_Release_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #3 :: Assemble Linux Packages"
 
     artifactRules = """
@@ -14,11 +12,11 @@ object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : Bui
     """.trimIndent()
 
     params {
-        text("IGNITE_VERSION", "%dep.Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare.IGNITE_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_VERSION", "${ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare.depParamRefs["IGNITE_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     vcs {
-        root(RelativeId("GitHubApacheIgnite"))
+        root(_Self.vcsRoots.GitHubApacheIgnite)
     }
 
     steps {
@@ -36,7 +34,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : Bui
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries")) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -45,7 +43,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : Bui
                 artifactRules = "apache-ignite-%IGNITE_VERSION%-bin.zip => packaging"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -60,4 +58,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages : Bui
         equals("teamcity.agent.jvm.os.name", "Linux")
     }
 })
-
