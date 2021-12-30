@@ -45,7 +45,7 @@ cd ${workDir}/; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% || exit
 
 docker images
 docker save --output ${workDir}/%DOCKER_ARCHIVE_NAME%.tar %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% || exit 1
-gzip %DOCKER_SRC_DIR%/%DOCKER_ARCHIVE_NAME%.tar || exit 1
+gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar || exit 1
 
 
 #
