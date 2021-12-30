@@ -74,7 +74,7 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote
     }
 
     dependencies {
-        remove(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
+        expect(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
             artifacts {
                 buildRule = build("%VOTE_BUILD_NUM%")
                 cleanDestination = true
@@ -84,8 +84,7 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote
                 """.trimIndent()
             }
         }
-
-        add(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild")) {
+        update(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
             artifacts {
                 buildRule = build("%VOTE_BUILD_NUM%")
                 cleanDestination = true

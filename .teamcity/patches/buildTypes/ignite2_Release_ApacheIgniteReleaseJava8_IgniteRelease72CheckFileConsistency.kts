@@ -10,14 +10,13 @@ accordingly, and delete the patch script.
 */
 changeBuildType(RelativeId("ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency")) {
     dependencies {
-        remove(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
+        expect(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
             artifacts {
                 buildRule = lastSuccessful("ignite-%IGNITE_VERSION%")
                 artifactRules = "release*.zip!svn/vote** => raw/cur"
             }
         }
-
-        add(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild")) {
+        update(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
             artifacts {
                 buildRule = lastSuccessful()
                 artifactRules = "release*.zip!svn/vote** => raw/cur"
