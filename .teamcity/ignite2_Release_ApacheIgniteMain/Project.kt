@@ -10,10 +10,10 @@ object Project : Project({
 
     vcsRoot(ignite2_Release_ApacheIgniteMain_GitBoxIgnite)
 
-    buildType(ignite2_Release_AIJava8_PrepareVote4CheckRcLicensesChecksum)
-    buildType(ignite2_Release_AIJava8_IgniteRelease72CheckFileConsistency)
+    buildType(ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote4CheckRcLicensesChecksum)
+    buildType(ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency)
     buildType(ignite2_Release_ApacheIgniteMain_ReleaseBuild_1)
-    buildType(ignite2_Release_AIJava8_PrepareVote3BuildNuGetPackages)
+    buildType(ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages)
 
     subProject(ignite2_Release_ApacheIgniteMain_ReleaseBuild.Project)
 })

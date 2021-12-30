@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetPublish
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
-object ignite2_Release_AIJava8_PrepareVote3BuildNuGetPackages : BuildType({
+object ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages : BuildType({
     name = "[3] Build & Upload Nuget Staging Packages"
     description = "Pack NuGet from existing binaries"
 

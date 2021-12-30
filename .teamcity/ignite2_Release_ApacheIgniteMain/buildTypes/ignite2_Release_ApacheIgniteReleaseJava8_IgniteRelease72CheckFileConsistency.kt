@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
-object ignite2_Release_AIJava8_IgniteRelease72CheckFileConsistency : BuildType({
+object ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency : BuildType({
     name = "[2] Compare w/ Previous Release"
 
     artifactRules = """

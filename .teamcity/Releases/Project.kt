@@ -7,5 +7,7 @@ object Project : Project({
     id("Releases")
     name = "[RELEASES]"
 
+    subProject(Releases_ApacheIgniteMain.Project)
+    subProject(Releases_ApacheIgniteNightly.Project)
     subProject(Releases_IgniteH2.Project)
 })
