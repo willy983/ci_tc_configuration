@@ -26,14 +26,15 @@ echo "##teamcity[setParameter name='DOCKER_WORK_DIR' value='${workDir}']"
 # Copy sources for build
 #
 #scp -r -o StrictHostKeyChecking=no %DOCKER_SRC_DIR%/* %DOCKER_HOST%:${workDir} || exit 1
-cp %DOCKER_SRC_DIR%/* %DOCKER_HOST%:${workDir} || exit 1
+
+cp %DOCKER_SRC_DIR%/* ${workDir} || exit 1
 
 #
 # Build docker image
 #
 #ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION%"  || exit 1
 
-cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% || exit 1
+cd ${workDir}/; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% || exit 1
 
 #
 # Save built docker image
@@ -42,7 +43,7 @@ cd ${workDir}; docker build . -t %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% || exit 
 #ssh -o StrictHostKeyChecking=no %DOCKER_HOST% "gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar" || exit 1
 
 docker save %DOCKER_TAG_NAME%:%DOCKER_TAG_VERSION% > ${workDir}/%DOCKER_ARCHIVE_NAME%.tar || exit 1
-gzip ${workDir}/%DOCKER_ARCHIVE_NAME%.tar || exit 1
+gzip %DOCKER_SRC_DIR%/%DOCKER_ARCHIVE_NAME%.tar || exit 1
 
 
 #
