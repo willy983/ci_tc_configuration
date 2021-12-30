@@ -118,6 +118,6 @@ object ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote4CheckRcLicensesCheck
     }
 
     requirements {
-        doesNotEqual("teamcity.agent.jvm.os.name", "Windows")
+        doesNotEqual("teamcity.agent.jvm.os.name", "Windows 10")
     }
 })
