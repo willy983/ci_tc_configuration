@@ -15,7 +15,7 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote
     check(name == "[3] Build & Upload Nuget Staging Packages") {
         "Unexpected name: '$name'"
     }
-    name = "[3] Build & Upload Nuget Staging Packages [DEPRECATED]"
+    name = "[3] [DEPRECATED] Build & Upload Nuget Staging Packages"
 
     expectSteps {
         powerShell {
