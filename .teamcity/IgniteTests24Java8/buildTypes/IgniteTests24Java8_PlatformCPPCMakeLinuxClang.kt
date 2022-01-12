@@ -8,8 +8,8 @@ object IgniteTests24Java8_PlatformCPPCMakeLinuxClang : BuildType({
     name = "Platform C++ CMake (Linux Clang)"
 
     params {
-        text("env.PATH", "/usr/lib/llvm-%CLANG_VERSION%/bin:%env.PATH%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("env.ASAN_OPTIONS", "handle_segv=0:detect_leaks=0 ")
+        text("env.PATH", "/usr/lib/llvm-%CLANG_VERSION%/bin:%env.PATH%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CC", "clang", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CXX", "clang++", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("CLANG_VERSION", "3.9", display = ParameterDisplay.HIDDEN, allowEmpty = true)
@@ -30,7 +30,7 @@ object IgniteTests24Java8_PlatformCPPCMakeLinuxClang : BuildType({
                 mkdir cmake-build-release
                 cd cmake-build-release
                 
-                cmake -DWITH_ODBC=ON -DWITH_THIN_CLIENT=ON -DWITH_TESTS=ON -DWARNINGS_AS_ERRORS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%env.CPP_STAGING% ..
+                cmake -DWITH_SANITIZERS=ON -DWITH_ODBC=ON -DWITH_THIN_CLIENT=ON -DWITH_TESTS=ON -DWARNINGS_AS_ERRORS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%env.CPP_STAGING% ..
                 make -j4 || exit 1
                 make install || exit 1
             """.trimIndent()
