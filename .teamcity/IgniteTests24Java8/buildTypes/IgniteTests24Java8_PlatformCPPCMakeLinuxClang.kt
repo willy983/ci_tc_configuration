@@ -46,7 +46,7 @@ object IgniteTests24Java8_PlatformCPPCMakeLinuxClang : BuildType({
                 mkdir cmake-build-release
                 cd cmake-build-release
                 
-                cmake -DIGNITE_CPP_DIR=%env.CPP_STAGING% -DCMAKE_BUILD_TYPE=Release ..
+                cmake  -DWITH_SANITIZERS=ON -DIGNITE_CPP_DIR=%env.CPP_STAGING% -DCMAKE_BUILD_TYPE=Release ..
                 make -j4 || exit 1
             """.trimIndent()
         }
