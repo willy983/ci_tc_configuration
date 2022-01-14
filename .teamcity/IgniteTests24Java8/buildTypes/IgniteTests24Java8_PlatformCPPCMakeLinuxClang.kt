@@ -12,6 +12,7 @@ object IgniteTests24Java8_PlatformCPPCMakeLinuxClang : BuildType({
         text("env.PATH", "/usr/lib/llvm-%CLANG_VERSION%/bin:%env.PATH%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CC", "clang", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CXX", "clang++", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        param("env.UBSAN_OPTIONS", "print_stacktrace=1")
         text("CLANG_VERSION", "3.9", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
