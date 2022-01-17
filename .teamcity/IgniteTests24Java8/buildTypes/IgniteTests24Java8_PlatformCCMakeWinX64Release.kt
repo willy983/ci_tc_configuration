@@ -13,16 +13,17 @@ object IgniteTests24Java8_PlatformCCMakeWinX64Release : BuildType({
     params {
         text("env.BOOST_LIBRARYDIR", """%env.BOOST_HOME%\lib64-msvc-10.0""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("env.OPENSSL_HOME", """C:\openssl\1.1.1k\x86_64""")
+        text("BUILD_PROFILE", "Release", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("BUILD_PROFILE_NAME", "release", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_ODBC_PROFILE", "ignite-odbc-amd64-%BUILD_PROFILE_NAME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("PATH__M2_REPOSITORY", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("SCALA_PROFILE", "-scala", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CPP_DIR", """%env.IGNITE_HOME%\modules\platforms\cpp""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.BOOST_INCLUDEDIR", "%env.BOOST_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("BUILD_PROFILE", "Release", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.ODBCDIR", """C:\odbc\amd64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.OPENSSL_ROOT_DIR", "%env.OPENSSL_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("BUILD_PROFILE_NAME", "release", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("IGNITE_ODBC_PROFILE", "ignite-odbc-amd64-%BUILD_PROFILE_NAME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CPP_STAGING", """%env.CPP_DIR%\cpp_staging""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("PATH__M2_REPOSITORY", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        param("env.OPENSSL_HOME_X86", """C:\openssl\1.1.1k\x86""")
     }
 
     steps {
