@@ -10,19 +10,32 @@ object IgniteTests24Java8_PlatformCCMakeWinX64Debug : BuildType({
 
     params {
         text("env.BOOST_LIBRARYDIR", """%env.BOOST_HOME%\lib64-msvc-10.0""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("BUILD_PROFILE", "Debug", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("BUILD_PROFILE_NAME", "debug", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("IGNITE_ODBC_PROFILE", "ignite-odbc-amd64-%BUILD_PROFILE_NAME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("PATH__M2_REPOSITORY", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("SCALA_PROFILE", "-scala", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CPP_DIR", """%env.IGNITE_HOME%\modules\platforms\cpp""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.BOOST_INCLUDEDIR", "%env.BOOST_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("BUILD_PROFILE", "Debug", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.ODBCDIR", """C:\odbc\amd64""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.OPENSSL_ROOT_DIR", "%env.OPENSSL_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("BUILD_PROFILE_NAME", "debug", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("IGNITE_ODBC_PROFILE", "ignite-odbc-amd64-%BUILD_PROFILE_NAME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CPP_STAGING", """%env.CPP_DIR%\cpp_staging""", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("PATH__M2_REPOSITORY", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     steps {
+        script {
+            name = "Install built artifacts to local maven repository"
+            id = "RUNNER_287"
+            scriptContent = """
+                @echo on
+                
+                
+                FOR /f "tokens=* delims=" %%%%F in ('"%teamcity.tool.maven.DEFAULT%\bin\mvn.cmd help:evaluate -Dexpression=settings.localRepository -q -DforceStdout"') do @set "PATH__M2_REPOSITORY=%%%%F"
+                del /s /f /q %PATH__M2_REPOSITORY%\org\apache\ignite
+                xcopy repository\* %PATH__M2_REPOSITORY%\ /s
+                exit /b
+            """.trimIndent()
+        }
         script {
             name = "Build C++"
             id = "RUNNER_36"
@@ -194,20 +207,7 @@ object IgniteTests24Java8_PlatformCCMakeWinX64Debug : BuildType({
                 ignite-compute-example.exe
             """.trimIndent()
         }
-        script {
-            name = "Install built artifacts to local maven repository"
-            id = "RUNNER_287"
-            scriptContent = """
-                @echo on
-                
-                
-                FOR /f "tokens=* delims=" %%%%F in ('"%teamcity.tool.maven.DEFAULT%\bin\mvn.cmd help:evaluate -Dexpression=settings.localRepository -q -DforceStdout"') do @set "PATH__M2_REPOSITORY=%%%%F"
-                del /s /f /q %PATH__M2_REPOSITORY%\org\apache\ignite
-                xcopy repository\* %PATH__M2_REPOSITORY%\ /s
-                exit /b
-            """.trimIndent()
-        }
-        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_225", "RUNNER_265", "RUNNER_36", "RUNNER_83", "RUNNER_75", "RUNNER_49", "RUNNER_51", "RUNNER_61", "RUNNER_151", "RUNNER_152", "RUNNER_194", "RUNNER_58", "RUNNER_38", "RUNNER_40", "RUNNER_41", "RUNNER_42", "RUNNER_44", "RUNNER_266")
+        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_225", "RUNNER_265", "RUNNER_36", "RUNNER_83", "RUNNER_75", "RUNNER_61", "RUNNER_151", "RUNNER_152", "RUNNER_194", "RUNNER_58", "RUNNER_38", "RUNNER_40", "RUNNER_41", "RUNNER_42", "RUNNER_44", "RUNNER_266")
     }
 
     failureConditions {
@@ -216,7 +216,7 @@ object IgniteTests24Java8_PlatformCCMakeWinX64Debug : BuildType({
 
     requirements {
         exists("DotNetFramework4.0_x86", "RQ_14")
-        contains("teamcity.agent.jvm.os.name", "Windows 10", "RQ_15")
+        contains("teamcity.agent.jvm.os.name", "Windows", "RQ_15")
     }
     
     disableSettings("RQ_10", "RQ_14", "RUNNER_264", "RUNNER_265", "RUNNER_266")

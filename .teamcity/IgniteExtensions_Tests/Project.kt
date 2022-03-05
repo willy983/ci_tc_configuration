@@ -12,6 +12,7 @@ object Project : Project({
     buildType(IgniteExtensions_Tests_Twitter)
     buildType(IgniteExtensions_Tests_Flink)
     buildType(IgniteExtensions_Tests_Storm)
+    buildType(IgniteExtensions_Tests_TopologyValidator)
     buildType(IgniteExtensions_Tests_Kafka)
     buildType(IgniteExtensions_Tests_ZeroMQ)
     buildType(IgniteExtensions_Tests_Aws_2)

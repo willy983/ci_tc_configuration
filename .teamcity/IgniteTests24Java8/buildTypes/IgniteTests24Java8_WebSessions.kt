@@ -7,8 +7,8 @@ object IgniteTests24Java8_WebSessions : BuildType({
     name = "Web Sessions"
 
     params {
-        text("TEST_SUITE", "IgniteWebSessionSelfTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", ":ignite-web", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteWebSessionSelfTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

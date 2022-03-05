@@ -7,8 +7,8 @@ object IgniteTests24Java8_Yarn : BuildType({
     name = "Yarn"
 
     params {
-        text("TEST_SUITE", "IgniteYarnTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", ":ignite-yarn", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteYarnTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

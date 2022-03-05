@@ -11,7 +11,7 @@ object IgniteTests24Java8_PreBuildNew : Template({
         text("env.JAVA_HOME", "%reverse.dep.*.env.JAVA_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("M2_REPOSITORY_DIR_LIN", "~/.m2/repository", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         select("reverse.dep.*.env.JAVA_HOME", "%env.JDK_ORA_8%", label = "JDK version", description = "Select JDK version for all tests",
-            options = listOf("JDK 8" to "%env.JDK_ORA_8%", "JDK 9" to "%env.JDK_ORA_9%", "JDK 10" to "%env.JDK_ORA_10%", "JDK 11" to "%env.JDK_OPEN_11%"))
+                options = listOf("JDK 8" to "%env.JDK_ORA_8%", "JDK 9" to "%env.JDK_ORA_9%", "JDK 10" to "%env.JDK_ORA_10%", "JDK 11" to "%env.JDK_OPEN_11%"))
     }
 
     vcs {

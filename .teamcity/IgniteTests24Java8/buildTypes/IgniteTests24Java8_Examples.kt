@@ -7,8 +7,8 @@ object IgniteTests24Java8_Examples : BuildType({
     name = "Examples"
 
     params {
-        text("MAVEN_MODULES", ":ignite-examples", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("EXTRA_MAVEN_PROFILES", "-P scala-test")
+        text("MAVEN_MODULES", ":ignite-examples", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("JVM_ARGS", """
             -Djava.awt.headless=true
             -Dawt.toolkit=sun.awt.HToolkit

@@ -8,8 +8,8 @@ object IgniteTests24Java8_Snapshots : BuildType({
 
     params {
         param("TEST_SCALE_FACTOR", "0.1")
-        text("TEST_SUITE", "IgniteSnapshotTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", ":ignite-core", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteSnapshotTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

@@ -7,8 +7,8 @@ object IgniteTests24Java8_Streamers : BuildType({
     name = "Streamers"
 
     params {
-        text("TEST_SUITE", "IgniteStreamSelfTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", ":ignite-core", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "IgniteStreamSelfTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

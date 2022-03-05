@@ -7,8 +7,8 @@ object IgniteTests24Java8_ZooKeeperDiscovery1 : BuildType({
     name = "ZooKeeper (Discovery) 1"
 
     params {
-        text("TEST_SUITE", "ZookeeperDiscoverySpiTestSuite1", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", ":ignite-zookeeper", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "ZookeeperDiscoverySpiTestSuite1", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {
