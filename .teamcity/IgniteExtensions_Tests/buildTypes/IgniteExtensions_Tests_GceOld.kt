@@ -18,7 +18,7 @@ object IgniteExtensions_Tests_GceOld : BuildType({
     params {
         text("MAVEN_MODULES", ":ignite-gce", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("env.test.gce.project.name", "449058130467")
-        password("env.test.gce.account.id", "zxx8032db6908839550a613426192d62c666d5761588218f21017c6408c18633819e056390e25997af83e9dca01fa26254aa601caa1b55a9f121c0a5e495bf60d561cc582af16ca0d12895d174a13cb74b6")
+        password("env.test.gce.account.id", "credentialsJSON:587148fc-3c11-4304-bd97-f2178857ae02")
         param("env.test.gce.p12.path", "/root/.gce/gridgain-gce-key.p12")
         text("TEST_SUITE", "IgniteGCETestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
