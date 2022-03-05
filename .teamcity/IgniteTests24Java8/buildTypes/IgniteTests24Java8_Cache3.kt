@@ -8,8 +8,8 @@ object IgniteTests24Java8_Cache3 : BuildType({
 
     params {
         text("MAVEN_MODULES", ":ignite-core", display = ParameterDisplay.HIDDEN, allowEmpty = true)
-        text("XMX", "4g", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("TEST_SUITE", "IgniteBinaryObjectsCacheTestSuite3", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("XMX", "4g", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

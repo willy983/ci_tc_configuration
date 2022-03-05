@@ -10,8 +10,8 @@ object IgniteTests24Java8_Security : BuildType({
         param("MAVEN_OPTS", "-DforkMode=always")
         text("MAVEN_MODULES", ":ignite-core", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("env.IGNITE_TEST_FEATURES_ENABLED", "true")
-        text("TEST_SUITE", "SecurityTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("JVM_ARGS", "-DIGNITE_MARSHAL_BUFFERS_RECHECK=1000")
+        text("TEST_SUITE", "SecurityTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     failureConditions {

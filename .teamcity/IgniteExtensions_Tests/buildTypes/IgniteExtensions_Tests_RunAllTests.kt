@@ -59,6 +59,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         }
         snapshot(IgniteExtensions_Tests_Storm) {
         }
+        snapshot(IgniteExtensions_Tests_TopologyValidator) {
+        }
         snapshot(IgniteExtensions_Tests_Twitter) {
         }
         snapshot(IgniteExtensions_Tests_ZeroMQ) {

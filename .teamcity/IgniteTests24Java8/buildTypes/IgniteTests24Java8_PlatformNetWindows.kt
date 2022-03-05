@@ -28,7 +28,7 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
         }
         powerShell {
             name = "NUnit: Apache.Ignite.Core.Tests"
-            id = "RUNNER_119"
+            id = "RUNNER_197"
             workingDir = "modules/platforms/dotnet/Apache.Ignite.Core.Tests/bin/Debug/net461"
             scriptMode = script {
                 content = """
@@ -46,7 +46,7 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
         }
         powerShell {
             name = "NUnit: Apache.Ignite.AspNet.Tests"
-            id = "RUNNER_171"
+            id = "RUNNER_198"
             workingDir = "modules/platforms/dotnet/Apache.Ignite.AspNet.Tests/bin/Debug/net461"
             scriptMode = script {
                 content = """
@@ -64,7 +64,7 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
         }
         powerShell {
             name = "NUnit: Apache.Ignite.EntityFramework.Tests"
-            id = "RUNNER_148"
+            id = "RUNNER_199"
             workingDir = "modules/platforms/dotnet/Apache.Ignite.EntityFramework.Tests/bin/Debug/net461"
             scriptMode = script {
                 content = """
@@ -80,7 +80,7 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
                 """.trimIndent()
             }
         }
-        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_119", "RUNNER_171", "RUNNER_148", "RUNNER_266")
+        stepsOrder = arrayListOf("RUNNER_264", "RUNNER_287", "RUNNER_79", "RUNNER_197", "RUNNER_198", "RUNNER_199", "RUNNER_266")
     }
 
     failureConditions {
@@ -113,6 +113,6 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
     }
 
     requirements {
-        exists("env.windir", "RQ_22")
+        exists("env.windir", "RQ_25")
     }
 })

@@ -8,7 +8,7 @@ object IgniteTests24Java8_NumaAllocator : BuildType({
     description = "NUMA Allocator Test Suite"
 
     params {
-        text("TEST_SUITE", "NumaAllocatorTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", ":ignite-numa-allocator", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("TEST_SUITE", "NumaAllocatorTestSuite", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 })

@@ -1,5 +1,6 @@
 package IgniteExtensions_Tests.buildTypes
 
+import IgniteTests24Java8.buildTypes.IgniteTests24Java8_BuildApacheIgnite
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.Swabra
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildFeatures.swabra
@@ -27,14 +28,14 @@ object IgniteExtensions_Tests_RunTestSuitesJava : Template({
         text("env.JAVA_HOME", "%reverse.dep.*.env.JAVA_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         checkbox("IGNITE_LOGGING_OPTS", "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=false", label = "Quite console output",
                   checked = "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true", unchecked = "-DIGNITE_QUIET=false")
-        text("JVM_EXTRA_ARGS", "%dep.IgniteTests24Java8_BuildApacheIgnite.JVM_EXTRA_ARGS%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("JVM_EXTRA_ARGS", "${IgniteTests24Java8_BuildApacheIgnite.depParamRefs["JVM_EXTRA_ARGS"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         select("reverse.dep.*.env.JAVA_HOME", "%env.JDK_ORA_8%", label = "JDK version", description = "Select JDK version for all tests",
                 options = listOf("JDK 8" to "%env.JDK_ORA_8%", "JDK 9" to "%env.JDK_ORA_9%", "JDK 10" to "%env.JDK_ORA_10%", "JDK 11" to "%env.JDK_OPEN_11%"))
         text("MAVEN_OPTS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("JVM_ARGS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("TEST_SCALE_FACTOR", "1.0")
-        text("ACTUAL_VERSION", "%dep.IgniteTests24Java8_BuildApacheIgnite.ACTUAL_VERSION%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("ACTUAL_VERSION", "${IgniteTests24Java8_BuildApacheIgnite.depParamRefs["ACTUAL_VERSION"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("XMS", "2g", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 

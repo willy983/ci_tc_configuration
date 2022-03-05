@@ -5,7 +5,6 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 object IgniteTests24Java8_CalciteSql : BuildType({
     templates(IgniteTests24Java8_RunTestsJava)
     name = "Calcite SQL"
-    description = "Run Calcite-based SQL engine tests"
 
     params {
         text("MAVEN_MODULES", ":ignite-calcite", display = ParameterDisplay.HIDDEN, allowEmpty = true)

@@ -26,10 +26,10 @@ object IgniteTests24Java8_RunTestSuitesJavaOld : Template({
         text("EXTRA_MAVEN_PROFILES", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.JAVA_HOME", "%reverse.dep.*.env.JAVA_HOME%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         checkbox("IGNITE_LOGGING_OPTS", "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=false", label = "Quite console output",
-            checked = "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true", unchecked = "-DIGNITE_QUIET=false")
+                  checked = "-DIGNITE_TEST_PROP_LOG4J_FILE=log4j-tc-test.xml -DIGNITE_QUIET=true", unchecked = "-DIGNITE_QUIET=false")
         text("JVM_EXTRA_ARGS", "${IgniteTests24Java8_BuildApacheIgnite.depParamRefs["JVM_EXTRA_ARGS"]}", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         select("reverse.dep.*.env.JAVA_HOME", "%env.JDK_ORA_8%", label = "JDK version", description = "Select JDK version for all tests",
-            options = listOf("JDK 8" to "%env.JDK_ORA_8%", "JDK 9" to "%env.JDK_ORA_9%", "JDK 10" to "%env.JDK_ORA_10%", "JDK 11" to "%env.JDK_OPEN_11%"))
+                options = listOf("JDK 8" to "%env.JDK_ORA_8%", "JDK 9" to "%env.JDK_ORA_9%", "JDK 10" to "%env.JDK_ORA_10%", "JDK 11" to "%env.JDK_OPEN_11%"))
         text("MAVEN_OPTS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("MAVEN_MODULES", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("JVM_ARGS", "", display = ParameterDisplay.HIDDEN, allowEmpty = true)

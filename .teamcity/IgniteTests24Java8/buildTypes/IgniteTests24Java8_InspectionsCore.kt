@@ -23,6 +23,7 @@ object IgniteTests24Java8_InspectionsCore : BuildType({
                 -XX:+UseG1GC
                 %JVM_PARAMETERS%
             """.trimIndent()
+            ideaAppHome = "%teamcity.tool.intellij.DEFAULT%"
             disabledPlugins = """
                 AntSupport
                 CVS

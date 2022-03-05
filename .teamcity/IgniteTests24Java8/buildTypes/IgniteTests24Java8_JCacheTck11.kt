@@ -17,6 +17,6 @@ object IgniteTests24Java8_JCacheTck11 : BuildType({
         executionTimeoutMin = 20
         nonZeroExitCode = false
     }
-
+    
     disableSettings("ARTIFACT_DEPENDENCY_103", "RUNNER_287")
 })

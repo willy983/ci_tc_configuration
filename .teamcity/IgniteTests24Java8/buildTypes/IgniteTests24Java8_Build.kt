@@ -162,6 +162,16 @@ object IgniteTests24Java8_Build : BuildType({
                 zip -ur ignite modules/{*,*/*}/target -i */aspectjweaver-*.jar \
                                                       -i */cache-api-*.jar \
                                                       -i */h2-*.jar
+                if [ -d "modules/calcite" ]; then                                      
+                	zip -ur ignite modules/calcite/target/libs/calcite-*.jar \
+                	               modules/calcite/target/libs/avatica-*.jar \
+                	               modules/calcite/target/libs/checker-qual-*.jar \
+                	               modules/calcite/target/libs/commons-compiler-*.jar \
+                	               modules/calcite/target/libs/esri-geometry-*.jar \
+                	               modules/calcite/target/libs/guava-*.jar \
+                	               modules/calcite/target/libs/janino-*.jar \
+                	               modules/calcite/target/libs/json-path-*.jar
+                fi
                 zip -r run modules/ssh/target/libs/jsch-*.jar \
                            modules/zookeeper/target/libs/*.jar \
                            modules/spring/target/libs/spring-*.jar \
