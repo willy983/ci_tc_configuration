@@ -209,7 +209,7 @@ create(RelativeId("TestAltLinIgniteTests2xJdk811"), BuildType({
 
     requirements {
         equals("teamcity.agent.jvm.os.name", "Linux")
-        startsWith("teamcity.agent.name", "aitc")
+        startsWith("teamcity.agent.name", "altLin")
     }
 }))
 

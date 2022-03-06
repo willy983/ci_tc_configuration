@@ -181,7 +181,7 @@ create(RelativeId("TestAltLinIgniteTests2xJdk811"), BuildType({
     }
 
     requirements {
-        startsWith("teamcity.agent.name", "aitc", "RQ_33")
+        startsWith("teamcity.agent.name", "altLin", "RQ_33")
     }
     
     disableSettings("RUNNER_265")
