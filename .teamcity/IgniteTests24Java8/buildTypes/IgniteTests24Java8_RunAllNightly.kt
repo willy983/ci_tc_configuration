@@ -67,7 +67,6 @@ object IgniteTests24Java8_RunAllNightly : BuildType({
             enforceCleanCheckoutForDependencies = true
         }
         schedule {
-            enabled = false
             schedulingPolicy = daily {
                 hour = 1
                 minute = 30
