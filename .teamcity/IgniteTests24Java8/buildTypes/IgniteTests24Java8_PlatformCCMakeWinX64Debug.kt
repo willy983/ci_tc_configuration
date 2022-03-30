@@ -101,7 +101,7 @@ object IgniteTests24Java8_PlatformCCMakeWinX64Debug : BuildType({
                 @echo on
                 
                 echo "Running ODBC tests"
-                ctest -V -R IgniteOdbcTest -C %BUILD_PROFILE% || echo "Some tests failed"
+                ctest -VV -R IgniteOdbcTest -C %BUILD_PROFILE% || echo "Some tests failed"
             """.trimIndent()
         }
         script {
