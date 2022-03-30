@@ -90,7 +90,7 @@ object IgniteTests24Java8_PlatformCCMakeWinX64Debug : BuildType({
             scriptContent = """
                 @echo on
                 
-                ctest -V -R IgniteCoreTest -C %BUILD_PROFILE% || echo "Some tests failed"
+                ctest -VV -R IgniteCoreTest -C %BUILD_PROFILE% || echo "Some tests failed"
             """.trimIndent()
         }
         script {
