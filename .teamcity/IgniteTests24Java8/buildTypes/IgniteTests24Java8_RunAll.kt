@@ -102,6 +102,8 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_CacheTxRecovery) {
         }
+        snapshot(IgniteTests24Java8_CalciteSql) {
+        }
         snapshot(IgniteTests24Java8_CassandraStore) {
         }
         snapshot(IgniteTests24Java8_CheckCodeStyleDucktests) {
