@@ -161,7 +161,8 @@ object IgniteTests24Java8_Build : BuildType({
                 zip -r ignite target examples/target modules/{*,*/*}/target -x '*.jar'
                 zip -ur ignite modules/{*,*/*}/target -i */aspectjweaver-*.jar \
                                                       -i */cache-api-*.jar \
-                                                      -i */h2-*.jar
+                                                      -i */h2-*.jar \
+                                                      -i */commons-codec-*.jar
                 if [ -d "modules/calcite" ]; then                                      
                 	zip -ur ignite modules/calcite/target/libs/*.jar
                 fi
