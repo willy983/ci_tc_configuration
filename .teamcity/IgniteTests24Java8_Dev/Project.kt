@@ -10,6 +10,7 @@ object Project : Project({
     name = "[DEV]"
 
     buildType(IgniteTests24Java8_Dev_SqlTest)
+    buildType(IgniteTests24Java8_Dev_Test1)
 
     features {
         githubConnection {
