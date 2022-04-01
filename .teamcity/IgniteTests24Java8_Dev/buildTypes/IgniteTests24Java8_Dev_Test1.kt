@@ -13,4 +13,8 @@ object IgniteTests24Java8_Dev_Test1 : BuildType({
             scriptContent = "cat /proc/cpuinfo"
         }
     }
+
+    requirements {
+        equals("teamcity.agent.jvm.os.name", "Linux")
+    }
 })
