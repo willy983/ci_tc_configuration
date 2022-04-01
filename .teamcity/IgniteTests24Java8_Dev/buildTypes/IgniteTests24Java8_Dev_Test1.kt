@@ -10,7 +10,10 @@ object IgniteTests24Java8_Dev_Test1 : BuildType({
     steps {
         script {
             name = "show cpu"
-            scriptContent = "lscpu"
+            scriptContent = """
+                echo "test1"
+                lscpu
+            """.trimIndent()
         }
     }
 })
