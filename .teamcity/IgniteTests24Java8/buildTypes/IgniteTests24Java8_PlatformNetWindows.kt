@@ -115,10 +115,4 @@ object IgniteTests24Java8_PlatformNetWindows : BuildType({
     requirements {
         exists("env.windir", "RQ_25")
     }
-
-    cleanup {
-        baseRule {
-            history(days = 15)
-        }
-    }
 })
