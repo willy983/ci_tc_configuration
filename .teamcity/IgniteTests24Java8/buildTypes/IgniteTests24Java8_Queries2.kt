@@ -14,4 +14,10 @@ object IgniteTests24Java8_Queries2 : BuildType({
     failureConditions {
         executionTimeoutMin = 120
     }
+
+    cleanup {
+        baseRule {
+            history(days = 15)
+        }
+    }
 })
