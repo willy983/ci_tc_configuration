@@ -44,5 +44,16 @@ create(DslContext.projectId, Project({
             )
         }
     }
+
+    cleanup {
+        baseRule {
+            all(days = 5)
+            history(days = 5)
+            artifacts(days = 5, artifactPatterns = """
+                +:**/*
+                +:.teamcity/**
+            """.trimIndent())
+        }
+    }
 }))
 
