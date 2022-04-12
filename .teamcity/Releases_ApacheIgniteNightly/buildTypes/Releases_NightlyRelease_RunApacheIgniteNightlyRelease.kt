@@ -26,9 +26,9 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 hour = 23
             }
             branchFilter = """
-                +:<default>
-                +:ignite-2.11
-            """.trimIndent()
+                    +:<default>
+                    +:ignite-2.11
+                """.trimIndent()
             triggerBuild = always()
             withPendingChangesOnly = false
             enableQueueOptimization = false

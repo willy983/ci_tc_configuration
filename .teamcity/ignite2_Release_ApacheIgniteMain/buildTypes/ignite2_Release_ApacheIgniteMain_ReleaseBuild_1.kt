@@ -206,7 +206,8 @@ object ignite2_Release_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
             scriptContent = """
                 #!/usr/bin/env bash
                 set -x
-           
+                
+                
                 cp -rfv target/bin/apache-ignite-%IGNITE_VERSION%-bin.zip packaging/
                 # Workaround for arch-dependant files in package
                 grep -q '_binaries_in_noarch_packages_terminate_build' packaging/rpm/apache-ignite.spec \

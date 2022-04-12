@@ -228,8 +228,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_Rdd) {
         }
-        snapshot(IgniteTests24Java8_ScalaExamples) {
-        }
         snapshot(IgniteTests24Java8_ScalaVisorConsole) {
         }
         snapshot(IgniteTests24Java8_Security) {

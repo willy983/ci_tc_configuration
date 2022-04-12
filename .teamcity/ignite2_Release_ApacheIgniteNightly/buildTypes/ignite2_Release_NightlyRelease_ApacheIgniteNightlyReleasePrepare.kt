@@ -49,9 +49,10 @@ object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildT
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
         }
         maven {
-            name = "Change MAVEN version"
+            name = "[OLD] Change MAVEN version"
+            enabled = false
             goals = "versions:set"
-            pomLocation = ""
+            pomLocation = "parent/pom.xml"
             runnerArgs = """
                 -N
                 -DnewVersion=%IGNITE_VERSION%
@@ -62,6 +63,16 @@ object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildT
             """.trimIndent()
             userSettingsSelection = "local-proxy.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
+        }
+        script {
+            name = "[NEW] Change MAVEN version"
+            scriptContent = """
+                #!/usr/bin/env bash
+                set -x
+                
+                
+                sed -r 's|(.*<revision>).*(</revision>)|\1%IGNITE_VERSION%\2|' -i parent/pom.xml
+            """.trimIndent()
         }
         script {
             name = "Change packages version"

@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_ScalaExamples : BuildType({
     templates(IgniteTests24Java8_RunTestsJava)
-    name = "Scala (Examples)"
+    name = "~[DEPRECATED] Scala (Examples)"
 
     params {
         param("EXTRA_MAVEN_PROFILES", "-P scala-test")

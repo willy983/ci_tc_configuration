@@ -1,13 +1,11 @@
 package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetPublish
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 object ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages : BuildType({
-    name = "[3] Build & Upload Nuget Staging Packages"
+    name = "[3] [DEPRECATED] Build & Upload Nuget Staging Packages"
     description = "Pack NuGet from existing binaries"
 
     artifactRules = "**/*.nupkg"
