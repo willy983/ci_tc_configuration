@@ -14,4 +14,10 @@ object IgniteTests24Java8_SpiDiscovery : BuildType({
     failureConditions {
         executionTimeoutMin = 100
     }
+
+    cleanup {
+        baseRule {
+            history(days = 15)
+        }
+    }
 })
