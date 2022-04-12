@@ -17,7 +17,12 @@ object IgniteTests24Java8_CacheFailover2 : BuildType({
 
     cleanup {
         baseRule {
+            all(days = 15)
             history(days = 15)
+            artifacts(days = 15, artifactPatterns = """
+                +:**/*
+                +:.teamcity/**
+            """.trimIndent())
         }
     }
 })
