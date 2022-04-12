@@ -15,4 +15,10 @@ object IgniteTests24Java8_Queries2lazyTrue : BuildType({
     failureConditions {
         executionTimeoutMin = 240
     }
+
+    cleanup {
+        baseRule {
+            history(days = 15)
+        }
+    }
 })
