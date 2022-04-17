@@ -26,6 +26,7 @@ create(RelativeId("TestAltLinIgniteTests2xJdk811"), BuildType({
 
     triggers {
         vcs {
+            enabled = false
             quietPeriodMode = VcsTrigger.QuietPeriodMode.USE_DEFAULT
             branchFilter = """
                 +:<default>
