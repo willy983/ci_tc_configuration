@@ -137,7 +137,7 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_Prepar
         insert(3) {
             script {
                 name = "[NEW] Change MAVEN version"
-                scriptContent = """sed -r 's|(.*<revision>).*(</revision>)|\1%IGNITE_VERSION%\2|' -i parent/pom.xml"""
+                scriptContent = """sed -i '' -e "s/<revision>.*<\/revision>/<revision>${'$'}1<\/revision>/" ./parent/pom.xml;"""
             }
         }
         update<MavenBuildStep>(4) {
