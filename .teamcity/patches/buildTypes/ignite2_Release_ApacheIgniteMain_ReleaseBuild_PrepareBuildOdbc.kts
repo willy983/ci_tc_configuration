@@ -3,6 +3,7 @@ package patches.buildTypes
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.PowerShellStep
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.VisualStudioStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
@@ -137,13 +138,42 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_Prepar
             script {
                 name = "[NEW] Change MAVEN version"
                 scriptContent = """
-                    #!/usr/bin/env bash
                     set -x
-                    
                     
                     sed -r 's|(.*<revision>).*(</revision>)|\1%IGNITE_VERSION%\2|' -i parent/pom.xml
                 """.trimIndent()
             }
         }
+        update<MavenBuildStep>(4) {
+            clearConditions()
+        }
+        update<ScriptBuildStep>(5) {
+            enabled = true
+            clearConditions()
+        }
+        update<PowerShellStep>(6) {
+            clearConditions()
+        }
+        update<VisualStudioStep>(7) {
+            clearConditions()
+        }
+        update<VisualStudioStep>(8) {
+            enabled = false
+            clearConditions()
+        }
+        update<ScriptBuildStep>(9) {
+            clearConditions()
+        }
+        update<ScriptBuildStep>(10) {
+            enabled = true
+            clearConditions()
+        }
+        update<ScriptBuildStep>(11) {
+            enabled = false
+            clearConditions()
+        }
     }
+
+    expectDisabledSettings()
+    updateDisabledSettings("RUNNER_7", "RUNNER_8")
 }
