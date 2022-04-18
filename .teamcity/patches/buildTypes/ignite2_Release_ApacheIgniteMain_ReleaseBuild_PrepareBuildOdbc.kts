@@ -133,5 +133,17 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_Prepar
             enabled = false
             clearConditions()
         }
+        insert(11) {
+            script {
+                name = "[NEW] Change MAVEN version"
+                scriptContent = """
+                    #!/usr/bin/env bash
+                    set -x
+                    
+                    
+                    sed -r 's|(.*<revision>).*(</revision>)|\1%IGNITE_VERSION%\2|' -i parent/pom.xml
+                """.trimIndent()
+            }
+        }
     }
 }
