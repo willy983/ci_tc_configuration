@@ -133,7 +133,7 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_Prepar
             enabled = false
             clearConditions()
         }
-        insert(11) {
+        insert(3) {
             script {
                 name = "[NEW] Change MAVEN version"
                 scriptContent = """
