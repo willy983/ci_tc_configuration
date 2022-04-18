@@ -130,6 +130,7 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_Prepar
     steps {
         update<MavenBuildStep>(2) {
             name = "[OLD] Change maven version"
+            enabled = false
             clearConditions()
         }
     }
