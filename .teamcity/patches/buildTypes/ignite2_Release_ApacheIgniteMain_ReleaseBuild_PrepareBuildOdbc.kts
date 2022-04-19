@@ -135,14 +135,16 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_Prepar
             clearConditions()
         }
         insert(3) {
-            script {
+            powerShell {
                 name = "[NEW] Change MAVEN version"
-                scriptContent = """
-                    #!/usr/bin/env bash
-                    set -x
-                    
-                    sed -r 's|(.*<revision>).*(</revision>)|\1%IGNITE_VERSION%\2|' -i parent/pom.xml
-                """.trimIndent()
+                scriptMode = script {
+                    content = """
+                        ${'$'}version = "%IGNITE_VERSION%"
+                        ${'$'}filePath = "%teamcity.agent.work.dir%\parent\pom.xml"
+                        
+                        (GC ${'$'}filePath).Replace("<revision>.*<revision>", "<revision>${'$'}version<revision>") | Set-Content ${'$'}filePath
+                    """.trimIndent()
+                }
             }
         }
         update<MavenBuildStep>(4) {
