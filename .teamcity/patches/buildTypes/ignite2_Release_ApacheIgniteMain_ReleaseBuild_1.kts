@@ -236,5 +236,12 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
                 -Dignite.edition=apache-ignite
             """.trimIndent()
         }
+        update<MavenBuildStep>(12) {
+            clearConditions()
+            runnerArgs = """
+                -Prelease,numa-allocator,all-scala
+                -Dignite.edition=apache-ignite-slim
+            """.trimIndent()
+        }
     }
 }
