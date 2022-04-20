@@ -232,7 +232,7 @@ changeBuildType(RelativeId("ignite2_Release_ApacheIgniteMain_ReleaseBuild_1")) {
         update<MavenBuildStep>(11) {
             clearConditions()
             runnerArgs = """
-                -Prelease,all-scala,numa-allocator
+                -Prelease,numa-allocator,all-scala
                 -Dignite.edition=apache-ignite
             """.trimIndent()
         }
