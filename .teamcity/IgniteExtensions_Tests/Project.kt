@@ -28,7 +28,6 @@ object Project : Project({
     buildType(IgniteExtensions_Tests_PubSub)
     buildType(IgniteExtensions_Tests_SpringData22)
     buildType(IgniteExtensions_Tests_SpringCache)
-    buildType(IgniteExtensions_Tests_SpringData20)
     buildType(IgniteExtensions_Tests_SpringSession)
     buildType(IgniteExtensions_Tests_Jms11)
     buildType(IgniteExtensions_Tests_Flume)
