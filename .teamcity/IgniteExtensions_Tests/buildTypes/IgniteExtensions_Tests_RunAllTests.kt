@@ -58,10 +58,6 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         }
         snapshot(IgniteExtensions_Tests_SpringData) {
         }
-        snapshot(IgniteExtensions_Tests_SpringData20) {
-        }
-        snapshot(IgniteExtensions_Tests_SpringData22) {
-        }
         snapshot(IgniteExtensions_Tests_SpringSession) {
         }
         snapshot(IgniteExtensions_Tests_SpringTransactions) {
