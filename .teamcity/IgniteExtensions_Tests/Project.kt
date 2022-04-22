@@ -26,7 +26,6 @@ object Project : Project({
     buildType(IgniteExtensions_Tests_Mqtt)
     buildType(IgniteExtensions_Tests_RunAllTests)
     buildType(IgniteExtensions_Tests_PubSub)
-    buildType(IgniteExtensions_Tests_SpringData22)
     buildType(IgniteExtensions_Tests_SpringCache)
     buildType(IgniteExtensions_Tests_SpringSession)
     buildType(IgniteExtensions_Tests_Jms11)
