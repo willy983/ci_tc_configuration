@@ -15,5 +15,10 @@ changeBuildType(RelativeId("IgniteExtensions_Tests_RunAllTests")) {
             }
         }
 
+        remove(RelativeId("IgniteExtensions_Tests_SpringData22")) {
+            snapshot {
+            }
+        }
+
     }
 }
