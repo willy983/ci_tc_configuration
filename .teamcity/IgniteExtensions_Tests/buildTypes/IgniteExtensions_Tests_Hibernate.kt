@@ -4,12 +4,12 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 
-object IgniteExtensions_Tests_SpringTransactions : BuildType({
+object IgniteExtensions_Tests_Hibernate : BuildType({
     templates(IgniteExtensions_Tests_RunExtensionTests)
-    name = "Spring Transactions"
+    name = "Hibernate"
 
     params {
-        param("DIR_EXTENSION", "spring-tx-ext")
+        text("DIR_EXTENSION", "hibernate-ext", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     steps {
@@ -28,5 +28,6 @@ object IgniteExtensions_Tests_SpringTransactions : BuildType({
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jdkHome = "%env.JDK_ORA_8%"
         }
+        stepsOrder = arrayListOf("RUNNER_140", "RUNNER_143", "RUNNER_141")
     }
 })

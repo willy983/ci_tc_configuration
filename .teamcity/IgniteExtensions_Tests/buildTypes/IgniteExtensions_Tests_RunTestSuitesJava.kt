@@ -283,7 +283,7 @@ object IgniteExtensions_Tests_RunTestSuitesJava : Template({
     }
 
     dependencies {
-        dependency(AbsoluteId("IgniteTests24Java8_BuildApacheIgnite")) {
+        dependency(IgniteTests24Java8.buildTypes.IgniteTests24Java8_BuildApacheIgnite) {
             snapshot {
                 onDependencyFailure = FailureAction.CANCEL
                 onDependencyCancel = FailureAction.CANCEL

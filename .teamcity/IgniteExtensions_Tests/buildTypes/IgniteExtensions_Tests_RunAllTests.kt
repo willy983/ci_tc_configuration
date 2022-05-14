@@ -1,7 +1,6 @@
 package IgniteExtensions_Tests.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.schedule
 
 object IgniteExtensions_Tests_RunAllTests : BuildType({
@@ -18,6 +17,7 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
 
         showDependenciesChanges = true
     }
+
     triggers {
         schedule {
             schedulingPolicy = daily {
@@ -27,6 +27,7 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
             triggerBuild = always()
         }
     }
+
     dependencies {
         snapshot(IgniteExtensions_Tests_Aws_2) {
         }
@@ -34,9 +35,13 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         }
         snapshot(IgniteExtensions_Tests_Cdc) {
         }
+        snapshot(IgniteExtensions_Tests_Checkstyle) {
+        }
         snapshot(IgniteExtensions_Tests_Flink) {
         }
         snapshot(IgniteExtensions_Tests_Flume) {
+        }
+        snapshot(IgniteExtensions_Tests_Hibernate) {
         }
         snapshot(IgniteExtensions_Tests_Jms11) {
         }

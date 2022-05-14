@@ -4,25 +4,19 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 
-object IgniteExtensions_Tests_SpringTransactions : BuildType({
+object IgniteExtensions_Tests_Checkstyle : BuildType({
     templates(IgniteExtensions_Tests_RunExtensionTests)
-    name = "Spring Transactions"
-
-    params {
-        param("DIR_EXTENSION", "spring-tx-ext")
-    }
+    name = "[Checkstyle]"
 
     steps {
         maven {
-            name = "Run Extension's tests"
+            name = "Run Checkstyle"
             id = "RUNNER_141"
-            goals = "test"
-            pomLocation = ""
+            goals = "validate"
             runnerArgs = """
-                -f modules/%DIR_EXTENSION% -am
-                -Dmaven.test.failure.ignore=true
-                -DfailIfNoTests=false
-                -Dignite.version=%IGNITE_VERSION%
+                -Pcheckstyle
+                -DskipTests
+                -Dmaven.javadoc.skip=true
             """.trimIndent()
             userSettingsSelection = "local-proxy.xml"
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
