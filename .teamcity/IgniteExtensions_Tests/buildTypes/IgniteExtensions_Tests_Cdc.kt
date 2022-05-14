@@ -10,4 +10,8 @@ object IgniteExtensions_Tests_Cdc : BuildType({
     params {
         text("DIR_EXTENSION", "cdc-ext", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
+
+    failureConditions {
+        executionTimeoutMin = 150
+    }
 })

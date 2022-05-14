@@ -140,12 +140,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_GeospatialIndexing) {
         }
-        snapshot(IgniteTests24Java8_Hibernate42) {
-        }
-        snapshot(IgniteTests24Java8_Hibernate51) {
-        }
-        snapshot(IgniteTests24Java8_Hibernate53) {
-        }
         snapshot(IgniteTests24Java8_IndexQueryApi) {
         }
         snapshot(IgniteTests24Java8_InspectionsCore) {
