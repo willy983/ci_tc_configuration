@@ -1,12 +1,9 @@
 package Releases_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetInstaller
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetPublish
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
-
 
 object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #3 :: Assemble Nuget Packages"
@@ -48,7 +45,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages :
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -58,7 +55,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages :
                 artifactRules = "apache-ignite-%IGNITE_VERSION%-bin.zip!apache-ignite-%IGNITE_VERSION%-bin/** => bin"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -69,4 +66,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages :
         }
     }
 })
-

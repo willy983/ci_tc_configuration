@@ -1,13 +1,11 @@
 package Releases_ApacheIgniteMain_ReleaseBuild.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.PowerShellStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 object ApacheIgniteReleaseJava8_PrepareVote1NetCpp : BuildType({
     name = "[1] Build .Net & C++"
@@ -119,4 +117,3 @@ object ApacheIgniteReleaseJava8_PrepareVote1NetCpp : BuildType({
         }
     }
 })
-

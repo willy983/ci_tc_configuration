@@ -10,10 +10,10 @@ object Project : Project({
     name = "~[DEPRECATED] Apache Ignite / Nightly"
 
     buildType(Releases_NightlyRelease_RunApacheIgniteNightlyRelease)
-    buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare)
+    buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage)
+    buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages)
     buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp)
     buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries)
-    buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage)
+    buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare)
     buildType(Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages)
-    buildType(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages)
 })

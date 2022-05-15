@@ -1,5 +1,6 @@
 package Releases_ApacheIgniteMain.vcsRoots
 
+import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 
 object Releases_ApacheIgniteMain_GitBoxIgnite : GitVcsRoot({
@@ -12,4 +13,3 @@ object Releases_ApacheIgniteMain_GitBoxIgnite : GitVcsRoot({
     """.trimIndent()
     userNameStyle = GitVcsRoot.UserNameStyle.FULL
 })
-

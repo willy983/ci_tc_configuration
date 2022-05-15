@@ -1,12 +1,10 @@
 package Releases_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #2 :: Assemble Binaries"
@@ -188,7 +186,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -198,7 +196,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
                 artifactRules = "ignite.odbc.installers.zip!** => modules/platforms/cpp/bin/odbc"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -214,4 +212,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries : Buil
         contains("teamcity.agent.jvm.os.name", "Linux")
     }
 })
-

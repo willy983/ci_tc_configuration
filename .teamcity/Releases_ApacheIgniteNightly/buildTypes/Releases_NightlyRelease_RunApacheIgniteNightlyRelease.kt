@@ -1,9 +1,7 @@
 package Releases_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.schedule
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
     name = "-> Run :: Apache Ignite Nightly Release"
@@ -26,9 +24,9 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 hour = 23
             }
             branchFilter = """
-                    +:<default>
-                    +:ignite-2.11
-                """.trimIndent()
+                +:<default>
+                +:ignite-2.11
+            """.trimIndent()
             triggerBuild = always()
             withPendingChangesOnly = false
             enableQueueOptimization = false
@@ -39,7 +37,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyRelease3AssemblePackages) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -52,7 +50,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 """.trimIndent()
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -65,7 +63,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 """.trimIndent()
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage) {
             snapshot {
                 onDependencyFailure = FailureAction.IGNORE
                 onDependencyCancel = FailureAction.IGNORE
@@ -76,7 +74,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 artifactRules = "*.tar.gz"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleNugetPackages) {
             snapshot {
                 onDependencyFailure = FailureAction.IGNORE
             }
@@ -86,7 +84,7 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
                 artifactRules = "apache-ignite-%IGNITE_VERSION%-nuget-staging.zip"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 reuseBuilds = ReuseBuilds.NO
                 onDependencyFailure = FailureAction.FAIL_TO_START
@@ -99,4 +97,3 @@ object Releases_NightlyRelease_RunApacheIgniteNightlyRelease : BuildType({
         }
     }
 })
-

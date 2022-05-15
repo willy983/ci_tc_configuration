@@ -2,6 +2,7 @@ package ignite2_Release_ApacheIgniteMain
 
 import ignite2_Release_ApacheIgniteMain.buildTypes.*
 import ignite2_Release_ApacheIgniteMain.vcsRoots.*
+import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
 
 object Project : Project({
@@ -11,9 +12,9 @@ object Project : Project({
     vcsRoot(ignite2_Release_ApacheIgniteMain_GitBoxIgnite)
 
     buildType(ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote4CheckRcLicensesChecksum)
-    buildType(ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency)
-    buildType(ignite2_Release_ApacheIgniteMain_ReleaseBuild_1)
     buildType(ignite2_Release_ApacheIgniteReleaseJava8_PrepareVote3BuildNuGetPackages)
+    buildType(ignite2_Release_ApacheIgniteMain_ReleaseBuild_1)
+    buildType(ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency)
 
     subProject(ignite2_Release_ApacheIgniteMain_ReleaseBuild.Project)
 })

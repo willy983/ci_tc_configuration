@@ -1,5 +1,6 @@
 package ignite2_Release_ApacheIgniteMain.vcsRoots
 
+import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
 
 object ignite2_Release_ApacheIgniteMain_GitBoxIgnite : GitVcsRoot({
