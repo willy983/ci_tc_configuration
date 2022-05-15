@@ -1,7 +1,6 @@
 package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 
 object ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsistency : BuildType({
@@ -15,7 +14,7 @@ object ignite2_Release_ApacheIgniteReleaseJava8_IgniteRelease72CheckFileConsiste
 
     params {
         text("PREV_IGNITE_VERSION", "", label = "Previous Ignite version", description = "X.X.X", display = ParameterDisplay.PROMPT, allowEmpty = true)
-        text("IGNITE_VERSION", "", label = "Current Ignite version", description = "X.X.X", display = ParameterDisplay.PROMPT, allowEmpty = true)
+        text("IGNITE_VERSION", "", label = "Current Ignite version", description = "X.X", display = ParameterDisplay.PROMPT, allowEmpty = true)
     }
 
     vcs {

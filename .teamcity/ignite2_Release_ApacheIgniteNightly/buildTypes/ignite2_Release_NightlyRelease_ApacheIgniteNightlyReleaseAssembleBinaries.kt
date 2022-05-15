@@ -139,7 +139,7 @@ object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries
             goals = "initialize"
             pomLocation = ""
             runnerArgs = """
-                -Prelease,all-scala
+                -Prelease,numa-allocator,all-scala
                 -Dignite.edition=apache-ignite
             """.trimIndent()
             userSettingsSelection = "local-proxy.xml"
@@ -151,7 +151,7 @@ object ignite2_Release_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries
             goals = "initialize"
             pomLocation = ""
             runnerArgs = """
-                -Prelease,all-scala
+                -Prelease,numa-allocator,all-scala
                 -Dignite.edition=apache-ignite-slim
             """.trimIndent()
             userSettingsSelection = "local-proxy.xml"

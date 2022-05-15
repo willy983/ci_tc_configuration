@@ -1,7 +1,6 @@
 package ignite2_Release_ApacheIgniteMain_ReleaseBuild.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.PowerShellStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.VisualStudioStep
@@ -9,7 +8,6 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.visualStudio
-
 
 object ignite2_Release_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildType({
     name = "[1] Prepare & Build ODBC"
@@ -53,7 +51,8 @@ object ignite2_Release_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildTyp
             scriptContent = "git config core.filemode false"
         }
         maven {
-            name = "Change maven version"
+            name = "[OLD] Change maven version"
+            enabled = false
             goals = "versions:set"
             pomLocation = """%IGNITE_ROOT%\pom.xml"""
             runnerArgs = """
@@ -64,6 +63,17 @@ object ignite2_Release_ApacheIgniteMain_ReleaseBuild_PrepareBuildOdbc : BuildTyp
                 -DprocessDependencies=false
             """.trimIndent()
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
+        }
+        powerShell {
+            name = "[NEW] Change MAVEN version"
+            scriptMode = script {
+                content = """
+                    ${'$'}version = "%IGNITE_VERSION%"
+                    ${'$'}filePath = "%teamcity.agent.work.dir%\parent\pom.xml"
+                    
+                    (GC ${'$'}filePath).Replace("<revision>.*<revision>", "<revision>${'$'}version<revision>") | Set-Content ${'$'}filePath
+                """.trimIndent()
+            }
         }
         maven {
             name = "Change dotnet & cpp versions"

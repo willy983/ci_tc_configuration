@@ -1,7 +1,6 @@
 package ignite2_Release_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
@@ -179,7 +178,7 @@ object ignite2_Release_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
             goals = "initialize"
             pomLocation = ""
             runnerArgs = """
-                -Prelease,all-scala
+                -Prelease,numa-allocator,all-scala
                 -Dignite.edition=apache-ignite
             """.trimIndent()
             workingDir = "%IGNITE_ROOT%"
@@ -192,7 +191,7 @@ object ignite2_Release_ApacheIgniteMain_ReleaseBuild_1 : BuildType({
             goals = "initialize"
             pomLocation = ""
             runnerArgs = """
-                -Prelease,all-scala
+                -Prelease,numa-allocator,all-scala
                 -Dignite.edition=apache-ignite-slim
             """.trimIndent()
             workingDir = "%IGNITE_ROOT%"
