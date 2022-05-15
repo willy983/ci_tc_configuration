@@ -1,13 +1,10 @@
 package Releases_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.PowerShellStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.nuGetInstaller
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.powerShell
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
-
 
 object Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #1 :: Build .Net & C++"
@@ -85,7 +82,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : BuildType
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -97,4 +94,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseBuildNetCpp : BuildType
         }
     }
 })
-

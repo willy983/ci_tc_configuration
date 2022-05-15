@@ -1,11 +1,9 @@
 package Releases_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
 
 object ApacheIgniteReleaseJava8_PrepareVote : BuildType({
     name = "-> Run [#1.1] :: Apache Ignite Release Vote | Full Assembly"
@@ -162,7 +160,7 @@ object ApacheIgniteReleaseJava8_PrepareVote : BuildType({
     }
 
     dependencies {
-        dependency(RelativeId("ApacheIgniteReleaseJava8_PrepareVote1NetCpp")) {
+        dependency(Releases_ApacheIgniteMain_ReleaseBuild.buildTypes.ApacheIgniteReleaseJava8_PrepareVote1NetCpp) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -183,4 +181,3 @@ object ApacheIgniteReleaseJava8_PrepareVote : BuildType({
         contains("teamcity.agent.jvm.os.name", "Linux")
     }
 })
-

@@ -1,11 +1,7 @@
 package Releases_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildStep
-import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
-
 
 object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #3 :: Assemble Docker Image"
@@ -29,7 +25,6 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
     steps {
         script {
             name = "Prepare"
-            enabled = true
             scriptContent = """
                 #!/usr/bin/env bash
                 set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
@@ -49,17 +44,15 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
         step {
             name = "Assemble Apache Ignite Docker image"
             type = "DockerBuildRemote"
-            enabled = true
-            executionMode = BuildStep.ExecutionMode.DEFAULT
-            param("DOCKER_ARCHIVE_NAME", "%DOCKER_ARCHIVE_NAME%")
-            param("DOCKER_SRC_DIR", "%DIR__DOCKERFILE%")
             param("DOCKER_TAG_NAME", "apacheignite/ignite")
+            param("DOCKER_ARCHIVE_NAME", "%DOCKER_ARCHIVE_NAME%")
             param("DOCKER_TAG_VERSION", "%IGNITE_VERSION%")
+            param("DOCKER_SRC_DIR", "%DIR__DOCKERFILE%")
         }
     }
 
     dependencies {
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleBinaries) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -68,7 +61,7 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
                 artifactRules = "apache-ignite-%IGNITE_VERSION%-bin.zip!apache-ignite-%IGNITE_VERSION%-bin/** => apache-ignite"
             }
         }
-        dependency(RelativeId("Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare")) {
+        dependency(Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare) {
             snapshot {
                 onDependencyFailure = FailureAction.FAIL_TO_START
             }
@@ -79,4 +72,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleaseAssembleDockerImage : B
         }
     }
 })
-

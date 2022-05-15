@@ -18,6 +18,7 @@ object Project : Project({
     vcsRoot(GitHubApacheIgniteRelease)
     vcsRoot(GitHubApacheIgniteNodejsThinClient)
     vcsRoot(GitHubH2fork4igniteSqlEngine)
+    vcsRoot(CiTcConfiguration)
 
     template(ThinClientStopIgnite)
     template(Tests_IgniteThinClients_PreBuild)
@@ -98,9 +99,9 @@ object Project : Project({
 
     cleanup {
         baseRule {
-            all(days = 28)
-            history(days = 28)
-            artifacts(days = 28, artifactPatterns = """
+            all(days = 16)
+            history(days = 16)
+            artifacts(days = 16, artifactPatterns = """
                 +:**/*
                 +:.teamcity/**
             """.trimIndent())
@@ -111,6 +112,7 @@ object Project : Project({
     subProject(IgniteExtensions.Project)
     subProject(Releases.Project)
     subProject(IgniteTests24Java8.Project)
+    subProject(TestAltLinIgniteTests2xJdk811.Project)
     subProject(ignite3.Project)
     subProject(ignite2.Project)
     subProject(IgniteThinClients.Project)

@@ -1,12 +1,9 @@
 package Releases_ApacheIgniteMain.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
-
 
 object ApacheIgniteReleaseJava8_TempIgniteRelease5GenerateReleaseReports : BuildType({
     name = "~[Obsolete] [IGNITE_RELEASE #5] Generate Release Reports"

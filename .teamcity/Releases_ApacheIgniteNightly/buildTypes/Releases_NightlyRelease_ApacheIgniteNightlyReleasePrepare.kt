@@ -1,12 +1,9 @@
 package Releases_ApacheIgniteNightly.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v2019_2.*
-import jetbrains.buildServer.configs.kotlin.v2019_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.v2019_2.ui.*
-
 
 object Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
     name = "[APACHE IGNITE NIGHTLY RELEASE] #0 :: Prepare"
@@ -110,4 +107,3 @@ object Releases_NightlyRelease_ApacheIgniteNightlyReleasePrepare : BuildType({
         equals("teamcity.agent.jvm.os.name", "Linux")
     }
 })
-

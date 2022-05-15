@@ -23,6 +23,8 @@ object DevAi2x_InspectionsCore : BuildType({
                 -XX:+UseG1GC
                 %JVM_PARAMETERS%
             """.trimIndent()
+            targetJdkHome = "%env.JDK_18%"
+            ideaAppHome = "%teamcity.tool.intellij.DEFAULT%"
             disabledPlugins = """
                 AntSupport
                 CVS
