@@ -108,8 +108,6 @@ object TestAltLinIgniteTests2xJdk811_BuildApacheIgnite : BuildType({
                 if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]; then
                 	REPOSITORY__DIR=${'$'}{REPOSITORY__DIR__TEST}
                 fi
-                echo "${'$'}{REPOSITORY__DIR}"
-                echo "${'$'}{REPOSITORY__DIR__TEST}"
                 cp -rfv "${'$'}{REPOSITORY__DIR}/*" "repository/"
             """.trimIndent()
         }
