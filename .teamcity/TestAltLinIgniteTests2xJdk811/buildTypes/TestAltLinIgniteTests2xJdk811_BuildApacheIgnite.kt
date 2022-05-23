@@ -71,6 +71,8 @@ object TestAltLinIgniteTests2xJdk811_BuildApacheIgnite : BuildType({
                 
                 REPOSITORY__DIR="%env.HOME%/.m2/repository/org/apache/ignite"
                 REPOSITORY__DIR__TEST="%env.HOME%/.m2/repository/com/sbt/ignite"
+                echo "${'$'}{REPOSITORY__DIR}"
+                echo "${'$'}{REPOSITORY__DIR__TEST}"
                 if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]
                 then
                 	rm -rfv "${'$'}{REPOSITORY__DIR__TEST}"
