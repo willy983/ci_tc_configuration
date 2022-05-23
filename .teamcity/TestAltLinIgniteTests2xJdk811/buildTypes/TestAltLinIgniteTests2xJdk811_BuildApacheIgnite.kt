@@ -96,11 +96,12 @@ object TestAltLinIgniteTests2xJdk811_BuildApacheIgnite : BuildType({
                 set -x
                 
                 mkdir -pv repository
-                if [ -d "~/.m2/repository/com/sbt/ignite/" ]; then
-                    cp -rfv ~/.m2/repository/com/sbt/ignite/* repository/
-                else
-                    cp -rfv ~/.m2/repository/org/apache/ignite/* repository/ 
+                REPOSITORY__DIR="${'$'}{'${'$'}'}(%env.HOME%/.m2/repository/org/apache/ignite/)"
+                REPOSITORY__DIR__TEST="${'$'}{'${'$'}'}(%env.HOME%/.m2/repository/com/sbt/ignite/)"
+                if [ -d "${'$'}{'${'$'}'}{REPOSITORY__DIR__TEST}" ]; then
+                	REPOSITORY__DIR=${'$'}{'${'$'}'}{REPOSITORY_DIR_TEST}
                 fi
+                cp -rfv ${'$'}{'${'$'}'}{REPOSITORY_DIR}/* repository/
             """.trimIndent()
         }
     }
