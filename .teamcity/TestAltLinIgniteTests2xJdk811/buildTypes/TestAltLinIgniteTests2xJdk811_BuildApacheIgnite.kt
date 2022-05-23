@@ -109,6 +109,7 @@ object TestAltLinIgniteTests2xJdk811_BuildApacheIgnite : BuildType({
                 set -x
                 
                 mkdir -pv repository
+                
                 REPOSITORY__DIR="%env.HOME%/.m2/repository/org/apache/ignite"
                 REPOSITORY__DIR__TEST="%env.HOME%/.m2/repository/com/sbt/ignite"
                 
@@ -116,6 +117,7 @@ object TestAltLinIgniteTests2xJdk811_BuildApacheIgnite : BuildType({
                 then
                     cp -rfv ${'$'}{REPOSITORY__DIR}/* repository/
                 fi
+                
                 if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]
                 then
                 	REPOSITORY__DIR=${'$'}{REPOSITORY__DIR__TEST}
