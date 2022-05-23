@@ -97,7 +97,7 @@ object TestAltLinIgniteTests2xJdk811_BuildApacheIgnite : BuildType({
                 
                 mkdir -pv repository
                 mkdir -pv repository
-                if [ -d `readlink -f `~/.m2/repository/com/sbt/ignite/`]; then
+                if [ -d `readlink -f ~/.m2/repository/com/sbt/ignite/` ]; then
                     cp -rfv ~/.m2/repository/com/sbt/ignite/* repository/
                 else
                     cp -rfv ~/.m2/repository/org/apache/ignite/* repository/ 
