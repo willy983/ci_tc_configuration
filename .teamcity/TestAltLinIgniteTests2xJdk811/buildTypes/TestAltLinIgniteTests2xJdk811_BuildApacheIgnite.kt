@@ -69,12 +69,14 @@ object TestAltLinIgniteTests2xJdk811_BuildApacheIgnite : BuildType({
                 #!/usr/bin/env bash
                 set -x
                 
-                REPOSITORY__DIR="${'$'}(%env.HOME%/.m2/repository/org/apache/ignite)"
-                REPOSITORY__DIR__TEST="${'$'}(%env.HOME%/.m2/repository/com/sbt/ignite)"
-                if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]; then
+                REPOSITORY__DIR="%env.HOME%/.m2/repository/org/apache/ignite"
+                REPOSITORY__DIR__TEST="%env.HOME%/.m2/repository/com/sbt/ignite"
+                if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]
+                then
                 	rm -rfv "${'$'}{REPOSITORY__DIR__TEST}"
                 fi
-                if [ -d "${'$'}{REPOSITORY__DIR}" ]; then
+                if [ -d "${'$'}{REPOSITORY__DIR}" ]
+                then
                 	rm -rfv "${'$'}{REPOSITORY__DIR}"
                 fi
             """.trimIndent()
