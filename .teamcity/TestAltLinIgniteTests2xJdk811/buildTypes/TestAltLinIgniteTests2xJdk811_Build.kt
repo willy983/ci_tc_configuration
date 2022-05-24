@@ -37,8 +37,19 @@ object TestAltLinIgniteTests2xJdk811_Build : BuildType({
                 set -o nounset; set -o errexit; set -o pipefail; set -o errtrace; set -o functrace
                 set -x
                 
+                REPOSITORY__DIR="%env.HOME%/.m2/repository/org/apache/ignite"
+                REPOSITORY__DIR__TEST="%env.HOME%/.m2/repository/com/sbt/ignite"
                 
-                rm -rfv ~/.m2/repository/org/apache/ignite
+                if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]
+                then
+                	rm -rfv "${'$'}{REPOSITORY__DIR__TEST}"
+                fi
+                
+                if [ -d "${'$'}{REPOSITORY__DIR}" ]
+                then
+                	rm -rfv "${'$'}{REPOSITORY__DIR}"
+                fi
+                                
             """.trimIndent()
         }
         maven {
@@ -188,8 +199,22 @@ object TestAltLinIgniteTests2xJdk811_Build : BuildType({
                 
                 
                 # Prepare archive with installed artifacts
-                mkdir -pv repository/org/apache/ignite
-                cp -rfv ~/.m2/repository/org/apache/ignite/* repository/org/apache/ignite/
+                REPOSITORY__DIR="%env.HOME%/.m2/repository/org/apache/ignite"
+                REPOSITORY__DIR__TEST="%env.HOME%/.m2/repository/com/sbt/ignite"
+                
+                if [ -d "${'$'}{REPOSITORY__DIR}" ]
+                then
+                    mkdir -pv repository/org/apache/ignite
+                    cp -rfv ${'$'}{REPOSITORY__DIR}/* repository/org/apache/ignite/
+                fi
+                
+                if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]
+                then
+                	REPOSITORY__DIR=${'$'}{REPOSITORY__DIR__TEST}
+                    mkdir -pv repository/com/sbt/ignite
+                    cp -rfv ${'$'}{REPOSITORY__DIR}/* repository/com/sbt/ignite/
+                fi                
+                
                 zip -r repository repository
             """.trimIndent()
         }
