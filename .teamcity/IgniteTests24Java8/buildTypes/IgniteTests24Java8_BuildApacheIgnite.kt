@@ -69,7 +69,20 @@ object IgniteTests24Java8_BuildApacheIgnite : BuildType({
                 #!/usr/bin/env bash
                 set -x
                 
-                rm -rfv ~/.m2/repository/org/apache/ignite
+                REPOSITORY__DIR="%env.HOME%/.m2/repository/org/apache/ignite"
+                REPOSITORY__DIR__TEST="%env.HOME%/.m2/repository/com/sbt/ignite"
+                echo "${'$'}{REPOSITORY__DIR}"
+                echo "${'$'}{REPOSITORY__DIR__TEST}"
+                
+                if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]
+                then
+                	rm -rfv "${'$'}{REPOSITORY__DIR__TEST}"
+                fi
+                
+                if [ -d "${'$'}{REPOSITORY__DIR}" ]
+                then
+                	rm -rfv "${'$'}{REPOSITORY__DIR}"
+                fi
             """.trimIndent()
         }
         maven {
@@ -96,7 +109,20 @@ object IgniteTests24Java8_BuildApacheIgnite : BuildType({
                 set -x
                 
                 mkdir -pv repository
-                cp -rfv ~/.m2/repository/org/apache/ignite/* repository/
+                
+                REPOSITORY__DIR="%env.HOME%/.m2/repository/org/apache/ignite"
+                REPOSITORY__DIR__TEST="%env.HOME%/.m2/repository/com/sbt/ignite"
+                
+                if [ -d "${'$'}{REPOSITORY__DIR}" ]
+                then
+                    cp -rfv ${'$'}{REPOSITORY__DIR}/* repository/
+                fi
+                
+                if [ -d "${'$'}{REPOSITORY__DIR__TEST}" ]
+                then
+                	REPOSITORY__DIR=${'$'}{REPOSITORY__DIR__TEST}
+                    cp -rfv ${'$'}{REPOSITORY__DIR}/* repository/
+                fi
             """.trimIndent()
         }
     }
