@@ -10,6 +10,7 @@ object Project : Project({
 
     buildType(IgniteExtensions_Tests_Camel)
     buildType(IgniteExtensions_Tests_Twitter)
+    buildType(IgniteExtensions_Tests_Geospatial)
     buildType(IgniteExtensions_Tests_Flink)
     buildType(IgniteExtensions_Tests_Storm)
     buildType(IgniteExtensions_Tests_TopologyValidator)

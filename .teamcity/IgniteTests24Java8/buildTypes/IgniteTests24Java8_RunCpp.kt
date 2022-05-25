@@ -16,7 +16,7 @@ object IgniteTests24Java8_RunCpp : BuildType({
     }
 
     dependencies {
-        snapshot(IgniteTests24Java8_CheckCodeStyle) {
+        snapshot(IgniteTests24Java8_CheckCodeStyleDucktests) {
         }
         snapshot(IgniteTests24Java8_Javadoc) {
         }

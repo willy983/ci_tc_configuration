@@ -4,12 +4,12 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.MavenBuildStep
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.maven
 
-object IgniteExtensions_Tests_ZookeeperIpFinder : BuildType({
+object IgniteExtensions_Tests_Geospatial : BuildType({
     templates(IgniteExtensions_Tests_RunExtensionTests)
-    name = "Zookeeper Ip Finder"
+    name = "Geospatial"
 
     params {
-        text("DIR_EXTENSION", "zookeeper-ip-finder-ext", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("DIR_EXTENSION", "geospatial-ext", display = ParameterDisplay.HIDDEN, allowEmpty = true)
     }
 
     steps {
@@ -28,5 +28,6 @@ object IgniteExtensions_Tests_ZookeeperIpFinder : BuildType({
             localRepoScope = MavenBuildStep.RepositoryScope.MAVEN_DEFAULT
             jdkHome = "%env.JDK_ORA_8%"
         }
+        stepsOrder = arrayListOf("RUNNER_140", "RUNNER_143", "RUNNER_141")
     }
 })

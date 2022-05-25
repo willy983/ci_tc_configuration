@@ -12,6 +12,7 @@ object Project : Project({
     buildType(IgniteThinClients_Tests_Build)
     buildType(IgniteThinClients_Tests_ThinClientNodeJs)
     buildType(IgniteThinClients_Tests_ThinClientPython)
+    buildType(IgniteThinClients_Tests_ThinClientPythonAllPythons)
     buildType(IgniteThinClients_Tests_ThinClientPhp)
 
     params {

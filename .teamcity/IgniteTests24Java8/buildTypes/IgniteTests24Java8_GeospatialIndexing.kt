@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_GeospatialIndexing : BuildType({
     templates(IgniteTests24Java8_RunTestsJava)
-    name = "Geospatial Indexing"
+    name = "~[DEPRECATED] Geospatial Indexing"
 
     params {
         text("MAVEN_MODULES", ":ignite-geospatial", display = ParameterDisplay.HIDDEN, allowEmpty = true)
