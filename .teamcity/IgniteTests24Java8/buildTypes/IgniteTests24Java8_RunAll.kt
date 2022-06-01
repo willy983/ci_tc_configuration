@@ -40,8 +40,6 @@ object IgniteTests24Java8_RunAll : BuildType({
     dependencies {
         snapshot(IgniteTests24Java8_ActivateDeactivateCluster) {
         }
-        snapshot(IgniteTests24Java8_Aop) {
-        }
         snapshot(IgniteTests24Java8_Basic1) {
         }
         snapshot(IgniteTests24Java8_Basic2) {
@@ -217,8 +215,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         snapshot(IgniteTests24Java8_Queries4lazyTrue) {
         }
         snapshot(IgniteTests24Java8_QueriesConfigVariations) {
-        }
-        snapshot(IgniteTests24Java8_Rdd) {
         }
         snapshot(IgniteTests24Java8_ScalaVisorConsole) {
         }

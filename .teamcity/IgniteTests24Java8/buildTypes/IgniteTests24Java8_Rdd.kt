@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.*
 
 object IgniteTests24Java8_Rdd : BuildType({
     templates(IgniteTests24Java8_RunTestsJava)
-    name = "RDD"
+    name = "~[DEPRECATED] RDD"
 
     params {
         text("MAVEN_MODULES", ":ignite-spark", display = ParameterDisplay.HIDDEN, allowEmpty = true)

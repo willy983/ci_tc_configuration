@@ -130,7 +130,6 @@ object Project : Project({
     buildType(IgniteTests24Java8_Security)
     buildType(IgniteTests24Java8_InterceptorCacheFullApiConfigVariationsPeerClassLoading)
     buildType(IgniteTests24Java8_LicensesHeaders)
-    buildType(IgniteTests24Java8_InspectionsCoreTest)
     buildType(IgniteTests24Java8_ThinClientNodeJs)
     buildType(IgniteTests24Java8_CacheExpiryPolicy)
     buildType(IgniteTests24Java8_RunCpp)

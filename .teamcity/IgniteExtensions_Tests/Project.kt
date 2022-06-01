@@ -12,6 +12,7 @@ object Project : Project({
     buildType(IgniteExtensions_Tests_Twitter)
     buildType(IgniteExtensions_Tests_Geospatial)
     buildType(IgniteExtensions_Tests_Flink)
+    buildType(IgniteExtensions_Tests_Rdd)
     buildType(IgniteExtensions_Tests_Storm)
     buildType(IgniteExtensions_Tests_TopologyValidator)
     buildType(IgniteExtensions_Tests_Kafka)
@@ -37,6 +38,7 @@ object Project : Project({
     buildType(IgniteExtensions_Tests_SpringBootThinClientAutoconfigure)
     buildType(IgniteExtensions_Tests_Azure)
     buildType(IgniteExtensions_Tests_Rocketmq)
+    buildType(IgniteExtensions_Tests_Aop)
     buildType(IgniteExtensions_Tests_SpringData)
     buildType(IgniteExtensions_Tests_ZookeeperIpFinder)
 

@@ -29,6 +29,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
     }
 
     dependencies {
+        snapshot(IgniteExtensions_Tests_Aop) {
+        }
         snapshot(IgniteExtensions_Tests_Aws_2) {
         }
         snapshot(IgniteExtensions_Tests_Camel) {
@@ -41,6 +43,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         }
         snapshot(IgniteExtensions_Tests_Flume) {
         }
+        snapshot(IgniteExtensions_Tests_Geospatial) {
+        }
         snapshot(IgniteExtensions_Tests_Hibernate) {
         }
         snapshot(IgniteExtensions_Tests_Jms11) {
@@ -52,6 +56,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         snapshot(IgniteExtensions_Tests_PerformanceStatistics) {
         }
         snapshot(IgniteExtensions_Tests_PubSub) {
+        }
+        snapshot(IgniteExtensions_Tests_Rdd) {
         }
         snapshot(IgniteExtensions_Tests_Rocketmq) {
         }
