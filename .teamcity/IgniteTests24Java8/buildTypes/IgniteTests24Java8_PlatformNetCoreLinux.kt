@@ -38,6 +38,7 @@ object IgniteTests24Java8_PlatformNetCoreLinux : BuildType({
         script {
             name = "Diag Script"
             id = "RUNNER_168"
+            enabled = false
             scriptContent = """
                 locale
                 locale -a

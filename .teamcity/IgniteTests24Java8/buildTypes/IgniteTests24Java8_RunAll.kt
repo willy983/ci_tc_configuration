@@ -108,8 +108,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         }
         snapshot(IgniteTests24Java8_ClientNodes) {
         }
-        snapshot(IgniteTests24Java8_Cloud) {
-        }
         snapshot(IgniteTests24Java8_ComputeAffinityRun) {
         }
         snapshot(IgniteTests24Java8_ComputeGrid) {
@@ -247,8 +245,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         snapshot(IgniteTests24Java8_WebSessions) {
         }
         snapshot(IgniteTests24Java8_WiPThinClientPython) {
-        }
-        snapshot(IgniteTests24Java8_Yarn) {
         }
         snapshot(IgniteTests24Java8_ZooKeeper) {
         }
