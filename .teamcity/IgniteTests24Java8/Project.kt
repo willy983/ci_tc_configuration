@@ -6,7 +6,6 @@ import jetbrains.buildServer.configs.kotlin.v2019_2.CustomChart
 import jetbrains.buildServer.configs.kotlin.v2019_2.CustomChart.*
 import jetbrains.buildServer.configs.kotlin.v2019_2.Project
 import jetbrains.buildServer.configs.kotlin.v2019_2.buildTypeCustomChart
-import jetbrains.buildServer.configs.kotlin.v2019_2.projectCustomChart
 
 object Project : Project({
     id("IgniteTests24Java8")
@@ -175,16 +174,6 @@ object Project : Project({
     }
 
     features {
-        projectCustomChart {
-            id = "PROJECT_EXT_12"
-            title = "عاايض القحطااني"
-            seriesTitle = "Serie"
-            format = CustomChart.Format.SIZE
-            series = listOf(
-                Serie(title = """Build Step #1 - Command Line "Setup additional arguments"""", key = SeriesKey.buildStepDuration("RUNNER_1"), sourceBuildTypeId = "IgniteTests24Java8_BuildApacheIgnite"),
-                Serie(title = """Build Step #4 - Command Line "Prepare built artifacts"""", key = SeriesKey.buildStepDuration("RUNNER_4"), sourceBuildTypeId = "IgniteTests24Java8_BuildApacheIgnite")
-            )
-        }
         buildTypeCustomChart {
             id = "PROJECT_EXT_6"
             title = "BuildDuration"
