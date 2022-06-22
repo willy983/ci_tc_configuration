@@ -32,7 +32,7 @@ object TestAltLinIgniteTests2xJdk811_RunAll : BuildType({
                 #!/usr/bin/env bash
                 set -x
                 
-                curl "http://172.25.5.21:8080/rest/chainResults/html?serverId=public&buildId=%teamcity.build.id%" > report.html
+                curl "http://10.100.100.254:8088/rest/chainResults/html?serverId=public&buildId=%teamcity.build.id%" > report.html
             """.trimIndent()
         }
     }

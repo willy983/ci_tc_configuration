@@ -32,7 +32,7 @@ object IgniteTests24Java8_RunAll : BuildType({
                 #!/usr/bin/env bash
                 set -x
                 
-                curl "http://172.25.5.21:8080/rest/chainResults/html?serverId=public&buildId=%teamcity.build.id%" > report.html
+                curl "http://10.100.100.254:8088/rest/chainResults/html?serverId=public&buildId=%teamcity.build.id%" > report.html
             """.trimIndent()
         }
     }
@@ -107,8 +107,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         snapshot(IgniteTests24Java8_CheckCodeStyleDucktests) {
         }
         snapshot(IgniteTests24Java8_ClientNodes) {
-        }
-        snapshot(IgniteTests24Java8_Cloud) {
         }
         snapshot(IgniteTests24Java8_ComputeAffinityRun) {
         }
@@ -247,8 +245,6 @@ object IgniteTests24Java8_RunAll : BuildType({
         snapshot(IgniteTests24Java8_WebSessions) {
         }
         snapshot(IgniteTests24Java8_WiPThinClientPython) {
-        }
-        snapshot(IgniteTests24Java8_Yarn) {
         }
         snapshot(IgniteTests24Java8_ZooKeeper) {
         }

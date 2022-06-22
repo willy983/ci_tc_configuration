@@ -18,6 +18,7 @@ object Project : Project({
     vcsRoot(GitHubApacheIgniteRelease)
     vcsRoot(GitHubApacheIgniteNodejsThinClient)
     vcsRoot(GitHubH2fork4igniteSqlEngine)
+    vcsRoot(CiTcConfiguration)
 
     template(ThinClientStopIgnite)
     template(Tests_IgniteThinClients_PreBuild)

@@ -24,3 +24,5 @@ hs_err_pid*
 
 .idea/
 teamcity/*.iml
+/.teamcity/_Root_dsl.iml
+/.teamcity/scripts/idea/ignite_inspections_teamcity.xml
