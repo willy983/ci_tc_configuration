@@ -39,6 +39,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         }
         snapshot(IgniteExtensions_Tests_Checkstyle) {
         }
+        snapshot(IgniteExtensions_Tests_Cloud) {
+        }
         snapshot(IgniteExtensions_Tests_Flink) {
         }
         snapshot(IgniteExtensions_Tests_Flume) {
@@ -50,6 +52,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         snapshot(IgniteExtensions_Tests_Jms11) {
         }
         snapshot(IgniteExtensions_Tests_Kafka) {
+        }
+        snapshot(IgniteExtensions_Tests_Mesos) {
         }
         snapshot(IgniteExtensions_Tests_Mqtt) {
         }
@@ -78,6 +82,8 @@ object IgniteExtensions_Tests_RunAllTests : BuildType({
         snapshot(IgniteExtensions_Tests_TopologyValidator) {
         }
         snapshot(IgniteExtensions_Tests_Twitter) {
+        }
+        snapshot(IgniteExtensions_Tests_Yarn) {
         }
         snapshot(IgniteExtensions_Tests_ZeroMQ) {
         }
