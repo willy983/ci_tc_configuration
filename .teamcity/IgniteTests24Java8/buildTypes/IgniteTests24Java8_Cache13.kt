@@ -12,6 +12,6 @@ object IgniteTests24Java8_Cache13 : BuildType({
     }
 
     failureConditions {
-        executionTimeoutMin = 150
+        executionTimeoutMin = 60
     }
 })
