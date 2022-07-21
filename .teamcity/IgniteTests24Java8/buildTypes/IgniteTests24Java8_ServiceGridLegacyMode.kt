@@ -8,7 +8,7 @@ object IgniteTests24Java8_ServiceGridLegacyMode : BuildType({
 
     params {
         param("MAVEN_OPTS", "-DforkMode=always")
-        text("MAVEN_MODULES", ":ignite-schedule,:ignite-jcl,:ignite-log4j,:ignite-log4j2,:ignite-slf4j,:ignite-core", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        text("MAVEN_MODULES", ":ignite-schedule,:ignite-jcl,:ignite-log4j2,:ignite-slf4j,:ignite-core", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("JVM_ARGS", """
             -DIGNITE_MARSHAL_BUFFERS_RECHECK=1000
             -DIGNITE_EVENT_DRIVEN_SERVICE_PROCESSOR_ENABLED=false
