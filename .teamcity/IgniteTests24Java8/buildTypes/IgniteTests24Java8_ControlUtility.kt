@@ -12,6 +12,6 @@ object IgniteTests24Java8_ControlUtility : BuildType({
     }
 
     failureConditions {
-        executionTimeoutMin = 60
+        executionTimeoutMin = 90
     }
 })
