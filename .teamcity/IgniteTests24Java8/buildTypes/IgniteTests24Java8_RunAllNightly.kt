@@ -71,7 +71,7 @@ object IgniteTests24Java8_RunAllNightly : BuildType({
                 hour = 1
                 minute = 30
             }
-            branchFilter = "+:ignite-2.13"
+            branchFilter = "+:ignite-2.14"
             triggerBuild = always()
             withPendingChangesOnly = false
             enableQueueOptimization = false
