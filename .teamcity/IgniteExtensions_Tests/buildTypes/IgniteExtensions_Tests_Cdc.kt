@@ -12,6 +12,6 @@ object IgniteExtensions_Tests_Cdc : BuildType({
     }
 
     failureConditions {
-        executionTimeoutMin = 150
+        executionTimeoutMin = 300
     }
 })
