@@ -8,8 +8,8 @@ object IgniteTests24Java8_PlatformCPPCMakeLinuxClang : BuildType({
     name = "Platform C++ CMake (Linux Clang)"
 
     params {
-        param("env.ASAN_OPTIONS", "handle_segv=0:detect_leaks=0 ")
         text("env.PATH", "/usr/lib/llvm-%CLANG_VERSION%/bin:%env.PATH%", display = ParameterDisplay.HIDDEN, allowEmpty = true)
+        param("env.ASAN_OPTIONS", "handle_segv=0:detect_leaks=0")
         text("env.CC", "clang", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         text("env.CXX", "clang++", display = ParameterDisplay.HIDDEN, allowEmpty = true)
         param("env.UBSAN_OPTIONS", "print_stacktrace=1")
